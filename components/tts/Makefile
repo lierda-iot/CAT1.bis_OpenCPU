@@ -1,0 +1,19 @@
+TTS_RESOURCE_DIR := $(MID_DIR)/tts
+
+# TTS_RESOURCE_TYPE values
+# 8k_zh		: 8K采样率+中文
+# 16k_zh	: 16K采样率+中文
+# 8k_en		: 8K采样率+英语
+# 16k_en	: 16K采样率+英语
+TTS_RESOURCE_TYPE := 8k_zh
+TTS_RESOURCE ?= $(TTS_RESOURCE_DIR)/ttsRes_$(TTS_RESOURCE_TYPE).bin
+TTS_RESOURCE_RAW_SIZE := $(shell stat -c %s $(TTS_RESOURCE))
+# 4字节对齐（向上取整）
+TTS_RESOURCE_SIZE := $(shell echo $$((( $(shell stat -c %s $(TTS_RESOURCE)) + 4095) / 4096 * 4096)))
+$(info TTS_RESOURCE_RAW_SIZE: $(TTS_RESOURCE_RAW_SIZE))
+$(info TTS_RESOURCE_SIZE: $(TTS_RESOURCE_SIZE))
+
+CFLAGS_DEFS += -DCONFIG_TTS_ENABLE
+CFLAGS_DEFS += -DCONFIG_TTS_RESOURCE_SIZE=$(TTS_RESOURCE_SIZE)
+
+BINPFK_ADD_ITEMS += -input $(TTS_RESOURCE) -addrname PKGFLXTTS_RES_LNA -flashsize PKGFLXTTS_RES_SIZE

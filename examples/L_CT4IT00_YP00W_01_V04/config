@@ -1,0 +1,21 @@
+##############################################################################
+# L_CT4IT00_YP00W_01_V04 Project Configuration
+#
+# BUILD_MODE: Select build mode
+#   app  - Full application (app/src/user_main.c)
+#   demo - Hardware validation (demo/src/demo_main.c + demo_xxx.c)
+##############################################################################
+APP_VERSION = 01
+
+BUILD_MODE ?= demo
+
+##############################################################################
+# Hardware ready flags (only effective when BUILD_MODE=demo)
+#
+# Mark a module as 'y' only when its hardware is wired and verified.
+# Setting 'n' excludes the module from compilation entirely.
+# This prevents an unstable module from affecting the rest of the system.
+##############################################################################
+HWDEMO_KEY_EN          ?= y
+HWDEMO_LCD_SSD1306_EN  ?= n
+HWDEMO_WS2812B_EN      ?= y  # 点阵屏使用i2c1和ws2812b spi0，66引脚有冲突，不能同时打开

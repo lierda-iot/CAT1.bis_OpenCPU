@@ -1,0 +1,58 @@
+######################################################################################################################
+# This is for the reconfiguration of the default switch in "SDK/rules/Makefile.defs".
+# To make it convenient for users to enable different features for different projects.
+######################################################################################################################
+APP_VERSION = 01
+BUILD_COMP_THIRDPART_EN = y
+BUILD_THPART_LIB1_ENABLE = n
+
+EXDEMO_ADC_EN	?= n
+EXDEMO_DEV_EN	?= n
+EXDEMO_FS_EN	?= n
+EXDEMO_I2C_EN	?= n
+EXDEMO_USB_EN	?= n
+EXDEMO_CMSIS_EN ?= n
+EXDEMO_NW_EN 	?= n
+EXDEMO_SOCKET_EN 	?= n
+EXDEMO_HTTP_FOTA_EN ?= n
+EXDEMO_MQTT_ALI_EN ?= n
+EXDEMO_WIFISCAN_EN ?= n
+EXDEMO_PWM_EN ?= n
+EXDEMO_PING_EN ?= n
+EXDEMO_USBNET_EN ?= n
+EXDEMO_SPI_EN ?= n
+EXDEMO_SIM_EN ?= n
+EXDEMO_RTC_EN ?= n
+EXDEMO_NTP_EN ?= n
+EXDEMO_LCD_EN ?= n
+EXDEMO_CAMERA_EN ?= n
+EXDEMO_TP_EN ?= n
+EXDEMO_LBS_EN ?= n
+EXDEMO_FTP_EN ?= n
+EXDEMO_FLASH_EN ?= n
+EXDEMO_KEYPAD_EN ?= n
+EXDEMO_PWMAUD_EN ?= n
+EXDEMO_APWM_EN ?= n
+EXDEMO_GPIO2_EN ?= n
+EXDEMO_APPFOTA_EN ?= n
+EXDEMO_UART2_EN ?= n
+EXDENO_SLEEPEX_EN ?= n
+EXDEMO_DATACALL_EN ?= n
+EXDEMO_SSL2_EN ?= n
+EXDEMO_VIRTUAL_EN ?= n
+EXDEMO_ATCMD_EN ?= n
+EXDEMO_OS_EN	?= n
+EXDEMO_FOTA2_EN	?= n
+EXDEMO_SOCKET2_EN	?= n
+EXDEMO_SOUND_EN	?= n
+EXDEMO_TTS_EN	?= n
+EXDEMO_VOLTE_EN	?= n
+EXDEMO_WS2812B_EN ?= n
+EXDEMO_SMS_EN	 ?= n
+EXDEMO_WEBSOCKET_EN ?= n
+EXDEMO_HTTP_EN ?= n
+EXDEMO_MOTOR_EN ?= n
+EXDEMO_LVGL_KEY_TCP_EN ?= n
+EXDEMO_LVGL_SIMINFO_EN ?= n
+EXDEMO_EXTFLASH_FS_EN ?= n
+EXDEMO_EXTFLASH_EN ?= n

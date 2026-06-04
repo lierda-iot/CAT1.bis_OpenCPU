@@ -1,0 +1,8 @@
+ECSECURE_DIR := $(TOP)/components/secboot
+
+PEMDIR	:= $(BASEPACK_SECBOOT_SEM)
+
+OUTTARGET 	+= $(BUILDDIR)/$(BINNAME)Sigend.bin
+$(BUILDDIR)/$(BINNAME)Sigend.bin: $(BUILDDIR)/$(BINNAME).bin $(PEMDIR)
+	$(Q)$(ECSECURE) USRAPP=$< SYSHASH=1 SYSPEM=$(PEMDIR) > $(NULL_DEVICE)
+	$(Q)$(ECHO) "ecsecure -> $@"

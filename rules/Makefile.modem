@@ -1,0 +1,29 @@
+
+F6B_A_SUPPORT_MODEMS := NT26FCNB60WNA 
+F6D_A_SUPPORT_MODEMS := NT26FCND60NNA NT26FEUD60NNA NT26F6D0
+F7B_A_SUPPORT_MODEMS := NT26FCNB70WNA
+K2B_A_SUPPORT_MODEMS := NT26K2B1
+K2F_A_SUPPORT_MODEMS := NT26KCNF20NNA
+F6D_GL_SUPPORT_MODEMS := NT26F6D0_GL
+
+MODEMPKG_LIST  := F6B_A F6D_A F7B_A K2B_A K2F_A F6D_GL
+
+ifeq ($(MODEM),)
+$(error 请传入模组型号参数!)
+endif
+
+# 遍历所有底包配置，匹配模组型号
+MODEMPKG_TMP := UNKNOWN
+$(foreach pkg, $(MODEMPKG_LIST), \
+    $(if $(filter $(MODEM), $($(pkg)_SUPPORT_MODEMS)), \
+        $(eval MODEMPKG_TMP := $(pkg)) \
+    ) \
+)
+
+ifeq ($(MODEMPKG),)
+MODEMPKG := $(MODEMPKG_TMP)
+endif
+
+ifeq ($(MODEMPKG), UNKNOWN)
+$(error $(MODEM) No matching base package found!)
+endif

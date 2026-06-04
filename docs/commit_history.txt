@@ -1,0 +1,98 @@
+commit ffdee2666915df70e8cda3e996eba0a4f569c9e3
+Author: SuXingXing <sxx@lierda.com>
+Date:   Wed May 27 17:24:30 2026 +0800
+
+    fix: 修正文件系统结束地址计算方式
+
+commit f7932664b6dcb42136cde68fe35179fd6e7aeaff
+Author: SuXingXing <sxx@lierda.com>
+Date:   Tue May 26 21:03:52 2026 +0800
+
+    release: Version Lierda_OpenCPU_SDK_E_V0103
+    1、更新doc文档
+    2、新增支持F6D_GL型号
+    3、新增L_CT4IT00_YP00W_01_V04示例工程
+
+commit 44f14b62d36fe775f58c8e074b27cb825ab478d8
+Author: SuXingXing <sxx@lierda.com>
+Date:   Thu May 14 19:32:22 2026 +0800
+
+    release: Version Lierda_OpenCPU_SDK_E_V0102
+        1、更新doc文档、README文件
+        2、新增支持lvgl和示例代码
+        3、gpio优化Liot_WakeupIntInit接口传参
+        4、i2c新增__Liot_I2cGetInterface接口
+
+commit f3cb1738ae36d334abd8de6222e0f272491989c9
+Author: zhaoliechang <zhaolc@lierda.com>
+Date:   Thu Apr 30 17:36:40 2026 +0800
+
+    doc: Update doc files README.md and README_EN.md
+
+commit 4e7dc76529833dc22f2cb3c50862d28b2ba59a57
+Author: lierdaiwg <liangj@lierda.com>
+Date:   Thu Apr 30 14:04:08 2026 +0800
+
+    Update Windows build command in README
+    
+    Simplified Windows build command in README.
+
+commit eff8381f7f47e865edbef98e68cde097b174edbe
+Author: lierdaiwg <liangj@lierda.com>
+Date:   Thu Apr 30 13:50:42 2026 +0800
+
+    优化readme
+
+commit 2db421fc2cd96295b83166f4fbe657143bfa7ccd
+Author: 004695 <zhaolc@lierda.com>
+Date:   Thu Apr 9 14:00:10 2026 +0800
+
+    fix: 同步最新LSDK代码
+    
+    1.优化716E默认app分区大小
+    2.解决tts功能异常问题
+    3.优化部分多余文件
+
+commit cd4bc8f67495cef24453c71bb17fb5630d499298
+Author: zhaoliechang <zhaolc@lierda.com>
+Date:   Wed Apr 1 18:39:55 2026 +0800
+
+    feat: 更新window下固件烧录与日志工具
+
+commit 70727dc8a49fa417a72cc0a8c8ecd1b6eef2dece
+Author: 004695 <zhaolc@lierda.com>
+Date:   Wed Apr 1 18:13:28 2026 +0800
+
+    ver：更新sDk版本到v0101
+    
+    【增加】新增底包F6D_A、F7B_A、K2B_A、K2F_A
+    【增加】新增audio/lcd/camera/volte/keypad API及demo
+    【增加】新增状态查询指令、硬件型号查询接口
+    【增加】支持USBAT与UART2AT输出日志
+    【优化】更新window烧录工具版本
+    【优化】更新SDK目录与开源仓库保持一致
+    【优化】支持底包、app查分升级
+
+commit 598d11583bcb540ffcee70d578131684227c5c8a
+Author: suhongbo <suhongbo@lierda.com>
+Date:   Tue Mar 24 15:14:29 2026 +0800
+
+    fix:将Python脚本打包成可执行文件,摆脱python环境限制
+
+commit 0ee7ded6a20d8b29109b17a4d57693fc6ef0c75d
+Author: suhongbo <suhongbo@lierda.com>
+Date:   Fri Mar 20 09:02:57 2026 +0800
+
+    去掉LSDK目录
+
+commit 1763f8d8bfac83c72d04682f5f5ab2e9ca145664
+Author: suhongbo <suhongbo@lierda.com>
+Date:   Thu Mar 19 17:44:44 2026 +0800
+
+    首版底包分离LSDK提交测试
+
+commit 98a99ab93f483713e01f74671762d43da627788c
+Author: lierda-iot <liangj@lierda.com>
+Date:   Thu Mar 19 17:02:42 2026 +0800
+
+    Initial commit

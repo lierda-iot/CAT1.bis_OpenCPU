@@ -1,0 +1,121 @@
+# default target
+all::
+#-------------------------------------------------------------------------------
+#		env
+#-------------------------------------------------------------------------------
+OUTTARGET := 
+PREBUILDLIBS += 
+PP_FILES	+=
+
+include $(TOP)/rules/Makefile.tools
+#-------------------------------------------------------------------------------
+#		users
+#-------------------------------------------------------------------------------
+include $(TOP)/examples/Makefile
+
+#-------------------------------------------------------------------------------
+#		module
+#-------------------------------------------------------------------------------
+include $(TOP)/rules/Makefile.modem
+include $(TOP)/rules/Makefile.defs
+include $(TOP)/components/Makefile
+include $(TOP)/rules/Makefile.vars
+
+#-------------------------------------------------------------------------------
+#		Rules
+#-------------------------------------------------------------------------------
+vpath %.c $(TOP)
+vpath %.s $(TOP)
+vpath %.S $(TOP)
+
+OBJS := $(addprefix $(BUILDDIR)/, $(obj-y))
+LIBS := $(addprefix $(BUILDDIR)/lib/,$(lib-y))
+LIBURS := $(addprefix $(BUILDDIR)/lib/libusr/,$(libusr-y))
+
+.PHONY: all build clean size cleanall
+all:: build $(PP_FILES)
+
+ifeq ($(TOOLCHAIN),GCC)
+build:$(BUILDDIR)/$(BINNAME).elf \
+	$(BUILDDIR)/$(BINNAME).bin \
+	$(OUTTARGET)
+
+$(BUILDDIR):
+	@mkdir -p $(BUILDDIR)
+
+$(LIBDIR):
+	@mkdir -p $(LIBDIR)
+	
+$(BUILDDIR)/%.pp:%.c 
+	@mkdir -p $(dir $@)
+	$(Q)$(CC) $(CFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) -C -E -MMD -MP $< -o $@
+
+#overwrite implicit .pp rule
+%.pp:%.c 
+	@mkdir -p $(dir $@)
+	$(Q)$(CC) $(CFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) -C -E -MMD -MP $< -o $@
+
+$(BUILDDIR)/%.sc: %.c
+	@mkdir -p $(dir $@)
+	@cp $< $@
+
+$(BUILDDIR)/%.o: %.c
+	$(ECHO) CC $<
+	@mkdir -p $(dir $@)
+	$(Q)$(CC) $(CFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) $(DEPFLAGS) -c $< -o $@
+
+#overwrite implicit rule
+%.o: %.c
+	@mkdir -p $(dir $@)
+	$(ECHO) CC $<
+	$(Q)$(CC) $(CFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) $(DEPFLAGS) -c $< -o $@
+
+$(BUILDDIR)/%.o: %.s
+	@mkdir -p $(dir $@)
+	$(ECHO) ASM $<
+	$(Q)$(CC) $(CFLAGS_ASM) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) $(DEPFLAGS) -c $< -o $@
+
+$(BUILDDIR)/%.o: %.S
+	@mkdir -p $(dir $@)
+	$(ECHO) ASM $<
+	$(Q)$(CC) $(CFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) $(DEPFLAGS) -c $< -o $@
+
+$(BUILDDIR)/mem_map.txt: $(TOP)/components/kernel/include/mem_map.h
+	$(Q)$(CC) $(CFLAGS_CPU) $(CFLAGS_DEFS) -E -dM -P $< -o $@
+
+$(BUILDDIR)/$(BINNAME).elf: $(OBJS) $(LIBS) $(LIBURS) $(PREBUILDLIBS)
+	$(ECHO) LINK $@
+	$(Q)$(CC) $(LDFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) -x assembler-with-cpp -E -P $(LD_FILE) -o $(BUILDDIR)/$(BINNAME).lds
+	$(Q)$(LD) $(LDFLAGS) -T $(BUILDDIR)/$(BINNAME).lds -o $(BUILDDIR)/$(BINNAME).elf -u _scanf_float -u _printf_float -Wl,--start-group $(OBJS) $(LIBS) $(LIBURS) $(PREBUILDLIBS) -Wl,--end-group -Wl,$(GCCLIB1_PATH)/libgcc.a $(GCCLIB2_PATH)/libc_nano.a $(GCCLIB2_PATH)/libm.a -lm -lc -Wl,-Map=$(BUILDDIR)/$(BINNAME).map -Wl,--no-undefined
+
+$(BUILDDIR)/$(BINNAME).symbols: $(BUILDDIR)/$(BINNAME).elf
+	$(Q)$(NM) --size-sort --print-size -r $< >$@
+
+$(BUILDDIR)/$(BINNAME).bin: $(BUILDDIR)/$(BINNAME).elf
+	$(ECHO) OBJCOPY $@
+	$(Q)$(OBJCOPY) -O binary $< $@
+#	$(Q)$(OBJCOPY) -O verilog $< $(@:.bin=.hex)
+#	@$(OBJDUMP) -d -h $< > $(BUILDDIR)/$(BINNAME).txt
+	@$(SIZE) $(OBJECTS) $<
+
+$(BUILDDIR)/$(BINNAME).size: $(BUILDDIR)/$(BINNAME).elf
+	@$(OBJDUMP) -h $< > $@
+	@$(SIZE) -G $< >> $@
+	@for lib in $(LIBS); do \
+		$(SIZE) $$lib -t -G >> $@; \
+	done
+	@for lib in $(LIBURS); do \
+		$(SIZE) $$lib -t -G >> $@; \
+	done
+	@for lib in $(PREBUILDLIBS); do \
+		$(SIZE) $$lib -t -G >> $@; \
+	done
+
+clean:
+	@rm -rf $(BUILDDIR)
+	
+size: $(BUILDDIR)/$(BINNAME).elf
+	@$(SIZE) $(OBJECTS) $(BUILDDIR)/$(BINNAME).elf
+
+endif
+

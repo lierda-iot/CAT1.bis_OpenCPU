@@ -1,0 +1,66 @@
+CROSS_COMPILE := $(GCC_PATH)/bin/arm-none-eabi-
+
+# Compilation tools
+CC = $(CROSS_COMPILE)gcc
+LD = $(CROSS_COMPILE)gcc
+SIZE = $(CROSS_COMPILE)size
+STRIP = $(CROSS_COMPILE)strip
+OBJCOPY = $(CROSS_COMPILE)objcopy
+OBJDUMP = $(CROSS_COMPILE)objdump
+GDB = $(CROSS_COMPILE)gdb
+NM = $(CROSS_COMPILE)gcc-nm
+AR = $(CROSS_COMPILE)gcc-ar
+CLANG = $(CROSS_COMPILE)clang
+
+Q       ?= @
+ECHO    ?= @echo
+PYTHON  ?= python
+
+ifeq ($(BUILD_ENV),linux)
+7zUnzip	:= 7z
+else
+7zUnzip	:= $(TOP)/tools/7z/7z.exe
+endif
+
+ifeq ($(BUILD_ENV),linux)
+ECSECURE ?= $(TOP)/tools/secboot/ecsecure
+else
+ECSECURE ?= $(TOP)/tools/secboot/ecsecure.exe
+endif
+
+ifeq ($(BUILD_ENV),linux)
+UNZIP_GCC ?= tar -xjvf $(TOP)/tools/toolchain/gcc-arm-none-eabi-linux.tar.bz2 --strip-components=1 -C $(GCC_PATH)
+else
+UNZIP_GCC ?= $(7zUnzip) x -y $(TOP)/tools/toolchain/gcc-arm-none-eabi-windows.zip -o$(GCC_PATH)/..
+endif
+
+ifeq ($(BUILD_ENV),linux)
+FCELF ?= $(TOP)/tools/fcelf/fcelf
+else
+FCELF ?= $(TOP)/tools/fcelf/fcelf.exe
+endif
+
+ifeq ($(BUILD_ENV),linux)
+OTASCRIPT ?= $(TOP)/tools/appota/create_ota_package
+else
+OTASCRIPT ?= $(TOP)/tools/appota/create_ota_package.exe
+endif
+
+ifeq ($(BUILD_ENV),linux)
+GEN_DEFCFG ?= $(TOP)/tools/precfg/defaultCfg
+else
+GEN_DEFCFG ?= $(TOP)/tools/precfg/defaultCfg.exe
+endif
+
+ifeq ($(BUILD_ENV),linux)
+GEN_IORESOURCE ?= $(TOP)/tools/precfg/ioResource
+else
+GEN_IORESOURCE ?= $(TOP)/tools/precfg/ioResource.exe
+endif
+
+NULL_DEVICE := /dev/null 2>&1
+
+GET_TIMESTAMP = date +%s%3N
+GET_DATE = date +"%Y-%m-%d %H:%M:%S"
+
+COPY := cp -fp

@@ -1,0 +1,62 @@
+###########################################################
+# SDK Version (managed by SDK maintainer, do not modify in project config)
+###########################################################
+SDK_VERSION_MAJOR ?= 1
+SDK_VERSION_MINOR ?= 4
+SDK_VERSION_PATCH ?= 0
+SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
+
+###########################################################
+# customer ctrl
+###########################################################
+APP_VERSION ?= 01
+
+###########################################################
+# secboot ctrl
+###########################################################
+BUILD_COMP_SECBOOT_EN		?= n
+
+###########################################################
+# mem adjust
+###########################################################
+CODE_REGION_ADJUST ?= 
+ifneq ($(CODE_REGION_ADJUST),)
+	CFLAGS_DEFS += -DCONFIG_CODE_REGION_ADJUST=$(CODE_REGION_ADJUST)
+endif
+
+###########################################################
+# driver ctrl
+###########################################################
+BUILD_DRIVER_LCD_EN ?= y
+BUILD_DRIVER_GX8006_EN ?= n
+BUILD_DRIVER_BATTERY_EN ?= n
+BUILD_DRIVER_WS2812B_EN ?= n
+
+###########################################################
+# tts ctrl
+###########################################################
+BUILD_COMP_TTS_EN ?= n
+# TTS_RESOURCE_TYPE values
+# 8kzh		: 8K采样率+中文
+# 16kzh	: 16K采样率+中文
+# 8ken		: 8K采样率+英语
+# 16ken	: 16K采样率+英语
+TTS_RESOURCE_TYPE ?= 8kzh
+
+###########################################################
+# thirdparty lib ctrl
+###########################################################
+BUILD_COMP_THIRDPART_EN ?= n
+
+BUILD_THPART_CJSON_ENABLE ?= y
+BUILD_THPART_FREERTOS_ENABLE ?= y
+BUILD_THPART_LIB1_ENABLE ?= n
+BUILD_THPART_LWIP_ENABLE ?= y
+BUILD_THPART_MBEDTLS_ENABLE ?= y
+BUILD_THPART_WEBSOCKET_ENABLE ?= y
+BUILD_THPART_LVGL_ENABLE ?= y
+###########################################################
+# user test demo ctrl
+###########################################################
+CFLAGS_DEFS += -DAPP_VERSION=\"appV$(APP_VERSION)\"
+CFLAGS_DEFS += -DSDK_VERSION=\"V$(SDK_VERSION)\"
