@@ -65,6 +65,14 @@ typedef struct {
 
 /* ========== Frame RX/TX interface ========== */
 
+void gx8006_notify_ack_fail(void)
+{
+    if (g_tx_ack_sem) {
+        g_tx_ack_result = 0xFF;
+        liot_rtos_semaphore_release(g_tx_ack_sem);
+    }
+}
+
 /**
  * @brief Enqueue received frame
  * @details Called by UART parser, copies complete frame to heap and posts to RX queue.
@@ -74,7 +82,6 @@ typedef struct {
  */
 void gx8006_frame_recv(uint8_t *data, uint32_t data_len)
 {
-    if (!g_rx_q || data_len == 0) return;
 
     gx8006_rx_chunk_t *chunk = liot_rtos_malloc(sizeof(gx8006_rx_chunk_t) + data_len);
     if (!chunk) return;
@@ -180,7 +187,7 @@ static void handle_voice_cmd(uint8_t *payload, uint16_t payload_len)
             liot_rtos_queue_release(g_evt_q, sizeof(uint8_t), &evt, LIOT_NO_WAIT);
             break;
         case RECV_SPK_DATA_CMD:
-            g_tx_ack_result = payload[1];
+            g_tx_ack_result = (payload_len > 1) ? payload[1] : 0x00;
             liot_rtos_semaphore_release(g_tx_ack_sem);
             break;
         case SEND_OFFLINE_VOICE_TIMEOUT_CMD:
@@ -210,6 +217,17 @@ static void rx_task_fn(void *arg)
     while (1) {
         liot_rtos_queue_wait(g_rx_q, (uint8_t *)&chunk, sizeof(gx8006_rx_chunk_t *), LIOT_WAIT_FOREVER);
         if (!chunk || chunk->len < PROTOCOL_HEAD_LEN + 1) {
+            liot_rtos_free(chunk);
+            chunk = NULL;
+            continue;
+        }
+
+        uint8_t sum = 0;
+        for (uint32_t j = 0; j < chunk->len - 1; j++)
+            sum += chunk->data[j];
+        if (sum != chunk->data[chunk->len - 1]) {
+            GX_TRACE("checsum error expect=0x%02X, calc=0x%02X", sum, chunk->data[chunk->len - 1]);
+            gx8006_notify_ack_fail();
             liot_rtos_free(chunk);
             chunk = NULL;
             continue;

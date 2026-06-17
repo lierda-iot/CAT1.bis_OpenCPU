@@ -108,4 +108,34 @@ int liot_cust_nvm_fwrite(void *buffer, size_t size, size_t num);
  */
 int liot_cust_nvm_fread(void *buffer, size_t size, size_t num);
 
+/**
+ * @brief Write data to NVRAM reserved partition using read-modify-write method
+ * @details Reads the entire NVRAM reserved partition, modifies the specified region,
+ *          and writes back the full partition to preserve other data.
+ *          The NVRAM reserved partition is 2KB in size and cannot be erased by the user.
+ * @param[in] data Pointer to the data buffer to write
+ * @param[in] size Number of bytes to write
+ * @param[in] offset Starting offset within the NVRAM reserved partition (offset + size must not exceed 2048)
+ * @return Write operation result
+ * @retval true  Write successful
+ * @retval false Invalid parameters or write failure
+ * @warning NVRAM has limited write endurance. Do not call this function frequently.
+ *          Write only during initialization or configuration changes, and use
+ *          Liot_nvmRead for subsequent data access.
+ */
+BOOL Liot_nvmWrite(UINT8 *data, UINT32 size, UINT32 offset);
+
+/**
+ * @brief Read data from NVRAM reserved partition
+ * @details Reads the specified number of bytes from the given offset in the NVRAM reserved partition.
+ *          The NVRAM reserved partition is 2KB in size and cannot be erased by the user.
+ * @param[out] data Pointer to the buffer where read data will be stored
+ * @param[in] size Number of bytes to read
+ * @param[in] offset Starting offset within the NVRAM reserved partition (offset + size must not exceed 2048)
+ * @return Read operation result
+ * @retval true  Read successful
+ * @retval false Invalid parameters or read failure
+ */
+BOOL Liot_nvmRead(UINT8 *data, UINT32 size, UINT32 offset);
+
 #endif

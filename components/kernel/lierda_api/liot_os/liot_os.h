@@ -711,6 +711,23 @@ extern LiotOSStatus_t liot_rtos_queue_release(liot_queue_t msgQRef, /* message q
 extern LiotOSStatus_t liot_rtos_queue_release_isr(liot_queue_t msgQRef, uint32 size, uint8 *msgPtr);
 
 /*!
+ * @brief Sends a message to the front of the queue (high priority insert).
+ *
+ * @param msgQRef [in] Message queue reference.
+ * @param size    [in] Size of the message.
+ * @param msgPtr  [in] Pointer to the message data to send.
+ * @param timeout [in] Timeout value in ticks.
+ *
+ * @return LiotOSStatus_t
+ *         - LIOT_OSI_SUCCESS: Message was successfully sent.
+ *         - Other: Error code indicating failure.
+ */
+extern LiotOSStatus_t liot_rtos_queue_release_front(liot_queue_t msgQRef,
+                                                    uint32 size,
+                                                    uint8 *msgPtr,
+                                                    uint32 timeout);
+
+/*!
  * @brief Gets the current number of messages in the queue.
  *
  * @details This function retrieves the number of messages currently present in the queue.

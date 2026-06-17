@@ -40,6 +40,24 @@ Each version entry should include the following categories (as applicable):
 
 <!-- CHANGELOG_PLACEHOLDER -->
 
+## [v1.5] - 2026-06-17
+
+### Added
+
+- add xiaodacall with CT4IT00YP00W_03
+- Add exflash, exflashfs, and lvgl interfaces
+- add apnv_recv_part api
+- support float add double
+
+### Changed
+
+- repet sound api as audio api
+- open source websocketlvgl/opus/amr/mp3
+
+### Fixed
+
+- update gx8006 driver
+
 ## [v1.4] - 2026-06-05
 
 ### Added

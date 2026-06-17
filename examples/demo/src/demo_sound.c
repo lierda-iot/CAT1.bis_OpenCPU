@@ -1,5 +1,5 @@
 #include "liot_type.h"
-#include "liot_sound.h"
+#include "liot_audio2.h"
 #include "liot_log.h"
 #include "liot_os.h"
 #include "liot_gpio2.h"
@@ -6294,41 +6294,41 @@ void liot_sound_demo_thread(void *argv)
     Liot_AonPowerCtl(TRUE);
     Liot_SetVoltage(L_DOMAIN_ALL, L_VOLT_3_30V );
 
-    Liot_SndHwConfig_t cfg ={
+    Liot_AudHwConfig_t cfg ={
         .i2cNum = 1,
         .i2sNum = 0,
         .paGpioNum = 0,
-        .codecType = L_SND_ES8311,
-        .channel = L_SND_MONO_RIGHT,
-        .role = L_SND_ROLE_SLAVE,
-        .mode = L_SND_MODE_I2S,
-        .frameSize = L_SND_FRAMESIZE_16_16,
-        .samples = L_SND_16K_SAMPLES,
+        .codecType = L_AUD_ES8311,
+        .channel = L_AUD_MONO_RIGHT,
+        .role = L_AUD_ROLE_SLAVE,
+        .mode = L_AUD_MODE_I2S,
+        .frameSize = L_AUD_FRAMESIZE_16_16,
+        .samples = L_AUD_16K_SAMPLES,
 	};
 
-    liot_trace("Liot_SoundInit");
-    Liot_SoundInit(&cfg);
+    liot_trace("Liot_AudioInit");
+    Liot_AudioInit(&cfg);
 
-    liot_trace("Liot_SoundSetVolume");
-    Liot_SoundSetVolume(50);
-    Liot_SoundSetMicVolume(8, 200);
+    liot_trace("Liot_AudioSetVolume");
+    Liot_AudioSetVolume(50);
+    Liot_AudioSetMicVolume(8, 200);
 
     while(1)
     {
         #ifdef TEST_PLAY
-        liot_trace("Liot_SoundPlay ...");
-        Liot_SoundPlay(audio16k_16, sizeof(audio16k_16)); //46384
+        liot_trace("Liot_AudioPlay ...");
+        Liot_AudioPlay(audio16k_16, sizeof(audio16k_16)); //46384
         liot_rtos_task_sleep_ms(5000);
         #endif
 
         #ifdef TEST_RECORD
-        liot_trace("Liot_SoundRecord ...");
-        Liot_SoundRecord(audioRecord, TEST_CACHE_LEN);
-        Liot_SoundPlay(audioRecord, TEST_CACHE_LEN); //46384
+        liot_trace("Liot_AudioRecord ...");
+        Liot_AudioRecord(audioRecord, TEST_CACHE_LEN);
+        Liot_AudioPlay(audioRecord, TEST_CACHE_LEN); //46384
         liot_rtos_task_sleep_ms(1);
         #endif
     }
-    Liot_SoundDeInit();
+    Liot_AudioDeInit();
     liot_rtos_task_delete(0); // kill itsel
 }
 

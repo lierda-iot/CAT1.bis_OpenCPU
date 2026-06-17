@@ -86,7 +86,7 @@ $(BUILDDIR)/mem_map.txt: $(TOP)/components/kernel/include/mem_map.h
 $(BUILDDIR)/$(BINNAME).elf: $(OBJS) $(LIBS) $(LIBURS) $(PREBUILDLIBS)
 	$(ECHO) LINK $@
 	$(Q)$(CC) $(LDFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) -x assembler-with-cpp -E -P $(LD_FILE) -o $(BUILDDIR)/$(BINNAME).lds
-	$(Q)$(LD) $(LDFLAGS) -T $(BUILDDIR)/$(BINNAME).lds -o $(BUILDDIR)/$(BINNAME).elf -u _scanf_float -u _printf_float -Wl,--start-group $(OBJS) $(LIBS) $(LIBURS) $(PREBUILDLIBS) -Wl,--end-group -Wl,$(GCCLIB1_PATH)/libgcc.a $(GCCLIB2_PATH)/libc_nano.a $(GCCLIB2_PATH)/libm.a -lm -lc -Wl,-Map=$(BUILDDIR)/$(BINNAME).map -Wl,--no-undefined
+	$(Q)$(LD) $(LDFLAGS) -T $(BUILDDIR)/$(BINNAME).lds -o $(BUILDDIR)/$(BINNAME).elf -u _scanf_float -u _printf_float -Wl,--allow-multiple-definition -Wl,--start-group $(OBJS) $(LIBS) $(LIBURS) $(PREBUILDLIBS) -Wl,$(GCCLIB1_PATH)/libgcc.a -Wl,$(GCCLIB2_PATH)/libc_nano.a -Wl,$(GCCLIB2_PATH)/libm.a -lm -lc -Wl,--end-group -Wl,-Map=$(BUILDDIR)/$(BINNAME).map -Wl,--no-undefined
 
 $(BUILDDIR)/$(BINNAME).symbols: $(BUILDDIR)/$(BINNAME).elf
 	$(Q)$(NM) --size-sort --print-size -r $< >$@

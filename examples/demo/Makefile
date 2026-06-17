@@ -255,6 +255,11 @@ CFLAGS_DEFS += -DAPPDEMO_EXTFLASH_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_extflash.o
 endif
 
+ifeq ($(EXDEMO_NVM_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_NVM_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_nvm.o
+endif
+
 DEMO_COBJS := $(addprefix $(BUILDDIR)/, $(DEMO_COBJSTEMP))
 PP_FILES += $(DEMO_COBJS:.o=.pp)
 

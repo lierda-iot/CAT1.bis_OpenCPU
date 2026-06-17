@@ -21,3 +21,7 @@ include $(MID_DIR)/driver/Makefile
 ifeq ($(BUILD_COMP_TTS_EN), y)
 include $(MID_DIR)/tts/Makefile
 endif
+
+ifeq ($(EF_IMAGE_EN), 1)
+include $(MID_DIR)/efImage/Makefile
+endif

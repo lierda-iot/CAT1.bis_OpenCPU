@@ -155,6 +155,18 @@ void user_main(void)
     liot_rtos_task_create(&flashtskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_flash_demo_task", &liot_flash_demo_task, NULL);
     #endif
 
+    #ifdef APPDEMO_EXTFLASH_FS_EN
+    void liot_extflash_fs_demo_thread(void *argv);
+    liot_task_t extflash_fstaskhandle = NULL;
+    liot_rtos_task_create(&extflash_fstaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_extflash_fs_demo_thread", &liot_extflash_fs_demo_thread, NULL);
+    #endif
+
+    #ifdef APPDEMO_EXTFLASH_EN
+    void liot_extflash_demo_thread(void *argv);
+    liot_task_t extflashtaskhandle = NULL;
+    liot_rtos_task_create(&extflashtaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_extflash_demo_thread", &liot_extflash_demo_thread, NULL);
+    #endif
+
     #ifdef APPDEMO_KEYPAD_EN
     void liot_keypad_demo_thread(void *argv);
     liot_task_t keypadtskhandle = NULL;
@@ -279,6 +291,12 @@ void user_main(void)
     void liot_motor_demo_task(void *argv);
     liot_task_t motortskhandle = NULL;
     liot_rtos_task_create(&motortskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_motor_demo_task", &liot_motor_demo_task, NULL);
+    #endif
+
+    #ifdef APPDEMO_NVM_EN
+    void demo_nvm_task(void *argv);
+    liot_task_t nvmtaskhandle = NULL;
+    liot_rtos_task_create(&nvmtaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "demo_nvm_task", &demo_nvm_task, NULL);
     #endif
 
     #ifdef APPDEMO_LVGL_KEY_TCP_EN

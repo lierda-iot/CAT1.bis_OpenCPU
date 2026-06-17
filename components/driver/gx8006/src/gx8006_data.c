@@ -103,7 +103,7 @@ static int gx8006_data_write_spk_stop(void)
     } while (ack && retry <= GX8006_SPK_CMD_RETRY);
 
     gx8006_spk_set_status(GX_SPK_IDLE);
-    GX_TRACE("SPK play stop, frames=%u", s_spk_count);
+    GX_TRACE("SPK play stop, frames=%u retry=%u", s_spk_count, retry);
     s_spk_count = 0;
     if (retry > GX8006_SPK_CMD_RETRY) {
         GX_TRACE("SPK stop FAILED after %d retries, ack=0x%02X", retry, ack);

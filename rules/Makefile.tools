@@ -17,7 +17,7 @@ ECHO    ?= @echo
 PYTHON  ?= python
 
 ifeq ($(BUILD_ENV),linux)
-7zUnzip	:= 7z
+7zUnzip	:= $(TOP)/tools/7z/7za
 else
 7zUnzip	:= $(TOP)/tools/7z/7z.exe
 endif
@@ -29,9 +29,9 @@ ECSECURE ?= $(TOP)/tools/secboot/ecsecure.exe
 endif
 
 ifeq ($(BUILD_ENV),linux)
-UNZIP_GCC ?= tar -xjvf $(TOP)/tools/toolchain/gcc-arm-none-eabi-linux.tar.bz2 --strip-components=1 -C $(GCC_PATH)
+UNZIP_GCC ?= $(7zUnzip) x -y $(TOP)/tools/toolchain/gcc-arm-none-eabi-linux.tar.7z -o$(TOP)/tools/toolchain && tar -xf $(TOP)/tools/toolchain/gcc-arm-none-eabi-linux.tar --strip-components=1 -C $(GCC_PATH) && rm -f $(TOP)/tools/toolchain/gcc-arm-none-eabi-linux.tar
 else
-UNZIP_GCC ?= $(7zUnzip) x -y $(TOP)/tools/toolchain/gcc-arm-none-eabi-windows.zip -o$(GCC_PATH)/..
+UNZIP_GCC ?= $(7zUnzip) x -y $(TOP)/tools/toolchain/gcc-arm-none-eabi-windows.7z -o$(GCC_PATH)/..
 endif
 
 ifeq ($(BUILD_ENV),linux)

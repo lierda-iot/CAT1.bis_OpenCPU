@@ -5,5 +5,6 @@ CFLAGS_INC +=  -I $(MBEDTLS_DIR)/include  \
                   -I $(MBEDTLS_DIR)/configs
 
 MBEDTLS_CFLAGS ?= -DMBEDTLS_CONFIG_FILE=\"config_ec_ssl_comm.h\"
+MBEDTLS_CFLAGS += -DFEATURE_APP_TLS_ENABLE
 
-CFLAGS += $(LWIPCONFIG_CFLAGS)
+CFLAGS += $(MBEDTLS_CFLAGS)

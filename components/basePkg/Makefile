@@ -48,10 +48,13 @@ CFLAGS_DEFS += -DCP_PKGIMG_LIMIT_SIZE="($(BASEPKG_CP_PKGIMG_LIMIT_SIZE))"
 
 
 # Add chip type definition based on PKG_PRODUCT
-ifneq ($(findstring EC716, $(BASEPKG_PRODUCT)),)
+ifneq ($(findstring EC716E, $(BASEPKG_PRODUCT)),)
 CFLAGS_DEFS += -DCHIP_EC716
-else ifneq ($(findstring EC718, $(BASEPKG_PRODUCT)),)
+CFLAGS_DEFS += -DTYPE_EC716E
+else ifneq ($(findstring EC718PM, $(BASEPKG_PRODUCT)),)
 CFLAGS_DEFS += -DCHIP_EC718
+CFLAGS_DEFS += -DTYPE_EC718M
+CFLAGS_DEFS += -DTYPE_EC718PM
 endif
 
 

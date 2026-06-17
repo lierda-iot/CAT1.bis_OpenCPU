@@ -22,6 +22,7 @@ extern void gx8006_frame_recv(uint8_t *data, uint32_t data_len);
 extern uint8_t gx8006_frame_send(uint8_t *data, uint32_t data_len, uint8_t sync, void *arg);
 extern void gx8006_protocol_init(gx8006_evt_cb_t evt_cb);
 extern void gx8006_protocol_deinit(void);
+extern void gx8006_notify_ack_fail(void);
 
 /* ========== Runtime config ========== */
 static gx8006_config_t g_cfg;
@@ -101,12 +102,6 @@ uint32_t gx8006_spk_get_volume(void)
     return g_cfg.default_volume;
 }
 
-/* ========== UART frame parsing ========== */
-#define RX_PARSE_BUF_SIZE  (GX8006_OPUS_MAX_FRAME_LENGTH + PROTOCOL_HEAD_LEN + 1)
-
-static uint8_t  s_parse_buf[RX_PARSE_BUF_SIZE * 2];
-static uint32_t s_parse_len = 0;
-
 /**
  * @brief UART RX callback: frame assembly, checksum validation, dispatch
  * @details Appends received data to parse buffer, searches for frame header (0x55AA),
@@ -117,52 +112,22 @@ static void gx8006_uart_rx_cb(liot_uart_e port, char *data, uint32_t size, void 
     (void)port;
     (void)argc;
 
-    if (s_parse_len + size > sizeof(s_parse_buf)) {
-        GX_TRACE("UART RX: buffer overflow, reset parse_len=%u + size=%u > buf=%u",
-                 s_parse_len, size, (uint32_t)sizeof(s_parse_buf));
-        s_parse_len = 0;
+    uint8_t *buf = (uint8_t *)data;
+    uint32_t buf_len = size;
+
+    /* Find all 55 AA header positions */
+    uint32_t hdr_pos[4];
+    int hdr_cnt = 0;
+    for (uint32_t i = 0; i + 1 < buf_len && hdr_cnt < 4; i++) {
+        if (buf[i] == FRAME_FIRST && buf[i + 1] == FRAME_SECOND)
+            hdr_pos[hdr_cnt++] = i;
     }
 
-    memcpy(s_parse_buf + s_parse_len, data, size);
-    s_parse_len += size;
-
-    while (s_parse_len >= PROTOCOL_HEAD_LEN + 1) {
-        uint32_t i = 0;
-        while (i + 1 < s_parse_len) {
-            if (s_parse_buf[i] == FRAME_FIRST && s_parse_buf[i + 1] == FRAME_SECOND)
-                break;
-            i++;
-        }
-        if (i > 0) {
-            GX_TRACE("UART RX: skipped %u bytes before header", i);
-            s_parse_len -= i;
-            memmove(s_parse_buf, s_parse_buf + i, s_parse_len);
-        }
-        if (s_parse_len < PROTOCOL_HEAD_LEN + 1)
-            break;
-
-        uint16_t dlen = ((uint16_t)s_parse_buf[4] << 8) | s_parse_buf[5];
-        uint32_t frame_total = PROTOCOL_HEAD_LEN + dlen + 1;
-        if (s_parse_len < frame_total) {
-            break;
-        }
-
-        uint8_t sum = 0;
-        for (uint32_t j = 0; j < frame_total - 1; j++)
-            sum += s_parse_buf[j];
-
-        if (sum == s_parse_buf[frame_total - 1]) {
-            gx8006_frame_recv(s_parse_buf, frame_total);
-        } else {
-            GX_TRACE("UART RX: checksum FAIL expect=0x%02X got=0x%02X, hex[0..7]: %02X %02X %02X %02X %02X %02X %02X %02X",
-                     sum, s_parse_buf[frame_total - 1],
-                     s_parse_buf[0], s_parse_buf[1], s_parse_buf[2], s_parse_buf[3],
-                     frame_total > 4 ? s_parse_buf[4] : 0, frame_total > 5 ? s_parse_buf[5] : 0,
-                     frame_total > 6 ? s_parse_buf[6] : 0, frame_total > 7 ? s_parse_buf[7] : 0);
-        }
-
-        s_parse_len -= frame_total;
-        memmove(s_parse_buf, s_parse_buf + frame_total, s_parse_len);
+    /* Dispatch each frame */
+    for (int i = 0; i < hdr_cnt; i++) {
+        uint8_t *frame = buf + hdr_pos[i];
+        uint32_t frame_len = (i + 1 < hdr_cnt) ? (hdr_pos[i + 1] - hdr_pos[i]) : (buf_len - hdr_pos[i]);
+        gx8006_frame_recv(frame, frame_len);
     }
 }
 
@@ -284,6 +249,10 @@ void gx8006_init(const gx8006_config_t *cfg)
 
     liot_rtos_task_sleep_ms(50);
     gx8006_set_vad_timeout_time(g_cfg.vad_timeout_time);
+
+    liot_rtos_task_sleep_ms(50);
+    gx8006_mic_close();
+    gx8006_set_vad_awaken_enable(0);
 }
 
 /**

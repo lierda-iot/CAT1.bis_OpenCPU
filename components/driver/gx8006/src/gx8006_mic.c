@@ -89,9 +89,9 @@ void gx8006_set_awaken_timeout_time(uint8_t time)
  * @param[in] active  Active mode sensitivity
  * @param[in] passive Passive mode sensitivity
  */
-void gx8006_set_vad_sensitivity(uint8_t active, uint8_t passive)
+void gx8006_set_vad_sensitivity(uint8_t val)
 {
-    uint8_t cmd[4] = {SET_OFFLINE_VOICE_CMD, 0x09, active, passive};
+    uint8_t cmd[3] = {SET_OFFLINE_VOICE_CMD, 0x09, val};
     gx8006_frame_send(cmd, sizeof(cmd), 0, NULL);
 }
 

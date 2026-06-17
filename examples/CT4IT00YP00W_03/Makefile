@@ -1,16 +1,19 @@
 CUSTOM_DIR := examples/$(PROJECT)
-CUSTOM_SRC := $(CUSTOM_DIR)/src
 
-CFLAGS_INC	+= -I $(TOP)/$(CUSTOM_DIR)/inc
+include $(TOP)/$(CUSTOM_DIR)/config
+include $(TOP)/$(CUSTOM_DIR)/framework/Makefile
 
-CUSTOM_COBJSTEMP := $(CUSTOM_SRC)/user_main.o
+CFLAGS_INC += -I $(TOP)/$(CUSTOM_DIR)/inc
+CUSTOM_SRC_DIRS := $(CUSTOM_DIR)/src
 
+CUSTOM_CSRC = $(foreach dir, $(CUSTOM_SRC_DIRS), $(wildcard $(TOP)/$(dir)/*.c))
+CUSTOM_COBJSTEMP := $(patsubst $(TOP)/%.c, %.o, $(CUSTOM_CSRC))
 CUSTOM_COBJS := $(addprefix $(BUILDDIR)/, $(CUSTOM_COBJSTEMP))
 
 ifeq ($(TOOLCHAIN),GCC)
-libusr-y += lib_CT4IT00YP00W_03.a
+libusr-y += lib_$(PROJECT).a
 
-$(BUILDDIR)/lib/libusr/lib_CT4IT00YP00W_03.a: $(CUSTOM_COBJS)
+$(BUILDDIR)/lib/libusr/lib_$(PROJECT).a: $(CUSTOM_COBJS)
 	@mkdir -p $(dir $@)
 	$(ECHO) AR $@
 	$(Q)$(AR) -cr $@ $^

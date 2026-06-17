@@ -16,7 +16,7 @@
 
 
 /* ========== Protocol constants ========== */
-#define GX8006_OPUS_MAX_FRAME_LENGTH        255   /* Max bytes per OPUS frame */
+#define GX8006_OPUS_MAX_FRAME_LENGTH        1152  /* Max bytes per OPUS frame (SPK single transfer max) */
 #define GX8006_OPUS_FRAME_SIZE              80    /* OPUS frame data length */
 
 #define FRAME_FIRST             0x55  /* Frame header first byte */
@@ -200,11 +200,10 @@ void gx8006_set_vad_timeout_time(uint8_t time);
 void gx8006_set_awaken_timeout_time(uint8_t time);
 
 /**
- * @brief Set VAD sensitivity
- * @param[in] active  Active mode sensitivity
- * @param[in] passive Passive mode sensitivity
+ * @brief Set VAD sensitivity (0-100, higher = less sensitive)
+ * @param[in] val Sensitivity value (default 45)
  */
-void gx8006_set_vad_sensitivity(uint8_t active, uint8_t passive);
+void gx8006_set_vad_sensitivity(uint8_t val);
 
 /**
  * @brief Set VAD noise reduction level

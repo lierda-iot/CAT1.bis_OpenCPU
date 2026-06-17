@@ -149,10 +149,10 @@ typedef struct
 
 typedef struct
 {
-    int rssi;         // received signal strength level (return 99 indicates that not known or not detectable)
+    int rssi;         // received signal strength level, range 0-31, 99=unknown. Convert to dBm: rssi_dBm = 2 * rssi - 113
     int bitErrorRate; // channel bit error rate (return 99 indicates that not known or not detectable)
-    int rsrq;         // reference signal received quality (return 255 indicates that not known or not detectable)
-    int rsrp;         // reference signal received power (return 255 indicates that not known or not detectable)
+    int rsrq;         // reference signal received quality, range 0-34, 255=unknown. Step 0.5dB, lower bound: rsrq_dB = rsrq * 0.5 - 20 (0: <-19.5dB, 34: >=-3dB)
+    int rsrp;         // reference signal received power, range 0-97, 255=unknown. Step 1dBm, lower bound: rsrp_dBm = rsrp - 141 (0: <-140dBm, 97: >=-44dBm)
     int snr;          // SNR Signal-to-Noise Ratio value in dB, value range: -20 ~ 40
 } liot_nw_signal_strength_info_s;
 
