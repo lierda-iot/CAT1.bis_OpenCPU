@@ -121,7 +121,7 @@ OPENSDK 在设计方面可以划分为三层：底包层、系统层和用户层
 
 # 6 快速开发
 
-下面是快速开发指导，更详细的开发参考[《新手开发指南》](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/general/quick_start.html)。
+下面是快速开发指导，更详细的开发参考[《新手开发指南》](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/general/quick_start.html)。
 
 ## 6.1 获取模组型号和确认编译的工程
 
@@ -131,7 +131,7 @@ OPENSDK 在设计方面可以划分为三层：底包层、系统层和用户层
 ## 6.2 编译
 
 SDK 支持 Windows 和 Linux 环境开发。
-Windows下可以使用 lierda_upgrade_tool 工具编译也可以使用 Makefile 编译，客户可以根据实际情况选择编译方式，具体使用方法参考：[《Lierda 蜂窝固件烧录工具使用指导》](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/tools/flash/flash-tool.html)
+Windows下可以使用 lierda_upgrade_tool 工具编译也可以使用 Makefile 编译，客户可以根据实际情况选择编译方式，具体使用方法参考：[《Lierda 蜂窝固件烧录工具使用指导》](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/tools/flash/flash-tool.html)
 
 以下是主要介绍 SDK 根目录下使用命令行编译：
 
@@ -182,26 +182,26 @@ cd CAT1.bis_OpenCPU
 
 烧录工具我们使用 lierda_upgrade_tool 工具，工具使用文档可以参考：
 
-[《Lierda 蜂窝固件烧录工具使用指导》](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/tools/flash/flash-tool.html)
+[《Lierda 蜂窝固件烧录工具使用指导》](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/tools/flash/flash-tool.html)
 
 ## 6.5 查看日志
 
 打开任意串口工具，波特率选择 115200，打开串口后，即可查看 APP 的 log。
 
-更多日志详情参考：[《Windows Log 抓取指南》](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/tools/log/log-tool.html)
+更多日志详情参考：[《Windows Log 抓取指南》](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/tools/log/log-tool.html)
 
 # 7 文档
 
-[通用指南](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/general/index.html) | [硬件资料](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/hardware/index.html) | [软件开发](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/software/index.html) | [工具](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/tools/index.html)
+[通用指南](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/general/index.html) | [硬件资料](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/hardware/index.html) | [软件开发](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/software/index.html) | [工具](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/tools/index.html)
 
 # 8 更多开发示例
 
-[《基于L-CT4IT00-YP00W-01_V04硬件》](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/examples/L-CT4IT00-YP00W-01_V04/L-CT4IT00-YP00W-01_V04_quick_start.html)
+[《基于L-CT4IT00-YP00W-01_V04硬件》](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/examples/L-CT4IT00-YP00W-01_V04/L-CT4IT00-YP00W-01_V04_quick_start.html)
 
-[ 《Lierda 小达 应用指导》](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/examples/XiaoDa/XiaoDa%20Application%20Guide_Rev0.1.html)
+[ 《Lierda 小达 应用指导》](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/examples/XiaoDa/XiaoDa%20Application%20Guide_Rev0.1.html)
 # 9 工具
 
-- [《USB驱动安装指导》](https://opendocs.lierda.com/docs/EC71X_OpenSDK/zh_CN/tools/usb/USB_Driver_Installation_Guide.html)
+- [《USB驱动安装指导》](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/zh_CN/tools/usb/USB_Driver_Installation_Guide.html)
 
 # 10 许可协议
 

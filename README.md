@@ -120,7 +120,7 @@ Module models can be identified by the silkscreen on the module shielding cover.
 
 # 6 Quick Development
 
-Below is a quick development guide. For more detailed development reference, see ["Quick Start Guide"](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/general/quick_start.html).
+Below is a quick development guide. For more detailed development reference, see ["Quick Start Guide"](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/general/quick_start.html).
 
 ## 6.1 Get Module Model and Confirm Build Project
 
@@ -130,7 +130,7 @@ Below is a quick development guide. For more detailed development reference, see
 ## 6.2 Build
 
 The SDK supports both Windows and Linux development.
-On Windows you can use the lierda_upgrade_tool or Makefile to build. Choose the method that suits your situation. For details, refer to: ["Lierda Cellular Firmware Flashing Tool User Guide"](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/tools/flash/flash-tool.html)
+On Windows you can use the lierda_upgrade_tool or Makefile to build. Choose the method that suits your situation. For details, refer to: ["Lierda Cellular Firmware Flashing Tool User Guide"](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/tools/flash/flash-tool.html)
 
 Below is the main introduction to command-line building from the SDK root directory:
 
@@ -181,27 +181,27 @@ Generated files are located in the **gccout/project_name** directory under the r
 
 We use the lierda_upgrade_tool for flashing. For tool usage documentation, refer to:
 
-["Lierda Cellular Firmware Flashing Tool User Guide"](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/tools/flash/flash-tool.html)
+["Lierda Cellular Firmware Flashing Tool User Guide"](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/tools/flash/flash-tool.html)
 
 ## 6.5 Viewing Logs
 
 Open any serial port tool, select baud rate 115200, open the serial port, and you can view the APP logs.
 
-For more log details, refer to: ["Windows Log Capture Guide"](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/tools/Packet%20capture/packet-capture.html)
+For more log details, refer to: ["Windows Log Capture Guide"](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/tools/Packet%20capture/packet-capture.html)
 
 # 7 Documentation
 
-[General Guide](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/general/index.html) | [Hardware](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/hardware/index.html) | [Software Development](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/software/index.html) | [Tools](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/tools/index.html)
+[General Guide](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/general/index.html) | [Hardware](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/hardware/index.html) | [Software Development](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/software/index.html) | [Tools](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/tools/index.html)
 
 # 8 More Development Examples
 
-["Based on L-CT4IT00-YP00W-01_V04 Hardware"](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/examples/L-CT4IT00-YP00W-01_V04/L-CT4IT00-YP00W-01_V04_quick_start.html)
+["Based on L-CT4IT00-YP00W-01_V04 Hardware"](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/examples/L-CT4IT00-YP00W-01_V04/L-CT4IT00-YP00W-01_V04_quick_start.html)
 
-["Lierda XiaoDa Application Guide"](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/examples/XiaoDa/XiaoDa%20Application%20Guide_Rev0.1.html)
+["Lierda XiaoDa Application Guide"](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/examples/XiaoDa/XiaoDa%20Application%20Guide_Rev0.1.html)
 
 # 9 Tools
 
-- ["USB Driver Installation Guide"](https://opendocs.lierda.com/docs/EC71X_OpenSDK/en/tools/usb/USB_Driver_Installation_Guide.html)
+- ["USB Driver Installation Guide"](https://opendocs.lierda.com/docs/CAT.1_Doc_Protal/en/tools/usb/USB_Driver_Installation_Guide.html)
 
 # 10 License
 
