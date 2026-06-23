@@ -4,6 +4,7 @@
 #include "liot_type.h"
 #include "liot_os.h"
 #include "lwip/sockets.h"
+#include "FreeRTOS.h"
 
 #ifndef xPortGetFreeHeapSize
 extern size_t xPortGetFreeHeapSizeEc( void );
