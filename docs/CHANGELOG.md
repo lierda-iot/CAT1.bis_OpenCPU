@@ -40,6 +40,27 @@ Each version entry should include the following categories (as applicable):
 
 <!-- CHANGELOG_PLACEHOLDER -->
 
+## [v1.5.patch03] - 2026-06-26
+
+### Added
+
+- Add models NT26F9D0 and F9D_A
+- Add ft6336 support for touch panel driver
+- add apnv_recv_part api
+- support float add double
+
+### Changed
+
+- Optimize sound sample code
+- Optimize demo for L_CT4IT00_YP00W_01_V04
+- Optimize sound sample code
+- Enable WebSocket compilation for CT4IT00YP00W_03
+- Optimize app Makefile for more general use
+
+### Fixed
+
+- Fix tts Makefile parameter passing
+
 ## [v1.5] - 2026-06-17
 
 ### Added

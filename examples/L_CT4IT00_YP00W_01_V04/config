@@ -8,6 +8,8 @@
 APP_VERSION = 01
 
 BUILD_MODE ?= demo
+BUILD_COMP_THIRDPART_EN = y
+BUILD_THPART_LIB1_ENABLE = n
 
 ##############################################################################
 # Hardware ready flags (only effective when BUILD_MODE=demo)
@@ -16,6 +18,10 @@ BUILD_MODE ?= demo
 # Setting 'n' excludes the module from compilation entirely.
 # This prevents an unstable module from affecting the rest of the system.
 ##############################################################################
-HWDEMO_KEY_EN          ?= y
+HWDEMO_KEY_EN          ?= n
 HWDEMO_LCD_SSD1306_EN  ?= n
-HWDEMO_WS2812B_EN      ?= y  # 点阵屏使用i2c1和ws2812b spi0，66引脚有冲突，不能同时打开
+HWDEMO_LCD_EN          ?= n
+HWDEMO_TP_EN           ?= n
+HWDEMO_SOUND_EN        ?= n
+# 点阵屏使用i2c1和ws2812b spi0，66引脚有冲突，不能同时打开
+HWDEMO_WS2812B_EN      ?= y

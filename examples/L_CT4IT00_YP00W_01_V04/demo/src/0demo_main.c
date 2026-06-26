@@ -23,6 +23,18 @@
 #include "demo_lcd_ssd1306.h"
 #endif
 
+#ifdef HWDEMO_LCD_EN
+void liot_lcd_demo_thread(void *argv);
+#endif
+
+#ifdef HWDEMO_TP_EN
+void liot_tp_demo_thread(void *argv);
+#endif
+
+#ifdef HWDEMO_SOUND_EN
+void liot_sound_demo_thread(void *argv);
+#endif
+
 #ifdef HWDEMO_WS2812B_EN
 #include "demo_ws2812b.h"
 #endif
@@ -41,6 +53,24 @@ void user_main(void)
     liot_task_t lcd_handle = NULL;
     liot_rtos_task_create(&lcd_handle, 10240, LIOT_APP_TASK_PRIORITY,
                           "demo_lcd_ssd1306", demo_lcd_ssd1306_task, NULL);
+#endif
+
+#ifdef HWDEMO_LCD_EN
+    liot_task_t lcd_demo_handle = NULL;
+    liot_rtos_task_create(&lcd_demo_handle, 10240, LIOT_APP_TASK_PRIORITY,
+                          "liot_lcd_demo_thread", liot_lcd_demo_thread, NULL);
+#endif
+
+#ifdef HWDEMO_TP_EN
+    liot_task_t tp_demo_handle = NULL;
+    liot_rtos_task_create(&tp_demo_handle, 10240, LIOT_APP_TASK_PRIORITY,
+                          "liot_tp_demo_thread", liot_tp_demo_thread, NULL);
+#endif
+
+#ifdef HWDEMO_SOUND_EN
+    liot_task_t sound_demo_handle = NULL;
+    liot_rtos_task_create(&sound_demo_handle, 10240, LIOT_APP_TASK_PRIORITY,
+                          "liot_sound_demo_thread", liot_sound_demo_thread, NULL);
 #endif
 
 #ifdef HWDEMO_WS2812B_EN

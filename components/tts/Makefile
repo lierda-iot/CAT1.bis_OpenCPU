@@ -5,7 +5,7 @@ TTS_RESOURCE_DIR := $(MID_DIR)/tts
 # 16k_zh	: 16K采样率+中文
 # 8k_en		: 8K采样率+英语
 # 16k_en	: 16K采样率+英语
-TTS_RESOURCE_TYPE := 8k_zh
+TTS_RESOURCE_TYPE ?= 8k_zh
 TTS_RESOURCE ?= $(TTS_RESOURCE_DIR)/ttsRes_$(TTS_RESOURCE_TYPE).bin
 TTS_RESOURCE_RAW_SIZE := $(shell stat -c %s $(TTS_RESOURCE))
 # 4字节对齐（向上取整）

@@ -3,7 +3,7 @@
 ###########################################################
 SDK_VERSION_MAJOR ?= 1
 SDK_VERSION_MINOR ?= 5
-SDK_VERSION_PATCH ?= 2
+SDK_VERSION_PATCH ?= 3
 SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
 
 ###########################################################

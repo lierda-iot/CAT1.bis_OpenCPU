@@ -6287,47 +6287,82 @@ __attribute__((aligned(16))) uint8_t audio16k_16[] = {
 __attribute__((aligned(16))) uint8_t audioRecord[TEST_CACHE_LEN] = {0};
 #endif
 
+void playCallback(Liot_AudEvent_e event, void *context)
+{
+    switch (event) 
+    {
+        case L_AUD_EVT_START:
+            liot_trace("L_AUD_EVT_START");
+            break;
+        case L_AUD_EVT_PAUSE:
+            liot_trace("L_AUD_EVT_PAUSE");
+            break;
+        case L_AUD_EVT_FINISH:
+            liot_trace("L_AUD_EVT_FINISH");
+            break;
+        case L_AUD_EVT_CLOSE:
+            liot_trace("L_AUD_EVT_CLOSE");
+            break;
+        case L_AUD_EVT_RESUME:
+            liot_trace("L_AUD_EVT_RESUME");
+            break;
+        default:
+            break;
+    }
+}
+
 void liot_sound_demo_thread(void *argv)
 {
     liot_rtos_task_sleep_ms(2000);
 
+    liot_trace("open audio power");
     Liot_AonPowerCtl(TRUE);
     Liot_SetVoltage(L_DOMAIN_ALL, L_VOLT_3_30V );
+    Liot_GpioInit(L_GPIO_25, L_IO_OUTPUT, L_IO_HIGH, NULL);
+    Liot_GpioInit(L_GPIO_27, L_IO_OUTPUT, L_IO_HIGH, NULL);
 
     Liot_AudHwConfig_t cfg ={
         .i2cNum = 1,
         .i2sNum = 0,
-        .paGpioNum = 0,
+        .paGpioNum = 8,
         .codecType = L_AUD_ES8311,
         .channel = L_AUD_MONO_RIGHT,
         .role = L_AUD_ROLE_SLAVE,
         .mode = L_AUD_MODE_I2S,
         .frameSize = L_AUD_FRAMESIZE_16_16,
         .samples = L_AUD_16K_SAMPLES,
+        .callback = playCallback,
 	};
 
-    liot_trace("Liot_AudioInit");
+    liot_trace("AudioInit");
     Liot_AudioInit(&cfg);
 
-    liot_trace("Liot_AudioSetVolume");
+    liot_trace("Audio Set Volume");
     Liot_AudioSetVolume(50);
+
+    liot_trace("Audio Set Codec Volume");
+    Liot_AudioSetCodecVolume(50);
+
+    liot_trace("Audio Set Mic Volume");
     Liot_AudioSetMicVolume(8, 200);
 
     while(1)
     {
         #ifdef TEST_PLAY
-        liot_trace("Liot_AudioPlay ...");
+        liot_trace("Audio Play ...");
         Liot_AudioPlay(audio16k_16, sizeof(audio16k_16)); //46384
-        liot_rtos_task_sleep_ms(5000);
+        Liot_AudioWaitPlayFinish(LIOT_WAIT_FOREVER);
         #endif
 
         #ifdef TEST_RECORD
-        liot_trace("Liot_AudioRecord ...");
+        liot_trace("Audio Record ...");
         Liot_AudioRecord(audioRecord, TEST_CACHE_LEN);
         Liot_AudioPlay(audioRecord, TEST_CACHE_LEN); //46384
-        liot_rtos_task_sleep_ms(1);
+        Liot_AudioWaitRecordFinish(LIOT_WAIT_FOREVER);
         #endif
     }
+
+    liot_trace("Audio DeInit");
     Liot_AudioDeInit();
     liot_rtos_task_delete(0); // kill itsel
 }

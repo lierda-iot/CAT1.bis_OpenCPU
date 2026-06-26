@@ -1,19 +1,19 @@
-CUSTOM_DIR := examples/app
-CUSTOM_SRC := $(CUSTOM_DIR)/src
+CUSTOM_DIR := examples/$(PROJECT)
 
-CFLAGS_INC	+= -I $(TOP)/$(CUSTOM_DIR)/inc
+include $(TOP)/$(CUSTOM_DIR)/config
 
-#Customize your configuration
-include  $(TOP)/$(CUSTOM_DIR)/config
+CFLAGS_INC += -I $(TOP)/$(CUSTOM_DIR)/inc
+CUSTOM_SRC_DIRS := $(CUSTOM_DIR)/src
 
-CUSTOM_COBJSTEMP := $(CUSTOM_SRC)/user_main.o
-
+CUSTOM_CSRC = $(foreach dir, $(CUSTOM_SRC_DIRS), $(wildcard $(TOP)/$(dir)/*.c))
+CUSTOM_COBJSTEMP := $(patsubst $(TOP)/%.c, %.o, $(CUSTOM_CSRC))
 CUSTOM_COBJS := $(addprefix $(BUILDDIR)/, $(CUSTOM_COBJSTEMP))
+PP_FILES += $(CUSTOM_COBJS:.o=.pp)
 
 ifeq ($(TOOLCHAIN),GCC)
-libusr-y += lib_customapp.a
+libusr-y += lib_custom_$(PROJECT).a
 
-$(BUILDDIR)/lib/libusr/lib_customapp.a: $(CUSTOM_COBJS)
+$(BUILDDIR)/lib/libusr/lib_custom_$(PROJECT).a: $(CUSTOM_COBJS)
 	@mkdir -p $(dir $@)
 	$(ECHO) AR $@
 	$(Q)$(AR) -cr $@ $^
