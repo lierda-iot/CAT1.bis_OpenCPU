@@ -302,8 +302,13 @@
 #else
 #define LWIP_IPSEC_ENABLE 0
 #endif
+/*Lierda Start: Add vsim by lijingzhe in 20260706*/
+#ifdef FEATURE_TGT_VSIM_ENABLE
+#define LWIP_NETIF_LOAD_INFO_ENABLE 1
+#else
 #define LWIP_NETIF_LOAD_INFO_ENABLE 0
-
+#endif
+/*Lierda End: Add vsim by lijingzhe in 20260706*/
 #endif  //end of ENABLE_PSIF
 
 #if PBUF_POOL_MM_USE_CUSTOM

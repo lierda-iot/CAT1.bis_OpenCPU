@@ -32,11 +32,13 @@
 #define APP_LISTEN_TIMEOUT_MS           10000
 
 /* ---- pin map ---- */
+#define GX8006_UART_PORT        1
+#define GX8006_VAD_TIMEOUT      25
 
 #define PIN_LDO33_EN            L_GPIO_25
 #define PIN_GX8006_POWER        L_GPIO_26
 
-#define PIN_GX8006_RST          L_GPIO_28
+#define PIN_GX8006_RST          L_GPIO_23
 #define PIN_GX8006_BOOT         L_GPIO_4
 #define PIN_GX8006_PA_SD        L_GPIO_17
 
@@ -51,18 +53,23 @@
 #define PIN_KEY_POWER           0
 
 // creat AI bot with https://www.coze.cn/ and get the token, botid, voiceid
-#define COZE_DEFAULT_TOKEN  "******"
-#define COZE_DEFAULT_BOTID  "******"
-#define COZE_DEFAULT_VOICEID "******"
+#define COZE_DEFAULT_TOKEN  "sat_66VJ40uptrgXQsUnPYR4RLuh1IJ1VI599zTruL5cf4xlWxZjElfKlJVn1dbmhHFM"
+#define COZE_DEFAULT_BOTID  "7543145424308420627"
+#define COZE_DEFAULT_VOICEID "7468512265151463451"
 
 #define CHAT_MODE_DEFAULT       (0U)
 
 /* ---- LBS auth ---- */
 // Please contact the staff to get it
 #define LBS_DEFAULT_USER_NAME   "lierda"
-#define LBS_DEFAULT_USER_PWD    "******"
-#define LBS_DEFAULT_TOKEN       "******"
+#define LBS_DEFAULT_USER_PWD    "123456"
+#define LBS_DEFAULT_TOKEN       "B84E427D95B1DF4A3F49B18DDF714C72"
 
+typedef enum boot_mode_e {
+    APP_BOOT_MODE_NORMAL = 0,
+    APP_BOOT_MODE_FACTORY = 1,
+    APP_BOOT_MODE_BURN = 2,
+} boot_mode_e;
 /* ---- NV data ---- */
 
 typedef struct {
@@ -76,8 +83,13 @@ typedef struct {
     led_config_t led_cfg;
     network_config_t net_cfg;
     uint32_t magic;
+    boot_mode_e boot_mode;
 } app_nv_data_t;
 
 app_nv_data_t *app_nv_get(void);
+boot_mode_e app_nv_get_boot_mode(void);
+void app_nv_set_boot_mode(boot_mode_e mode);
+void app_nv_load(void);
+void app_nv_save(void);
 
 #endif /* APP_NV_H */

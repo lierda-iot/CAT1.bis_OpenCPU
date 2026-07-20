@@ -27,6 +27,10 @@
 void liot_lcd_demo_thread(void *argv);
 #endif
 
+#ifdef HWDEMO_CAMERA_EN
+void liot_camera_demo_thread(void *argv);
+#endif
+
 #ifdef HWDEMO_TP_EN
 void liot_tp_demo_thread(void *argv);
 #endif
@@ -59,6 +63,12 @@ void user_main(void)
     liot_task_t lcd_demo_handle = NULL;
     liot_rtos_task_create(&lcd_demo_handle, 10240, LIOT_APP_TASK_PRIORITY,
                           "liot_lcd_demo_thread", liot_lcd_demo_thread, NULL);
+#endif
+
+#ifdef HWDEMO_CAMERA_EN
+    liot_task_t camera_demo_handle = NULL;
+    liot_rtos_task_create(&camera_demo_handle, 10240, LIOT_APP_TASK_PRIORITY,
+                                                         "liot_camera_demo_thread", liot_camera_demo_thread, NULL);
 #endif
 
 #ifdef HWDEMO_TP_EN

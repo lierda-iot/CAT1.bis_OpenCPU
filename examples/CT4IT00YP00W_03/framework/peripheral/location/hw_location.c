@@ -19,6 +19,10 @@ static liot_sem_t g_lbs_sem = NULL;
 static liot_lbs_postion_info_t g_lbs_result;
 static volatile int g_lbs_ok = 0;
 
+/* 开机只真正定位一次,成功后缓存,后续调用直接返回缓存数据 */
+static location_info_t g_cachedLocation;
+static int g_locationCached = 0;
+
 static void lbs_result_cb(liot_lbs_response_data_t *response_data)
 {
     if (response_data == NULL || response_data->hndl == 0) {
@@ -49,6 +53,13 @@ int locationModuleGetPosition(location_info_t *info)
     char imei_str[64] = {0};
 
     if (info == NULL) return -1;
+
+    /* 已有缓存则直接返回,不再发起定位请求 */
+    if (g_locationCached) {
+        memcpy(info, &g_cachedLocation, sizeof(location_info_t));
+        return 0;
+    }
+
     memset(info, 0, sizeof(location_info_t));
 
     liot_dev_get_imei(imei_str, 64, 0);
@@ -147,6 +158,10 @@ int locationModuleGetPosition(location_info_t *info)
     strncpy(info->desc, g_lbs_result.desc, LOCATION_DESC_LEN - 1);
     liot_trace("[LOC] success: %s, %s", info->longitude, info->latitude);
     ret = 0;
+
+    /* 首次定位成功,缓存结果供后续调用直接使用 */
+    memcpy(&g_cachedLocation, info, sizeof(location_info_t));
+    g_locationCached = 1;
 
 exit:
     if (g_lbs_sem) {

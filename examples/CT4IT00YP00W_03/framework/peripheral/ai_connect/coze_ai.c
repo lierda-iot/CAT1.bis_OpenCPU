@@ -152,6 +152,7 @@ int coze_ai_recv_message(uint8_t *data, uint32_t len)
         ws_ai_connect_done_release();
     } else if (strcmp(event_type, "conversation.chat.created") == 0) {
         LOG_INFO("[COZE] conversation.chat.created (AI thinking)");
+        post_framework_event(EVT_AI_RESPONSE_THINK);
         ws_ai_transcript_release();
     } else if (strcmp(event_type, "input_audio_buffer.completed") == 0) {
         LOG_INFO("[COZE] input_audio_buffer.completed");

@@ -34,12 +34,17 @@ static int ledSideJobOnEvent(job_t *job, const event_t *event)
         idleTimerReset();
         ledSetPattern(LED_PATTERN_STANDBY);
         break;
-    case EVT_AUDIO_WAKEUP:
     case EVT_AI_RESPONSE_DONE:
         idleTimerReset();
         ledSetPattern(LED_PATTERN_STANDBY);
         break;
+    case EVT_AI_RESPONSE_THINK:
+        frameworkTimerStop(TIMER_ID_IDLE_POWEROFF);
+        frameworkTimerStop(TIMER_ID_IDLE_WARNING);
+        ledSetPattern(LED_PATTERN_THINKING);
+        break;
     case EVT_AUDIO_RECORD_DONE:
+    case EVT_AUDIO_WAKEUP:
         idleTimerReset();
         ledSetPattern(LED_PATTERN_THINKING);
         break;

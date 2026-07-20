@@ -43,3 +43,7 @@ endif
 ifeq ($(BUILD_THPART_MP3_ENABLE), y)
 include $(THIRDPART_DIR)/mp3/Makefile
 endif
+
+ifeq ($(BUILD_THPART_VSIM_ENABLE), y)
+include $(THIRDPART_DIR)/vsim/Makefile.inc
+endif

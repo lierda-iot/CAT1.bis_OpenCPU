@@ -245,6 +245,10 @@ ifeq ($(EXDEMO_LVGL_SIMINFO_EN), y)
 include $(TOP)/$(DEMO_SRC)/demo_lvgl_siminfo/Makefile
 endif
 
+ifeq ($(EXDEMO_LVGL_DUAL_EYE_EN), y)
+include $(TOP)/$(DEMO_SRC)/demo_lvgl_dual_eye/Makefile
+endif
+
 ifeq ($(EXDEMO_EXTFLASH_FS_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_EXTFLASH_FS_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_extflash_fs.o
@@ -258,6 +262,16 @@ endif
 ifeq ($(EXDEMO_NVM_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_NVM_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_nvm.o
+endif
+
+ifeq ($(EXDEMO_VSIM_TGT_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_VSIM_TGT_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_vsim_tgt.o
+endif
+
+ifeq ($(EXDEMO_TIMER_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_TIMER_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_timer.o
 endif
 
 DEMO_COBJS := $(addprefix $(BUILDDIR)/, $(DEMO_COBJSTEMP))

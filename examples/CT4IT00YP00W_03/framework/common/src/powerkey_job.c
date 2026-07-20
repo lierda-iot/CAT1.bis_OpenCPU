@@ -14,7 +14,8 @@ static jobDesc_t g_powerkeyJobDesc;
 
 static int powerkeyJobInit(void)
 {
-    powerkeyInit();
+    /* powerkeyInit 延后到开机流程结束后由 app_main_task 调用,
+     * 避免开机长按残留事件触发误关机 */
     return 0;
 }
 

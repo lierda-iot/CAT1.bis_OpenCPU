@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Device Manager</title>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,sans-serif;margin:0;background:#f0f2f5;color:#222}
+header{background:#1f6feb;color:#fff;font-size:18px;font-weight:600;display:flex;align-items:stretch}
+header .logo-box{background:#fff;display:flex;align-items:center;padding:0 16px}
+header .logo-box img{height:24px;width:auto;display:block}
+header .title{display:flex;align-items:center;padding:14px 18px}
+nav{display:flex;background:#fff;border-bottom:1px solid #ddd;overflow-x:auto}
+nav button{border:0;background:none;padding:12px 16px;font-size:14px;cursor:pointer;color:#555;white-space:nowrap}
+nav button.active{color:#1f6feb;border-bottom:2px solid #1f6feb;font-weight:600}
+main{padding:16px;max-width:720px;margin:0 auto}
+.card{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card h3{margin:0 0 12px;font-size:15px}
+.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
+.row .k{color:#888}.row .v{font-weight:600}
+label{display:block;font-size:13px;color:#666;margin:8px 0 3px}
+input,select{width:100%;padding:8px;border:1px solid #ccc;border-radius:5px;font-size:14px}
+button.act{background:#1f6feb;color:#fff;border:0;border-radius:5px;padding:9px 16px;font-size:14px;cursor:pointer;margin-top:12px}
+button.danger{background:#e5484d}
+#msg{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:6px;font-size:13px;opacity:0;transition:.3s;pointer-events:none}
+#msg.show{opacity:1}
+/* Top center banner: green on success, red on failure */
+#banner{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);
+  min-width:200px;max-width:90%;text-align:center;color:#fff;font-size:14px;font-weight:600;
+  padding:12px 24px;border-radius:0 0 8px 8px;box-shadow:0 3px 10px rgba(0,0,0,.2);
+  transition:transform .3s ease;z-index:1000}
+#banner.show{transform:translateX(-50%) translateY(0)}
+#banner.ok{background:#22c55e}
+#banner.err{background:#e5484d}
+#login{position:fixed;inset:0;background:#f0f2f5;display:flex;align-items:center;justify-content:center}
+#login .box{background:#fff;padding:28px;border-radius:10px;width:300px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+#login .login-logo{display:block;height:40px;width:auto;margin:0 auto 14px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div id="login"><div class="box">
+  <img src="logo1.png" alt="logo" class="login-logo">
+  <h3 style="margin-top:0;text-align:center">Login</h3>
+  <label>Username</label><input id="lu" value="admin">
+  <label>Password</label><input id="lp" type="password">
+  <button class="act" style="width:100%" onclick="doLogin()">Login</button>
+</div></div>
+
+<div id="app" class="hide">
+<header><span class="logo-box"><img src="logo1.png" alt="logo"></span><span class="title">Device Manager</span></header>
+<nav id="nav"></nav>
+<main id="view"></main>
+</div>
+<div id="msg"></div>
+<div id="banner"></div>
+<script src="app.js"></script>
+</body>
+</html>

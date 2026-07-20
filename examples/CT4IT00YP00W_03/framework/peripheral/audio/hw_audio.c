@@ -12,12 +12,12 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
+extern uint32_t gx8006_get_tx_pending(void);
+
 #define PLAYBACK_TASK_STACK     (4096)
 #define PLAYBACK_TASK_PRIO      (7)
 #define PLAYBACK_QUEUE_LEN      (100)
 #define PLAYBACK_IDLE_TIMEOUT   (2000)
-#define PLAYBACK_CACHE_NUM      (10)
-#define PLAYBACK_CACHE_WAIT_MS  (200)
 
 /* ========== types & state ========== */
 
@@ -99,19 +99,10 @@ static void playback_task(void *arg)
     (void)arg;
     audio_frame_t frame;
     TickType_t wait = portMAX_DELAY;
-    uint32_t cache_waited_ms = 0;
     while (1) {
         if (xQueueReceive(g_playback_queue, &frame, wait) == pdPASS) {
             wait = pdMS_TO_TICKS(PLAYBACK_IDLE_TIMEOUT);
             if (g_playback_state == PLAYBACK_IDLE) {
-                if (uxQueueMessagesWaiting(g_playback_queue) + 1 < PLAYBACK_CACHE_NUM
-                    && cache_waited_ms < PLAYBACK_CACHE_WAIT_MS) {
-                    xQueueSendToFront(g_playback_queue, &frame, 0);
-                    liot_rtos_task_sleep_ms(20);
-                    cache_waited_ms += 20;
-                    continue;
-                }
-                cache_waited_ms = 0;
                 g_playback_state = PLAYBACK_PLAYING;
                 gx8006_spk_stream_start();
                 liot_trace("[AUDIO] stream_start (cached %d)",
@@ -120,19 +111,22 @@ static void playback_task(void *arg)
 
             if (g_playback_state == PLAYBACK_PLAYING) {
                 gx8006_spk_stream_write(frame.data, frame.len);
-            } else {
-                liot_trace("[AUDIO] skip write, state=%d", g_playback_state);
             }
 
             if (frame.needfree)
                 liot_rtos_free(frame.data);
 
         } else {
-            liot_trace("[AUDIO] stream_stop");
+            if (g_playback_state == PLAYBACK_PLAYING) {
+                if (gx8006_get_tx_pending() > 0) {
+                    wait = pdMS_TO_TICKS(500);
+                    continue;
+                }
+                liot_trace("[AUDIO] stream_stop");
+                gx8006_spk_stream_stop();
+            }
             wait = portMAX_DELAY;
-            cache_waited_ms = 0;
             g_playback_state = PLAYBACK_IDLE;
-            gx8006_spk_stream_stop();
         }
     }
 }
@@ -208,7 +202,6 @@ void audioModuleWritePlayback(uint8_t *data, uint32_t len)
 {
     if (!data || len == 0 || !g_playback_queue)
         return;
-    liot_rtos_task_sleep_ms(2);
     playback_enqueue(data, len, AUDIO_PROMPT_NONE);
 }
 
@@ -222,14 +215,16 @@ bool audioModuleWaitPlayDone(uint32_t timeout_ms)
 {
     uint32_t elapsed = 0;
     while (1) {
-        if (g_playback_queue && uxQueueMessagesWaiting(g_playback_queue) == 0)
+        if (g_playback_queue && uxQueueMessagesWaiting(g_playback_queue) == 0
+            && gx8006_get_tx_pending() == 0)
             return true;
         if (timeout_ms != 0xffffffff && elapsed >= timeout_ms)
             break;
         liot_rtos_task_sleep_ms(10);
         elapsed += 10;
     }
-    return (g_playback_queue && uxQueueMessagesWaiting(g_playback_queue) == 0);
+    return (g_playback_queue && uxQueueMessagesWaiting(g_playback_queue) == 0
+            && gx8006_get_tx_pending() == 0);
 }
 
 void audioModuleStartRecord(void)

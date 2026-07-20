@@ -1,5 +1,7 @@
 CUSTOM_DIR := examples/$(PROJECT)
 
+IOINI  := $(TOP)/$(CUSTOM_DIR)/iodriver.ini
+
 # Load project config (BUILD_MODE, HW_XXX_READY flags)
 include $(TOP)/$(CUSTOM_DIR)/config
 
@@ -8,6 +10,10 @@ CFLAGS_INC += -I $(TOP)/$(CUSTOM_DIR)/inc
 CFLAGS_INC += -I $(TOP)/$(CUSTOM_DIR)/demo/inc
 
 ifeq ($(BUILD_MODE), demo)
+
+DEMO_NAME ?= hardware
+
+ifeq ($(DEMO_NAME), hardware)
 
 CUSTOM_SRC := $(CUSTOM_DIR)/demo/src
 CUSTOM_COBJSTEMP := $(CUSTOM_SRC)/0demo_main.o
@@ -25,6 +31,11 @@ endif
 ifeq ($(HWDEMO_LCD_EN), y)
 CUSTOM_COBJSTEMP += $(CUSTOM_SRC)/demo_lcd.o
 CFLAGS_DEFS += -DHWDEMO_LCD_EN
+endif
+
+ifeq ($(HWDEMO_CAMERA_EN), y)
+CUSTOM_COBJSTEMP += $(CUSTOM_SRC)/demo_camera.o
+CFLAGS_DEFS += -DHWDEMO_CAMERA_EN
 endif
 
 ifeq ($(HWDEMO_LCD_SSD1306_EN), y)
@@ -45,6 +56,18 @@ endif
 ifeq ($(HWDEMO_WS2812B_EN), y)
 CUSTOM_COBJSTEMP += $(CUSTOM_SRC)/demo_ws2812b.o
 CFLAGS_DEFS += -DHWDEMO_WS2812B_EN
+endif
+
+else ifeq ($(DEMO_NAME), demo_zhongyi_ai)
+
+CUSTOM_SRC := $(CUSTOM_DIR)/demo/src/demo_zhongyi_ai/src
+CUSTOM_INC := $(CUSTOM_DIR)/demo/src/demo_zhongyi_ai/inc
+CFLAGS_INC += -I $(TOP)/$(CUSTOM_INC)
+CUSTOM_COBJSTEMP := $(patsubst $(TOP)/%.c,%.o,$(wildcard $(TOP)/$(CUSTOM_SRC)/*.c))
+PP_FILES += $(wildcard $(TOP)/$(CUSTOM_SRC)/*.c)
+
+else
+$(error Unsupported DEMO_NAME "$(DEMO_NAME)"; use "hardware" or "demo_zhongyi_ai")
 endif
 
 else

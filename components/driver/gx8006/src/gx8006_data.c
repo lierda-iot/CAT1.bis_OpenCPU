@@ -21,10 +21,6 @@
 extern uint8_t gx8006_frame_send(uint8_t *data, uint32_t data_len, uint8_t sync, void *arg);
 extern void gx8006_int_to_big_endian(int32_t value, uint8_t *array);
 
-#ifndef GX8006_SPK_CMD_RETRY
-#define GX8006_SPK_CMD_RETRY                10
-#endif
-
 /* ========== SPK status ========== */
 static uint32_t s_spk_count  = 0;
 static uint8_t  g_spk_status = GX_SPK_IDLE;
@@ -59,8 +55,6 @@ static int gx8006_data_write_spk_stop(void);
 static int gx8006_data_write_spk_start(void)
 {
     uint8_t cmd[6] = {RECV_SPK_DATA_CMD, 0x00, 0x00, 0x00, 0x00, 0x00};
-    uint8_t retry = 0;
-    uint8_t ack;
 
     if (gx8006_spk_get_status() == GX_SPK_PLAYING)
         gx8006_data_write_spk_stop();
@@ -68,13 +62,9 @@ static int gx8006_data_write_spk_start(void)
     gx8006_spk_set_status(GX_SPK_START);
     s_spk_count = 0;
 
-    do {
-        ack = gx8006_frame_send(cmd, sizeof(cmd), 1, NULL);
-        retry++;
-    } while (ack && retry <= GX8006_SPK_CMD_RETRY);
-
-    if (retry > GX8006_SPK_CMD_RETRY) {
-        GX_TRACE("SPK start FAILED after %d retries, ack=0x%02X", retry, ack);
+    uint8_t ack = gx8006_frame_send(cmd, sizeof(cmd), 1, NULL);
+    if (ack) {
+        GX_TRACE("SPK start FAILED, ack=0x%02X", ack);
         return -1;
     }
 
@@ -91,22 +81,18 @@ static int gx8006_data_write_spk_start(void)
 static int gx8006_data_write_spk_stop(void)
 {
     uint8_t cmd[6] = {RECV_SPK_DATA_CMD, 0x02, 0x00, 0x00, 0x00, 0x00};
-    uint8_t retry = 0;
-    uint8_t ack;
 
     gx8006_spk_set_status(GX_SPK_STOP);
     gx8006_int_to_big_endian(s_spk_count, &cmd[2]);
 
-    do {
-        ack = gx8006_frame_send(cmd, sizeof(cmd), 1, NULL);
-        retry++;
-    } while (ack && retry <= GX8006_SPK_CMD_RETRY);
+    uint8_t ack = gx8006_frame_send(cmd, sizeof(cmd), 1, NULL);
 
     gx8006_spk_set_status(GX_SPK_IDLE);
-    GX_TRACE("SPK play stop, frames=%u retry=%u", s_spk_count, retry);
+    GX_TRACE("SPK play stop, frames=%u", s_spk_count);
     s_spk_count = 0;
-    if (retry > GX8006_SPK_CMD_RETRY) {
-        GX_TRACE("SPK stop FAILED after %d retries, ack=0x%02X", retry, ack);
+
+    if (ack) {
+        GX_TRACE("SPK stop FAILED, ack=0x%02X", ack);
         return -1;
     }
     return 0;
@@ -123,34 +109,22 @@ static int gx8006_data_write_spk_stop(void)
 static int gx8006_data_write_spk(uint8_t *buf, uint32_t len)
 {
     uint8_t cmd[6] = {RECV_SPK_DATA_CMD, 0x01, 0x00, 0x00, 0x00, 0x00};
-    uint8_t retry = 0;
-    uint8_t ack;
+
+    if (gx8006_spk_get_status() == GX_SPK_STOP)
+        return 0;
+
+    gx8006_spk_set_status(GX_SPK_PLAYING);
+    gx8006_int_to_big_endian(s_spk_count, &cmd[2]);
 
     uint8_t *pkt = liot_rtos_malloc(len + 6);
     if (!pkt)
         return -1;
 
-    if (gx8006_spk_get_status() == GX_SPK_STOP) {
-        liot_rtos_free(pkt);
-        return 0;
-    }
-
-    gx8006_spk_set_status(GX_SPK_PLAYING);
-    gx8006_int_to_big_endian(s_spk_count, &cmd[2]);
     memcpy(pkt, cmd, 6);
     memcpy(pkt + 6, buf, len);
 
-    do {
-        ack = gx8006_frame_send(pkt, len + 6, 1, NULL);
-        if (ack) {
-            liot_rtos_task_sleep_ms(10);
-            retry++;
-        }
-    } while (ack && gx8006_spk_get_status() == GX_SPK_PLAYING && retry <= GX8006_SPK_CMD_RETRY);
-
+    gx8006_frame_send(pkt, len + 6, 0, NULL);
     liot_rtos_free(pkt);
-    if (retry > GX8006_SPK_CMD_RETRY)
-        return -1;
 
     s_spk_count++;
     return 0;

@@ -10,7 +10,7 @@
 #include "app_nv.h"
 #include "liot_gpio2.h"
 #include "liot_dev.h"
-#define TALK_RESPONSE_TIMEOUT_MS    15000
+#define TALK_RESPONSE_TIMEOUT_MS    3000
 
 static jobDesc_t g_talkJobDesc;
 
@@ -21,11 +21,11 @@ static int talkJobInit(void)
         .rst_gpio        = PIN_GX8006_RST,
         .boot_gpio       = PIN_GX8006_BOOT,
         .pa_mode_gpio    = PIN_GX8006_PA_SD,
-        .uart_port       = 1,
+        .uart_port       = GX8006_UART_PORT,
         .uart_baudrate   = 1000000,
         .chat_mode       = nv->chat_mode,
         .volume          = nv->audio_volume,
-        .vad_timeout_time = 5,
+        .vad_timeout_time = GX8006_VAD_TIMEOUT,
         .evt_cb          = NULL,
     };
     audioModuleInit(&cfg);
@@ -64,17 +64,21 @@ static int talkJobOnEvent(job_t *job, const event_t *event)
             LOG_INFO("[AL CLOUDE] listen timeout → THINKING");
         } else if (event->arg1 == TIMER_ID_TALK_RESPONSE_TIMEOUT) {
             LOG_WARN("[AL CLOUDE] response timeout, stop");
+            event_t doneEvt = { .eventId = EVT_AI_RESPONSE_DONE };
+            frameworkPostEvent(&doneEvt);
         }
         break;
 
     case EVT_AUDIO_WAKEUP:
         LOG_INFO("[AL CLOUDE] wakeup");
+        ai_client_cancel();
         audioModulePlayPrompt(AUDIO_PROMPT_AWAKE);
         break;
 
     case EVT_AUDIO_RECORD_DONE:
         LOG_INFO("[AL CLOUDE] VAD end");
         ai_client_send_audio_complete();
+        frameworkTimerStart(TIMER_ID_TALK_RESPONSE_TIMEOUT, TALK_RESPONSE_TIMEOUT_MS);
         break;
 
     case EVT_AUDIO_PLAY_START:
@@ -84,9 +88,14 @@ static int talkJobOnEvent(job_t *job, const event_t *event)
     case EVT_AUDIO_PLAY_DONE:
         LOG_INFO("[AL CLOUDE] AI audio play done");
         break;
+    case EVT_AI_RESPONSE_THINK:
+        LOG_INFO("[AL CLOUDE] AI response thinking");
+        frameworkTimerStop(TIMER_ID_TALK_RESPONSE_TIMEOUT);
+        break;
 
     case EVT_AI_RESPONSE_DONE:
         LOG_INFO("[AL CLOUDE] AI response done");
+        frameworkTimerStop(TIMER_ID_TALK_RESPONSE_TIMEOUT);
         break;
 
     case EVT_AI_CONNECTED:

@@ -1,0 +1,21 @@
+######################################################################################################################
+# This is for the reconfiguration of the default switch in "SDK/rules/Makefile.defs".
+# To make it convenient for users to enable different features for different projects.
+######################################################################################################################
+APP_VERSION = 01
+BUILD_COMP_THIRDPART_EN = y
+BUILD_THPART_LIB1_ENABLE = n
+
+# 路由器示例：使能 CH390 以太网驱动
+BUILD_DRIVER_CH390_EN = y
+
+# 可选模块开关（y=启用）
+LIOT_ROUTER_LIGHT ?= y
+LIOT_ROUTER_RESET ?= y
+
+# LAN口开关（y=参与编译）
+LIOT_ROUTER_LAN0  ?= y
+LIOT_ROUTER_LAN1  ?= y
+
+# Web 管理服务开关（y=启用）
+LIOT_ROUTER_WEB ?= y

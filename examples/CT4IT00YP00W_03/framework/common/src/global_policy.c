@@ -27,6 +27,7 @@ static bool globalPolicyMatch(const event_t *event, const job_t *currentJob, sys
     case EVT_AUDIO_RECORD_DONE:
     case EVT_AUDIO_PLAY_START:
     case EVT_AUDIO_PLAY_DONE:
+    case EVT_AI_RESPONSE_THINK:
     case EVT_AI_RESPONSE_DONE:
     case EVT_AI_CONNECT_REQ:
     case EVT_AI_CONNECTED:
@@ -72,6 +73,7 @@ static policyResult_E globalPolicyDecide(const event_t *event, const job_t *curr
     case EVT_AUDIO_RECORD_DONE:
     case EVT_AUDIO_PLAY_START:
     case EVT_AUDIO_PLAY_DONE:
+    case EVT_AI_RESPONSE_THINK:
     case EVT_AI_RESPONSE_DONE:
     case EVT_AI_CONNECTED:
     case EVT_AI_CONNECT_FAIL:

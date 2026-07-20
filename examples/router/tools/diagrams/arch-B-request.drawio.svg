@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="470" viewBox="0 0 820 470" content="&lt;mxGraphModel dx=&quot;800&quot; dy=&quot;600&quot; grid=&quot;1&quot; gridSize=&quot;10&quot; guides=&quot;1&quot; tooltips=&quot;1&quot; connect=&quot;1&quot; arrows=&quot;1&quot; fold=&quot;1&quot; page=&quot;1&quot; pageScale=&quot;1&quot; pageWidth=&quot;850&quot; pageHeight=&quot;600&quot; math=&quot;0&quot; shadow=&quot;0&quot;&gt;&lt;root&gt;&lt;mxCell id=&quot;0&quot;/&gt;&lt;mxCell id=&quot;1&quot; parent=&quot;0&quot;/&gt;&lt;mxCell id=&quot;bB0&quot; value=&quot;浏览器&quot; style=&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;10&quot; y=&quot;20&quot; width=&quot;120&quot; height=&quot;34&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;&lt;mxCell id=&quot;bB1&quot; value=&quot;httpd.c&quot; style=&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;180&quot; y=&quot;20&quot; width=&quot;120&quot; height=&quot;34&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;&lt;mxCell id=&quot;bB2&quot; value=&quot;http_router&quot; style=&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;350&quot; y=&quot;20&quot; width=&quot;120&quot; height=&quot;34&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;&lt;mxCell id=&quot;bB3&quot; value=&quot;api_lan.c&quot; style=&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;520&quot; y=&quot;20&quot; width=&quot;120&quot; height=&quot;34&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;&lt;mxCell id=&quot;bB4&quot; value=&quot;hal&quot; style=&quot;rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;&lt;mxGeometry x=&quot;680&quot; y=&quot;20&quot; width=&quot;120&quot; height=&quot;34&quot; as=&quot;geometry&quot;/&gt;&lt;/mxCell&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;">
+<defs><marker id="arw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 z" fill="#555"/></marker></defs>
+<rect width="820" height="470" fill="#ffffff"/>
+<rect x="10" y="20" width="120" height="34" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="70.0" y="41.5" font-family="Segoe UI,Helvetica,Arial" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">浏览器</text>
+<line x1="70" y1="54" x2="70" y2="430" stroke="#bbb" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="180" y="20" width="120" height="34" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="240.0" y="41.5" font-family="Segoe UI,Helvetica,Arial" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">httpd.c</text>
+<line x1="240" y1="54" x2="240" y2="430" stroke="#bbb" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="350" y="20" width="120" height="34" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="410.0" y="41.5" font-family="Segoe UI,Helvetica,Arial" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">http_router</text>
+<line x1="410" y1="54" x2="410" y2="430" stroke="#bbb" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="520" y="20" width="120" height="34" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="580.0" y="41.5" font-family="Segoe UI,Helvetica,Arial" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">api_lan.c</text>
+<line x1="580" y1="54" x2="580" y2="430" stroke="#bbb" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="680" y="20" width="120" height="34" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="740.0" y="41.5" font-family="Segoe UI,Helvetica,Arial" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">hal</text>
+<line x1="740" y1="54" x2="740" y2="430" stroke="#bbb" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="70" y1="90" x2="240" y2="90" stroke="#555" stroke-width="1.5"  marker-end="url(#arw)"/>
+<text x="76" y="85" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="start">POST /api/lan/dns  Cookie:SID</text>
+<line x1="240" y1="130" x2="241" y2="130" stroke="#555" stroke-width="1.5"  marker-end="url(#arw)"/>
+<text x="246" y="125" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="start">解析头/Cookie, 读body, validate(SID)✓</text>
+<line x1="240" y1="175" x2="410" y2="175" stroke="#555" stroke-width="1.5"  marker-end="url(#arw)"/>
+<text x="246" y="170" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="start">分发</text>
+<line x1="410" y1="210" x2="411" y2="210" stroke="#555" stroke-width="1.5"  marker-end="url(#arw)"/>
+<text x="416" y="205" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="start">匹配路由, needAuth&amp;authed✓</text>
+<line x1="410" y1="250" x2="580" y2="250" stroke="#555" stroke-width="1.5"  marker-end="url(#arw)"/>
+<text x="416" y="245" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="start">h_dns</text>
+<line x1="580" y1="290" x2="740" y2="290" stroke="#555" stroke-width="1.5"  marker-end="url(#arw)"/>
+<text x="586" y="285" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="start">parse_ip_strict✓ → liot_nv_set</text>
+<line x1="740" y1="325" x2="580" y2="325" stroke="#555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arw)"/>
+<text x="734" y="320" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="end">写NV OK</text>
+<line x1="580" y1="360" x2="70" y2="360" stroke="#555" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arw)"/>
+<text x="574" y="355" font-family="Segoe UI" font-size="11" fill="#333" text-anchor="end">200 {ok, Takes effect after reboot}</text>
+<text x="70" y="405" font-family="Segoe UI" font-size="11" fill="#2a2">前端 banner 绿条</text><rect x="300" y="425" width="500" height="34" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+<text x="550.0" y="445.5" font-family="Segoe UI,Helvetica,Arial" font-size="11" font-weight="normal" fill="#222" text-anchor="middle">认证失败→401跳登录(不进handler)；IP非法→400不写NV</text>
+</svg>

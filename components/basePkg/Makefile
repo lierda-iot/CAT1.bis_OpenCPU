@@ -16,6 +16,9 @@ BASEPKG_COMDB		:= $(BASEPKG_MDM_DIR)/comdb.txt
 BASEPKG_ELF			:= $(BASEPKG_MDM_DIR)/ap_lierda_app.elf
 
 BASEPKG_LIB			:= $(foreach dir, $(BASEPKG_MDM_DIR)/lib, $(wildcard $(dir)/*.a))
+ifneq ($(origin EXDEMO_LVGL_USE_SOURCE_LIB), undefined)
+BASEPKG_LIB			:= $(filter-out %/liblvgl.a,$(BASEPKG_LIB))
+endif
 
 BASEPKG_BL_BIN		:= $(BASEPKG_MDM_DIR)/ap_bootloader.bin
 BASEPKG_AP_BIN		:= $(BASEPKG_MDM_DIR)/ap_lierda_app.bin

@@ -2,8 +2,8 @@
 # SDK Version (managed by SDK maintainer, do not modify in project config)
 ###########################################################
 SDK_VERSION_MAJOR ?= 1
-SDK_VERSION_MINOR ?= 5
-SDK_VERSION_PATCH ?= 3
+SDK_VERSION_MINOR ?= 6
+SDK_VERSION_PATCH ?= beta
 SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
 
 ###########################################################
@@ -33,6 +33,7 @@ BUILD_DRIVER_BATTERY_EN ?= n
 BUILD_DRIVER_WS2812B_EN ?= n
 BUILD_DRIVER_CAMERA_EN ?= n
 BUILD_DRIVER_TP_EN ?= n
+BUILD_DRIVER_CH390_EN ?= n
 
 ###########################################################
 # tts ctrl
@@ -61,6 +62,7 @@ BUILD_THPART_LIOT_AI_ENABLE ?= n
 BUILD_THPART_OPUS_ENABLE ?= n
 BUILD_THPART_AMR_DECODER_ENABLE ?= n
 BUILD_THPART_MP3_ENABLE ?= n
+BUILD_THPART_VSIM_ENABLE ?= n
 
 ###########################################################
 # ext flash image ctrl (parsed from config/default.ini [EXTFLASH IMAGE])

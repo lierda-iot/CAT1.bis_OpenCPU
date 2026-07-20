@@ -91,10 +91,11 @@ Module models can be identified by the silkscreen on the module shielding cover.
 | F6B_A | EC718PM B Series | 812 KB | 1 MB | 780 KB | NT26FCNB30WNA / NT26FCNB60WNA |
 | F6D_A | EC718PM D Series | 812 KB | 1 MB | 780 KB | NT26F6D0 (all series) / NT26F7D0 |
 | F7B_A | EC718PM B Series VoLTE | 452 KB | 1 MB | 168 KB | NT26FCNB70WNA |
-| K2B_A | EC716E B Series | 844 KB | 512 KB | 840 KB | NT26KCNB20NNA / NT26KCNB2MNNA / NT26K2B1 |
+| K2B_A | EC716E B Series | 844 KB | 512 KB | 840 KB | NT26K2B1 / NT26K2B3 |
+| K2E_A | EC716E E Series | 844 KB | 512 KB | 840 KB | NT26K2E0 |
 | K2F_A | EC716E F Series | 844 KB | 512 KB | 840 KB | NT26KCNF20NNA |
 | F6E_A | EC718PM F Series | 844 KB | 512 KB | 840 KB | NT26F6E0 (under development) |
-| F6C_A | EC718PM F Series | 844 KB | 512 KB | 840 KB | NT26F6C0 (under development) |
+| F6C_A | EC718PM F Series | 812 KB | 1 MB | 780 KB | NT26F6C0 |
 
 # 5 Peripheral Resources
 

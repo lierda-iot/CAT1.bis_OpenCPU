@@ -299,6 +299,12 @@ void user_main(void)
     liot_rtos_task_create(&nvmtaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "demo_nvm_task", &demo_nvm_task, NULL);
     #endif
 
+    #ifdef APPDEMO_VSIM_TGT_EN
+    void liot_vsim_tgt_demo_thread(void *argv);
+    liot_task_t vsimtaskhandle = NULL;
+    liot_rtos_task_create(&vsimtaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_vsim_tgt_demo_thread", &liot_vsim_tgt_demo_thread, NULL);
+    #endif
+
     #ifdef APPDEMO_LVGL_KEY_TCP_EN
     void demo_tgai_csq_start(void);
     void demo_tgai_key_init(void);
@@ -318,5 +324,17 @@ void user_main(void)
     lvgl_init();
     liot_rtos_task_sleep_ms(200);
     demo_siminfo_csq_start();
+    #endif
+
+    #ifdef APPDEMO_LVGL_DUAL_EYE_EN
+    void dual_eye_lvgl_init(void);
+
+    dual_eye_lvgl_init();
+    #endif
+
+    #ifdef APPDEMO_TIMER_EN
+    void liot_timer_demo_thread(void *argv);
+    liot_task_t timertskhandle = NULL;
+    liot_rtos_task_create(&timertskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_timer_demo_thread", &liot_timer_demo_thread, NULL);
     #endif
 }

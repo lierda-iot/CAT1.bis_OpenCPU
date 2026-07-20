@@ -11,23 +11,35 @@
 #include "liot_os.h"
 #include "liot_log.h"
 
+static bool s_network_ready_posted = false;
+static bool s_network_init_done = false;
+
 static void ps_event_cb(Liot_PsEvent_e eventId, void *param, UINT32 paramLen)
 {
     (void)param;
     (void)paramLen;
     event_t evt = {0};
 
+    if (!s_network_init_done) {
+        liot_trace("[NET] PS event ignored during init (0x%x)", eventId);
+        return;
+    }
+
     switch (eventId) {
     case LIOT_PS_EVENT_BEARER_ACTED:
     case LIOT_PS_EVENT_NETIF_ACTIVATED:
         liot_trace("[NET] PS event: network ready (0x%x)", eventId);
-        evt.eventId = EVT_NETWORK_READY;
-        frameworkPostEvent(&evt);
+        if (!s_network_ready_posted) {
+            s_network_ready_posted = true;
+            evt.eventId = EVT_NETWORK_READY;
+            frameworkPostEvent(&evt);
+        }
         break;
     case LIOT_PS_EVENT_BEARER_DEACTED:
     case LIOT_PS_EVENT_NETIF_DEACTIVATED:
     case LIOT_PS_EVENT_NETIF_OOS:
         liot_trace("[NET] PS event: network fail (0x%x)", eventId);
+        s_network_ready_posted = false;
         evt.eventId = EVT_NETWORK_FAIL;
         frameworkPostEvent(&evt);
         break;
@@ -71,14 +83,26 @@ bool networkModuleInit(const network_config_t *cfg)
         return false;
     }
 
+    liot_set_data_call_asyn_mode(0, 1, 0);
+
     r = liot_start_data_call(0, 1, LIOT_DATA_TYPE_IP,
                              (char *)cfg->apn, (char *)cfg->username, (char *)cfg->password,
                              LIOT_DATA_AUTH_TYPE_NONE);
     if (r != 0) {
         liot_trace("[NET] data call failed");
+        s_network_init_done = true;
         event_t evt = {.eventId = EVT_NETWORK_FAIL};
         frameworkPostEvent(&evt);
         return false;
+    }
+
+    s_network_init_done = true;
+
+    if (!s_network_ready_posted && liot_datacall_get_sim_profile_is_active(0, 1)) {
+        liot_trace("[NET] network already active, post EVT_NETWORK_READY");
+        s_network_ready_posted = true;
+        event_t evt = {.eventId = EVT_NETWORK_READY};
+        frameworkPostEvent(&evt);
     }
 
     return true;

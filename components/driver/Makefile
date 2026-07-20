@@ -23,3 +23,7 @@ endif
 ifeq ($(BUILD_DRIVER_GX8006_EN), y)
 include $(TOP)/$(DRIVER_DIR)/gx8006/Makefile
 endif
+
+ifeq ($(BUILD_DRIVER_CH390_EN), y)
+include $(TOP)/$(DRIVER_DIR)/ch390/Makefile
+endif

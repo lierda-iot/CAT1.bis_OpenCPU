@@ -40,6 +40,38 @@ Each version entry should include the following categories (as applicable):
 
 <!-- CHANGELOG_PLACEHOLDER -->
 
+## [v1.6] - 2026-07-20
+
+### Added
+
+- Add models NT26K2E0, NT26F6C0, and NT26F6D1
+- Add router example demo with WebUI support (L-CS4IF01-1757W)
+- Add CH390 SPI Ethernet driver
+- Add VSIM feature and VSIM + SPI ETH support in base package (L-CS4BF01-YW-0950)
+- Add Zhongyi AI demo for L_CT4IT00_YP00W_01_V04
+- Add camera support for L_CT4IT00_YP00W_01_V04
+- Add LVGL dual-eye VPU acceleration demo
+- Add hardware timer demo
+- Add flashing/burn feature to xiaodacall (xdcall)
+- Add reset key feature
+- Add dedicated IO configuration for openkit
+
+### Changed
+
+- Update F9D0 base package and compilation toolchain
+- Optimize router project-to-hardware model matching and network registration light effect
+- Optimize F6D_LGU base package
+- Optimize CT4IT00YP00W_03 demo: call interrupt handling, single positioning at boot, light status behavior
+- Optimize CH390 driver
+- Optimize GX8006 VAD timing
+- Optimize xiaodacall audio playback stuttering
+- Increase 718hm memory space: FLASH and filesystem expanded to 2.7MB
+- Update guide documentation (L-CS4IF01-1757W)
+
+### Fixed
+
+- Fix AI light state detection timeout exception
+
 ## [v1.5.patch03] - 2026-06-26
 
 ### Added
