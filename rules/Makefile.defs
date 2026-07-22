@@ -3,7 +3,7 @@
 ###########################################################
 SDK_VERSION_MAJOR ?= 1
 SDK_VERSION_MINOR ?= 6
-SDK_VERSION_PATCH ?= beta
+SDK_VERSION_PATCH ?= beta_01
 SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
 
 ###########################################################

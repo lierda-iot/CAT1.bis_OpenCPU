@@ -18,7 +18,7 @@ static int h_sysinfo(Liot_HttpCtx_t *ctx) {
         "{\"ok\":true,"
         "\"model\":\"%s\",\"imei\":\"%s\",\"sn\":\"%s\","
         "\"fwVer\":\"%s\",\"productId\":\"%s\","
-        "\"uptimeSec\":%u}",
+        "\"uptimeSec\":%lu}",
         info.model, info.imei, info.sn, info.fwVer, info.productId, up);
     Liot_HttpSendJson(ctx->sock, buf);
     return 0;

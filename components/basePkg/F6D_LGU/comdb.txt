@@ -1,8 +1,8 @@
 DbVersion
-2067102887,100
+452597455,100
 <end>
 BuildInfo
-The current data file was built by the Application Ver. 2.2.83.223, Mon Jul 20 15:23:59 2026
+The current data file was built by the Application Ver. 2.2.83.223, Tue Jul 21 14:02:53 2026
 <end>
 EnumVals
 0,0,0,0,PHY_ONLINE,PHY_ICS_MODULE,PhyIcsMeasMainEntrance_0,P_INFO,swLogPrintf("ICS MEAS of euArfcn %d will be started ");
@@ -14425,33 +14425,13 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 812032,1663350784,0,0,CUSTOMER,LIOT_CUST,liot_router_wan_123,P_INFO,swLogPrintf("WAN init failed , ret = %d ");
 812032,1663354879,0,0,CUSTOMER,LIOT_CUST,liot_router_wan_127,P_INFO,swLogPrintf("WAN init done ");
 812032,1663356927,0,0,CUSTOMER,LIOT_CUST,liot_router_wan_130,P_INFO,swLogPrintf("WAN PsEventCb register failed ");
-812032,1663356928,0,0,CUSTOMER,LIOT_CUST,liot_router_hal_ec718_149,P_INFO,swLogPrintf("factory reset : remove fail , ret = %d ");
-812032,1663358976,0,0,CUSTOMER,LIOT_CUST,liot_router_hal_ec718_164,P_INFO,swLogPrintf("factory reset : %d file ( s ) FAIL to remove ");
-812032,1663363071,0,0,CUSTOMER,LIOT_CUST,liot_router_hal_ec718_167,P_INFO,swLogPrintf("factory reset : all config cleared ");
-812032,1663363072,0,0,CUSTOMER,LIOT_CUST,liot_router_hal_ec718_188,P_INFO,swLogPrintf("fw : upgrade progress %d%% ");
-812032,1663365377,0,0,CUSTOMER,LIOT_CUST,liot_router_hal_ec718_197,P_INFO,swLogPrintf("fw : fopen %s fail , ret = %d ");
-812032,1663367424,0,0,CUSTOMER,LIOT_CUST,liot_router_hal_ec718_210,P_INFO,swLogPrintf("fw : fwrite want = %u got = %d ");
-812032,1663369216,0,0,CUSTOMER,LIOT_CUST,liot_router_hal_ec718_238,P_INFO,swLogPrintf("fw : FOTA fail , ret = %d ");
-812032,1663371520,0,0,CUSTOMER,LIOT_CUST,liot_router_atlan0_44,P_INFO,swLogPrintf("LAN0 get VID / PID : 0x%x / 0x%x ");
-812032,1663375359,0,0,CUSTOMER,LIOT_CUST,liot_router_atlan0_47,P_INFO,swLogPrintf("LAN0 VID / PID invalid ");
-812032,1663376640,0,0,CUSTOMER,LIOT_CUST,liot_router_atlan0_56,P_INFO,swLogPrintf("LAN0 ok , mac = %x : %x : %x : %x : %x : %x ");
-812032,1663377664,0,0,CUSTOMER,LIOT_CUST,liot_router_atlan1_44,P_INFO,swLogPrintf("LAN1 get VID / PID : 0x%x / 0x%x ");
-812032,1663381503,0,0,CUSTOMER,LIOT_CUST,liot_router_atlan1_47,P_INFO,swLogPrintf("LAN1 VID / PID invalid ");
-812032,1663382784,0,0,CUSTOMER,LIOT_CUST,liot_router_atlan1_56,P_INFO,swLogPrintf("LAN1 ok , mac = %x : %x : %x : %x : %x : %x ");
-812032,1663384320,0,0,CUSTOMER,LIOT_CUST,liot_router_nv_76,P_INFO,swLogPrintf("NV : loaded , pool = %d~%d binds = %d nat = %d ");
-812032,1663387647,0,0,CUSTOMER,LIOT_CUST,liot_router_nv_80,P_INFO,swLogPrintf("NV : file invalid , use defaults ");
-812032,1663389695,0,0,CUSTOMER,LIOT_CUST,liot_router_nv_83,P_INFO,swLogPrintf("NV : no config file , use defaults ");
-812032,1663389696,0,0,CUSTOMER,LIOT_CUST,liot_router_nv_103,P_INFO,swLogPrintf("NV : failed to open for write , ret = %d ");
-812032,1663393791,0,0,CUSTOMER,LIOT_CUST,liot_router_nv_110,P_INFO,swLogPrintf("NV : config saved ");
-812032,1663395839,0,0,CUSTOMER,LIOT_CUST,liot_router_nv_117,P_INFO,swLogPrintf("NV : reset to defaults ");
-812032,1663397887,0,0,CUSTOMER,LIOT_CUST,liot_router_web_main_43,P_INFO,swLogPrintf("liot web manager started ");
-812032,1663399935,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1072,P_INFO,swLogPrintf("enter sleep ");
-812032,1663399936,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1085,P_INFO,swLogPrintf("exit sleep , wake up for : %d ");
-812032,1663402240,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1102,P_INFO,swLogPrintf("deep slp time : %d , %p ");
-812032,1663404032,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1123,P_INFO,swLogPrintf("app log port : %d ");
-812032,1663406080,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_395,P_INFO,swLogPrintf("applicationsStartup appTaskRef is %p ");
-812032,1663410175,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_421,P_INFO,swLogPrintf("lierda_app_main entry \r \n ");
-812032,1663410177,0,0,CUSTOMER,LIOT_CUST,USERAPP_LOG,P_INFO,swLogPrintf("%s ");
+812032,1663358975,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1072,P_INFO,swLogPrintf("enter sleep ");
+812032,1663358976,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1085,P_INFO,swLogPrintf("exit sleep , wake up for : %d ");
+812032,1663361280,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1102,P_INFO,swLogPrintf("deep slp time : %d , %p ");
+812032,1663363072,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1123,P_INFO,swLogPrintf("app log port : %d ");
+812032,1663365120,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_395,P_INFO,swLogPrintf("applicationsStartup appTaskRef is %p ");
+812032,1663369215,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_421,P_INFO,swLogPrintf("lierda_app_main entry \r \n ");
+812032,1663369217,0,0,CUSTOMER,LIOT_CUST,USERAPP_LOG,P_INFO,swLogPrintf("%s ");
 814080,1667236096,0,0,CUSTOMER,LIOT_FACTORY,lierda_gpio_test_8311_23,P_INFO,swLogPrintf("cnt : %d trunkNum : %d ");
 814080,1667238144,0,0,CUSTOMER,LIOT_FACTORY,lierda_gpio_test_8311_32,P_INFO,swLogPrintf("cnt : %d trunkNum : %d ");
 814080,1667240192,0,0,CUSTOMER,LIOT_FACTORY,lierda_gpio_test_8311_41,P_INFO,swLogPrintf("cnt : %d trunkNum : %d ");
@@ -15028,5 +15008,5 @@ MW_INFO_PHY_EDRX_PARAM,midWareNvmInfoPhyEdrxParam
 plat_config,plat_config_fs_t
 <end>
 OptionalSegment
-optional_sk_01,71676ECF5C1ACEDD791F294CDF4662CCAD6082E7F275C500CEC54AEAF9471FCF
+optional_sk_01,1DB31D2864A5CB225E0AF04AF1C1F0228AB959A53EAC3C0713C522F4986625A6
 <end>
