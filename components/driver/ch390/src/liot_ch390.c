@@ -85,8 +85,7 @@ static void ctx_wait_spi(liot_ch390_ctx_t *ctx) {
 static uint8_t ctx_spi_exchange(liot_ch390_ctx_t *ctx, uint8_t byte) {
     uint8_t out = 0;
     ctx->spiDrv->Transfer(&byte, &out, 1);
-    //ctx_wait_spi(ctx);
-    osDelay(1);
+    ctx_wait_spi(ctx);
     return out;
 }
 

@@ -3,7 +3,7 @@
 ###########################################################
 SDK_VERSION_MAJOR ?= 1
 SDK_VERSION_MINOR ?= 6
-SDK_VERSION_PATCH ?= beta
+SDK_VERSION_PATCH ?= 0
 SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
 
 ###########################################################
@@ -63,6 +63,7 @@ BUILD_THPART_OPUS_ENABLE ?= n
 BUILD_THPART_AMR_DECODER_ENABLE ?= n
 BUILD_THPART_MP3_ENABLE ?= n
 BUILD_THPART_VSIM_ENABLE ?= n
+BUILD_THPART_ZLIB_ENABLE ?= n
 
 ###########################################################
 # ext flash image ctrl (parsed from config/default.ini [EXTFLASH IMAGE])

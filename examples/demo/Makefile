@@ -117,6 +117,11 @@ CFLAGS_DEFS += -DAPPDEMO_LBS_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_lbs.o
 endif
 
+ifeq ($(EXDEMO_GNSS_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_GNSS_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_gnss.o
+endif
+
 ifeq ($(EXDEMO_FTP_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_FTP_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_ftp.o
@@ -272,6 +277,11 @@ endif
 ifeq ($(EXDEMO_TIMER_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_TIMER_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_timer.o
+endif
+
+ifeq ($(EXDEMO_ZIP_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_ZIP_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_zip.o
 endif
 
 DEMO_COBJS := $(addprefix $(BUILDDIR)/, $(DEMO_COBJSTEMP))

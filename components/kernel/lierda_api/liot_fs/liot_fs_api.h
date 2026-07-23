@@ -325,6 +325,40 @@ int liot_closedir(LDIR *pdir);
  * @note Returns NULL for broken symlinks on most implementations
  */
 ldirent *liot_readdir(LDIR *pdir);
+
+/**
+ * @brief Get current position of directory stream
+ * @details Returns the current position of the directory stream pointed to by @p pdir,
+ *          which can be used with liot_seekdir() to return to this position later
+ * @param[in] pdir Directory stream pointer returned by liot_opendir()
+ * @return Current directory position on success, negative @ref liot_file_errcode_e on failure
+ * @retval LIOT_FS_DIR_TELL_FAIL if position cannot be retrieved
+ * @see liot_seekdir() to reposition the directory stream
+ */
+int liot_telldir(LDIR *pdir);
+
+/**
+ * @brief Reposition directory stream to a saved position
+ * @details Sets the position of the directory stream pointed to by @p pdir to the
+ *          position specified by @p off. The value of @p off should be obtained
+ *          from a previous call to liot_telldir()
+ * @param[in] pdir Directory stream pointer returned by liot_opendir()
+ * @param[in] off Directory position obtained from liot_telldir()
+ * @return LFS_ERR_OK on success, negative @ref liot_file_errcode_e on failure
+ * @retval LIOT_FS_DIR_SEEK_FAIL if seek operation fails
+ * @see liot_telldir() to obtain a valid position value
+ */
+int liot_seekdir(LDIR *pdir, int off);
+
+/**
+ * @brief Reset directory stream to the beginning
+ * @details Repositions the directory stream pointed to by @p pdir to the beginning
+ *          of the directory, equivalent to liot_seekdir(pdir, 0)
+ * @param[in] pdir Directory stream pointer returned by liot_opendir()
+ * @return LFS_ERR_OK on success, negative @ref liot_file_errcode_e on failure
+ * @see liot_opendir() to open a directory stream
+ */
+int liot_rewinddir(LDIR *pdir);
 /**
  * @brief Rename a file or directory
  * @details Renames the file or directory specified by @p oldpath to @p newpath
