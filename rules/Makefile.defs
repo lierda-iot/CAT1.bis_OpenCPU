@@ -3,7 +3,7 @@
 ###########################################################
 SDK_VERSION_MAJOR ?= 1
 SDK_VERSION_MINOR ?= 6
-SDK_VERSION_PATCH ?= beta_01
+SDK_VERSION_PATCH ?= beta
 SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
 
 ###########################################################
@@ -40,11 +40,11 @@ BUILD_DRIVER_CH390_EN ?= n
 ###########################################################
 BUILD_COMP_TTS_EN ?= n
 # TTS_RESOURCE_TYPE values
-# 8kzh		: 8K采样率+中文
-# 16kzh	: 16K采样率+中文
-# 8ken		: 8K采样率+英语
-# 16ken	: 16K采样率+英语
-TTS_RESOURCE_TYPE ?= 8kzh
+# 8k_zh		: 8K采样率+中文
+# 16k_zh	: 16K采样率+中文
+# 8k_en		: 8K采样率+英语
+# 16k_en	: 16K采样率+英语
+TTS_RESOURCE_TYPE ?= 8k_zh
 
 ###########################################################
 # thirdparty lib ctrl
@@ -63,6 +63,7 @@ BUILD_THPART_OPUS_ENABLE ?= n
 BUILD_THPART_AMR_DECODER_ENABLE ?= n
 BUILD_THPART_MP3_ENABLE ?= n
 BUILD_THPART_VSIM_ENABLE ?= n
+BUILD_THPART_ZLIB_ENABLE ?= n
 
 ###########################################################
 # ext flash image ctrl (parsed from config/default.ini [EXTFLASH IMAGE])

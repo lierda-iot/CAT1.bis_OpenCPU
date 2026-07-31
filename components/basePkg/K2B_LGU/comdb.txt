@@ -1,8 +1,8 @@
 DbVersion
-534719205,100
+1975486377,100
 <end>
 BuildInfo
-The current data file was built by the Application Ver. 2.2.83.223, Wed Jul 22 15:03:48 2026
+The current data file was built by the Application Ver. 2.2.83.223, Thu Jul 23 18:48:52 2026
 <end>
 EnumVals
 0,0,0,0,PHY_ONLINE,PHY_ICS_MODULE,PhyIcsMeasMainEntrance_1,P_ERROR,swLogPrintf("Incorrect ICS stage ( %d ) for new euArfcn arranged for ICS MEAS ");
@@ -11536,43 +11536,44 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 786432,1611134976,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_1940,P_INFO,swLogPrintf("get url len %d ");
 786432,1611139071,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_1969,P_INFO,swLogPrintf("input param is invalid ");
 786432,1611139591,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_1983,P_INFO,swLogPrintf("in %s %s %s ");
-786432,1611143167,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_66,P_INFO,swLogPrintf("Lierda Gnss Cmd Uart Init ");
-786432,1611145215,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_71,P_INFO,swLogPrintf("Liot_SemaphoreNew fail ");
-786432,1611147263,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_75,P_INFO,swLogPrintf("Liot_SemaphoreNew succ ");
-786432,1611147265,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_100,P_INFO,swLogPrintf("lierda gps send : %s ");
-786432,1611151359,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_166,P_INFO,swLogPrintf("reinit log uart success ");
-786432,1611153407,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_199,P_INFO,swLogPrintf("uart0 is running , do not init to report data. ");
-786432,1611153408,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_263,P_INFO,swLogPrintf("gnss_backup_pin_state %d ");
-786432,1611155456,0,0,CUSTOMER,LIOT_APP,Liot_I2sInit_0,P_VALUE,swLogPrintf("i2s %d no support ");
-786432,1611159551,0,0,CUSTOMER,LIOT_APP,liot_lcd_CheckConfig_0,P_VALUE,swLogPrintf("init fail , lcd_config invalid ");
-786432,1611161599,0,0,CUSTOMER,LIOT_APP,liot_lcd_CheckConfig_1,P_VALUE,swLogPrintf("init fail , lcdDev interface type error ");
-786432,1611163647,0,0,CUSTOMER,LIOT_APP,liot_hal_lcd_init_0,P_VALUE,swLogPrintf("lcd malloc handle no memary ");
-786432,1611165695,0,0,CUSTOMER,LIOT_APP,liot_hal_lcd_init_1,P_VALUE,swLogPrintf("init fail lspi need dma callback ");
-786432,1611167743,0,0,CUSTOMER,LIOT_APP,Liot_LspiAllocHandle_1,P_VALUE,swLogPrintf("LspiAllocHandle fail ");
-786432,1611168768,0,0,CUSTOMER,LIOT_APP,Liot_LspiInit,P_VALUE,swLogPrintf("Lspi ( %d ) , dmaChl ( %d ) , sync ( %d ) , Height ( %d ) , width ( %d ) ");
-786432,1611170048,0,0,CUSTOMER,LIOT_APP,Liot_LspiSend_0,P_VALUE,swLogPrintf("Lspihdl %d SendData len = %d ");
-786432,1611172616,0,0,CUSTOMER,LIOT_APP,Liot_LspiSendCmd_0,P_VALUE,swLogPrintf("Lspihdl %d SendCmd : 0x%x , data ( len = %d ) -> [ %s ] ");
-786432,1611175935,0,0,CUSTOMER,LIOT_APP,HTTPClient_105,P_INFO,swLogPrintf("Could not find host ");
-786432,1611176192,0,0,CUSTOMER,LIOT_APP,HTTPClient_110,P_INFO,swLogPrintf("Scheme str is too small ( %d > = %d ) ");
-786432,1611178240,0,0,CUSTOMER,LIOT_APP,HTTPClient_159,P_INFO,swLogPrintf("Host str is too small ( %d > = %d ) ");
-786432,1611180288,0,0,CUSTOMER,LIOT_APP,HTTPClient_179,P_INFO,swLogPrintf("Path str is too small ( %d > = %d ) ");
-786432,1611183379,0,0,CUSTOMER,LIOT_APP,HTTPClient_191,P_INFO,swLogPrintf("parseURL{url(%s),host(%s),maxHostLen(%d),port(%d),path(%s),maxPathLen(%d)}\r \n ");
-786432,1611186175,0,0,CUSTOMER,LIOT_APP,HTTPClient_271,P_INFO,swLogPrintf("http_client ( ssl ) : send failed \n ");
-786432,1611186176,0,0,CUSTOMER,LIOT_APP,HTTPClient_886,P_INFO,swLogPrintf("parseURL returned %d ");
-786432,1611190271,0,0,CUSTOMER,LIOT_APP,HTTPClient_931,P_INFO,swLogPrintf("send auth ( if defined ) ");
-786432,1611190791,0,0,CUSTOMER,LIOT_APP,HTTPClient_935,P_INFO,swLogPrintf("( %s , %s ) = > ( %s ) ");
-786432,1611192321,0,0,CUSTOMER,LIOT_APP,HTTPClient_946,P_INFO,swLogPrintf("httpSendHeader custheader :{%s}");
-786432,1611194625,0,0,CUSTOMER,LIOT_APP,HTTPClient_1004,P_INFO,swLogPrintf("httpSendHeader send head : %s , headlen : %d ");
-786432,1611196417,0,0,CUSTOMER,LIOT_APP,HTTPClient_1712,P_INFO,swLogPrintf("httpConnect parse url : [ %s ] ");
-786432,1611198464,0,0,CUSTOMER,LIOT_APP,HTTPClient_1716,P_INFO,swLogPrintf("parseURL returned %d ");
-786432,1611200513,0,0,CUSTOMER,LIOT_APP,HTTPClient_1733,P_INFO,swLogPrintf("httpConnect Scheme : %s ");
-786432,1611202561,0,0,CUSTOMER,LIOT_APP,HTTPClient_1734,P_INFO,swLogPrintf("httpConnect Host : %s ");
-786432,1611204608,0,0,CUSTOMER,LIOT_APP,HTTPClient_1735,P_INFO,swLogPrintf("httpConnect Port : %d ");
-786432,1611206657,0,0,CUSTOMER,LIOT_APP,HTTPClient_1736,P_INFO,swLogPrintf("httpConnect Path : %s ");
-786432,1611208704,0,0,CUSTOMER,LIOT_APP,HTTPClient_1768,P_INFO,swLogPrintf("httpSendRequest ret : %d ");
-786432,1611212799,0,0,CUSTOMER,LIOT_APP,HTTPClient_1791,P_INFO,swLogPrintf("httpClose ");
-786432,1611214847,0,0,CUSTOMER,LIOT_APP,HTTPClient_1804,P_INFO,swLogPrintf("Receiving response ");
-786432,1611214849,0,0,CUSTOMER,LIOT_APP,LWS_LOG,P_VALUE,swLogPrintf("%s ");
+786432,1611143167,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_90,P_INFO,swLogPrintf("Lierda Gnss Cmd Uart Init ");
+786432,1611145215,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_95,P_INFO,swLogPrintf("Liot_SemaphoreNew fail ");
+786432,1611147263,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_99,P_INFO,swLogPrintf("Liot_SemaphoreNew succ ");
+786432,1611147265,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_147,P_INFO,swLogPrintf("lierda gps send : %s ");
+786432,1611151359,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_231,P_INFO,swLogPrintf("get gnss debug uart driver fail ");
+786432,1611153407,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_247,P_INFO,swLogPrintf("reinit log uart success ");
+786432,1611155455,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_282,P_INFO,swLogPrintf("uart0 is running , do not init to report data. ");
+786432,1611155456,0,0,CUSTOMER,LIOT_APP,lierda_open_gnss_hal_349,P_INFO,swLogPrintf("gnss_backup_pin_state %d ");
+786432,1611157504,0,0,CUSTOMER,LIOT_APP,Liot_I2sInit_0,P_VALUE,swLogPrintf("i2s %d no support ");
+786432,1611161599,0,0,CUSTOMER,LIOT_APP,liot_lcd_CheckConfig_0,P_VALUE,swLogPrintf("init fail , lcd_config invalid ");
+786432,1611163647,0,0,CUSTOMER,LIOT_APP,liot_lcd_CheckConfig_1,P_VALUE,swLogPrintf("init fail , lcdDev interface type error ");
+786432,1611165695,0,0,CUSTOMER,LIOT_APP,liot_hal_lcd_init_0,P_VALUE,swLogPrintf("lcd malloc handle no memary ");
+786432,1611167743,0,0,CUSTOMER,LIOT_APP,liot_hal_lcd_init_1,P_VALUE,swLogPrintf("init fail lspi need dma callback ");
+786432,1611169791,0,0,CUSTOMER,LIOT_APP,Liot_LspiAllocHandle_1,P_VALUE,swLogPrintf("LspiAllocHandle fail ");
+786432,1611170816,0,0,CUSTOMER,LIOT_APP,Liot_LspiInit,P_VALUE,swLogPrintf("Lspi ( %d ) , dmaChl ( %d ) , sync ( %d ) , Height ( %d ) , width ( %d ) ");
+786432,1611172096,0,0,CUSTOMER,LIOT_APP,Liot_LspiSend_0,P_VALUE,swLogPrintf("Lspihdl %d SendData len = %d ");
+786432,1611175935,0,0,CUSTOMER,LIOT_APP,Liot_LspiSendCmd_0,P_VALUE,swLogDump("");
+786432,1611177983,0,0,CUSTOMER,LIOT_APP,HTTPClient_105,P_INFO,swLogPrintf("Could not find host ");
+786432,1611178240,0,0,CUSTOMER,LIOT_APP,HTTPClient_110,P_INFO,swLogPrintf("Scheme str is too small ( %d > = %d ) ");
+786432,1611180288,0,0,CUSTOMER,LIOT_APP,HTTPClient_159,P_INFO,swLogPrintf("Host str is too small ( %d > = %d ) ");
+786432,1611182336,0,0,CUSTOMER,LIOT_APP,HTTPClient_179,P_INFO,swLogPrintf("Path str is too small ( %d > = %d ) ");
+786432,1611185427,0,0,CUSTOMER,LIOT_APP,HTTPClient_191,P_INFO,swLogPrintf("parseURL{url(%s),host(%s),maxHostLen(%d),port(%d),path(%s),maxPathLen(%d)}\r \n ");
+786432,1611188223,0,0,CUSTOMER,LIOT_APP,HTTPClient_271,P_INFO,swLogPrintf("http_client ( ssl ) : send failed \n ");
+786432,1611188224,0,0,CUSTOMER,LIOT_APP,HTTPClient_886,P_INFO,swLogPrintf("parseURL returned %d ");
+786432,1611192319,0,0,CUSTOMER,LIOT_APP,HTTPClient_931,P_INFO,swLogPrintf("send auth ( if defined ) ");
+786432,1611192839,0,0,CUSTOMER,LIOT_APP,HTTPClient_935,P_INFO,swLogPrintf("( %s , %s ) = > ( %s ) ");
+786432,1611194369,0,0,CUSTOMER,LIOT_APP,HTTPClient_946,P_INFO,swLogPrintf("httpSendHeader custheader :{%s}");
+786432,1611196673,0,0,CUSTOMER,LIOT_APP,HTTPClient_1004,P_INFO,swLogPrintf("httpSendHeader send head : %s , headlen : %d ");
+786432,1611198465,0,0,CUSTOMER,LIOT_APP,HTTPClient_1712,P_INFO,swLogPrintf("httpConnect parse url : [ %s ] ");
+786432,1611200512,0,0,CUSTOMER,LIOT_APP,HTTPClient_1716,P_INFO,swLogPrintf("parseURL returned %d ");
+786432,1611202561,0,0,CUSTOMER,LIOT_APP,HTTPClient_1733,P_INFO,swLogPrintf("httpConnect Scheme : %s ");
+786432,1611204609,0,0,CUSTOMER,LIOT_APP,HTTPClient_1734,P_INFO,swLogPrintf("httpConnect Host : %s ");
+786432,1611206656,0,0,CUSTOMER,LIOT_APP,HTTPClient_1735,P_INFO,swLogPrintf("httpConnect Port : %d ");
+786432,1611208705,0,0,CUSTOMER,LIOT_APP,HTTPClient_1736,P_INFO,swLogPrintf("httpConnect Path : %s ");
+786432,1611210752,0,0,CUSTOMER,LIOT_APP,HTTPClient_1768,P_INFO,swLogPrintf("httpSendRequest ret : %d ");
+786432,1611214847,0,0,CUSTOMER,LIOT_APP,HTTPClient_1791,P_INFO,swLogPrintf("httpClose ");
+786432,1611216895,0,0,CUSTOMER,LIOT_APP,HTTPClient_1804,P_INFO,swLogPrintf("Receiving response ");
+786432,1611216897,0,0,CUSTOMER,LIOT_APP,LWS_LOG,P_VALUE,swLogPrintf("%s ");
 787456,1612710400,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1297,P_INFO,swLogPrintf("UTC UTCtimer1 0x%x , UTCtimer2 0x%x , local timeZone %d ");
 787456,1612711936,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1305,P_INFO,swLogPrintf("ctzuValue %d ");
 787456,1612714496,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1317,P_INFO,swLogPrintf("Local UTCtimer1 0x%x , UTCtimer2 0x%x , timeZone %d ");
@@ -13370,8 +13371,8 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 808960,1656819711,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_458,P_INFO,swLogPrintf("ivTTS_SynthText succ ");
 808960,1656819712,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_467,P_INFO,swLogPrintf("ivTTS_Exit failed / 0x%x ");
 808960,1656823807,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_471,P_INFO,swLogPrintf("ivTTS_Exit succ ");
-811008,1660944385,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_95,P_INFO,swLogPrintf("GNSS get location : %s ");
-811008,1660946433,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_227,P_INFO,swLogPrintf("GNSS get nmea : %s ");
+811008,1660944385,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_112,P_INFO,swLogPrintf("GNSS get location : %s ");
+811008,1660946433,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_244,P_INFO,swLogPrintf("GNSS get nmea : %s ");
 812032,1663041536,0,0,CUSTOMER,LIOT_CUST,liot_ch390_112,P_INFO,swLogPrintf("CH390 [ %d ] spi driver not found ");
 812032,1663044608,0,0,CUSTOMER,LIOT_CUST,liot_ch390_143,P_INFO,swLogPrintf("CH390 [ %d ] created , spi = %d rstGpio = %d ssnGpio = %d WakeupPad = %d ");
 812032,1663047168,0,0,CUSTOMER,LIOT_CUST,liot_ch390_286,P_INFO,swLogPrintf("CH390 [ %d ] config done , mac = %x : %x : %x : %x : %x : %x ");
@@ -14109,5 +14110,5 @@ MW_INFO_PHY_EDRX_PARAM,midWareNvmInfoPhyEdrxParam
 plat_config,plat_config_fs_t
 <end>
 OptionalSegment
-optional_sk_01,0B8EE5ED2BDE4724EDF9C5905403C4F83762E4AE1449587898EFC4CB76FC09FC
+optional_sk_01,1EA3FBB71BEECE30B3B46A05A010E2A6BE1BC9C866426ECC6E7FB49C221359DC
 <end>

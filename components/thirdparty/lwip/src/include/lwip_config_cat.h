@@ -327,7 +327,11 @@
 * 2.0~1024 is reserved
 * 3.Max used port num is 6100 !!!
 */
+#ifdef FEATURE_LIERDA_LG_ENABLE
+#define TCPIP_UE_PORT_ASSIGN_MIN 8000
+#else
 #define TCPIP_UE_PORT_ASSIGN_MIN 10000
+#endif
 #define TCPIP_UE_PORT_ASSIGN_MAX 10015
 
  /*
@@ -1565,7 +1569,11 @@
  * an upper limit on the MSS advertised by the remote host.
  */
 #if !defined TCP_MSS || defined __DOXYGEN__
+#ifdef  FEATURE_LIERDA_LG_ENABLE
+#define TCP_MSS                         1388
+#else
 #define TCP_MSS                         1440
+#endif
 #endif
 
 /**

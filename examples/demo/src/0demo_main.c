@@ -142,6 +142,12 @@ void user_main(void)
     liot_task_t lbstskhandle = NULL;
     liot_rtos_task_create(&lbstskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_lbs_demo_thread", &liot_lbs_demo_thread, NULL);
     #endif
+
+    #ifdef APPDEMO_GNSS_EN
+    void liot_gnss_demo_thread(void *argv);
+    liot_task_t gnsstskhandle = NULL;
+    liot_rtos_task_create(&gnsstskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_gnss_demo_thread", &liot_gnss_demo_thread, NULL);
+    #endif
     
     #ifdef APPDEMO_FTP_EN
     void liot_ftp_demo_thread(void *argv);
@@ -336,5 +342,11 @@ void user_main(void)
     void liot_timer_demo_thread(void *argv);
     liot_task_t timertskhandle = NULL;
     liot_rtos_task_create(&timertskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_timer_demo_thread", &liot_timer_demo_thread, NULL);
+    #endif
+
+    #ifdef APPDEMO_ZIP_EN
+    void liot_zip_demo_thread(void *argv);
+    liot_task_t ziptskhandle = NULL;
+    liot_rtos_task_create(&ziptskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_zip_demo_thread", &liot_zip_demo_thread, NULL);
     #endif
 }

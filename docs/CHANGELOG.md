@@ -55,7 +55,6 @@ Each version entry should include the following categories (as applicable):
 - Add flashing/burn feature to xiaodacall (xdcall)
 - Add reset key feature
 - Add dedicated IO configuration for openkit
-- Add model NT26KCNF20NNK
 
 ### Changed
 
@@ -72,7 +71,6 @@ Each version entry should include the following categories (as applicable):
 ### Fixed
 
 - Fix AI light state detection timeout exception
-- Fix F6D_LGU conntect OM fail
 
 ## [v1.5.patch03] - 2026-06-26
 

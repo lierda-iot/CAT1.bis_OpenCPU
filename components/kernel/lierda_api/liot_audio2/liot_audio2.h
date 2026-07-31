@@ -43,6 +43,7 @@ typedef enum {
     L_AUD_ES8311,       /*!< ES8311 audio codec */
     L_AUD_ES8374,       /*!< ES8374 audio codec */
     L_AUD_ES8375,       /*!< ES8375 audio codec */
+    L_AUD_SPI_CODEC,     /*!< SPI codec */
     L_AUD_DEV_MAX,      /*!< Maximum number of supported devices */
 } Liot_AudDevice_e;
 
@@ -169,6 +170,7 @@ typedef struct
 {
     int8_t i2cNum;               /*!< I2C bus number */
     int8_t i2sNum;               /*!< I2S interface number */
+    int8_t spiNum;               /*!< SPI port for L_AUD_SPI_CODEC: 0 or 1 */
     int8_t paGpioNum;            /*!< Power Amplifier GPIO number */
     Liot_AudDevice_e codecType;  /*!< Audio codec type */
     Liot_AudChannel_e channel;   /*!< Audio channel configuration */

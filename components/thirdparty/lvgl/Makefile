@@ -19,7 +19,7 @@ CFLAGS += -DLV_LVGL_H_INCLUDE_SIMPLE
 LVGL_EXCLUDE_FILES :=
 LVGL_CSRC = $(foreach dir, $(LVGL_SRC_DIRS), $(wildcard $(dir)/*.c))
 LVGL_CFILES = $(filter-out $(LVGL_EXCLUDE_FILES), $(LVGL_CSRC))
-LVGL_COBJSTEMP := $(patsubst $(TOP)/%.c, %.o, $(LVGL_CFILES_REL))
+LVGL_COBJSTEMP := $(patsubst $(TOP)/%.c, %.o, $(LVGL_CFILES))
 LVGL_COBJS := $(addprefix $(BUILDDIR)/, $(LVGL_COBJSTEMP))
 
 PP_FILES += $(LVGL_COBJS:.o=.pp)

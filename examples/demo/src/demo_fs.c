@@ -41,6 +41,64 @@ typedef struct _nv_demo
     char parameter_2[10];
 } nv_demo;
 
+void liot_dir_tell_seek_rewind_test()
+{
+    char *path = "/";
+
+    LDIR *dir_test      = NULL;
+    ldirent *dir_info   = NULL;
+    int off = 0;
+    int record_off = 0;
+    int max_off = 0;
+    int cnt = 0;
+    int ret = 0;
+
+    liot_rtos_task_sleep_ms(10000);
+
+    dir_test = liot_opendir(path);
+    liot_trace("\n=== opendir. fs_index(%d) ===\n", dir_test->fs_index);
+    while((dir_info = liot_readdir(dir_test)) != NULL)
+    {
+        cnt++;
+        off = liot_telldir(dir_test);
+        if (cnt == 4)
+        {
+            record_off = off;
+        }
+        if (off > max_off)
+        {
+            max_off = off;
+        }
+        liot_trace("=== read dir success. off: %d, type: %d, name(%s) ===\n", off, dir_info->d_type, dir_info->d_name);
+    }
+
+    ret = liot_rewinddir(dir_test);
+    liot_trace("\ndir rewind ret: %d\n", ret);
+    while((dir_info = liot_readdir(dir_test)) != NULL)
+    {
+        off = liot_telldir(dir_test);
+        liot_trace("=== read dir success. off: %d, type: %d, name(%s) ===\n", off, dir_info->d_type, dir_info->d_name);
+    }
+
+    ret = liot_seekdir(dir_test, record_off);
+    liot_trace("\ndir seek ret: %d\n", ret);
+    while((dir_info = liot_readdir(dir_test)) != NULL)
+    {
+        off = liot_telldir(dir_test);
+        liot_trace("=== read dir success. off: %d, type: %d, name(%s) ===\n", off, dir_info->d_type, dir_info->d_name);
+    }
+
+    ret = liot_seekdir(dir_test, max_off + 8); // Abnormal situation
+    liot_trace("\ndir seek ret: %d\n", ret);
+    while((dir_info = liot_readdir(dir_test)) != NULL)
+    {
+        off = liot_telldir(dir_test);
+        liot_trace("=== read dir success. off: %d, type: %d, name(%s) ===\n", off, dir_info->d_type, dir_info->d_name);
+    }
+
+    liot_closedir(dir_test);
+}
+
 void liot_fs_demo_task(void *argv)
 {
     liot_stat_s fstat_st;
@@ -294,6 +352,8 @@ void liot_fs_demo_task(void *argv)
     }
 
     liot_rtos_task_sleep_ms(1000);
+
+    liot_dir_tell_seek_rewind_test();
 
     liot_rtos_task_delete(NULL); // kill itself
 }

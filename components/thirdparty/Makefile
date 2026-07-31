@@ -47,3 +47,7 @@ endif
 ifeq ($(BUILD_THPART_VSIM_ENABLE), y)
 include $(THIRDPART_DIR)/vsim/Makefile.inc
 endif
+
+ifeq ($(BUILD_THPART_ZLIB_ENABLE), y)
+include $(THIRDPART_DIR)/zlib/Makefile
+endif
