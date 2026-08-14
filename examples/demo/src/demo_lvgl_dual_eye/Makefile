@@ -9,25 +9,6 @@ LVGL_CFILES_REL = $(LVGL_CFILES)
 DUAL_EYE_LV_CONF := $(TOP)/$(DUAL_EYE_DIR)/lv_conf.h
 CFLAGS_DEFS += -DLV_CONF_PATH=$(DUAL_EYE_LV_CONF)
 
-DUAL_EYE_MODEMPKG := $(MODEMPKG)
-ifeq ($(DUAL_EYE_MODEMPKG),)
-ifneq ($(filter $(MODEM),NT26FCNB60WNA),)
-DUAL_EYE_MODEMPKG := F6B_A
-else ifneq ($(filter $(MODEM),NT26FCND60NNA NT26FEUD60NNA NT26F6D0),)
-DUAL_EYE_MODEMPKG := F6D_A
-else ifneq ($(filter $(MODEM),NT26FCNB70WNA),)
-DUAL_EYE_MODEMPKG := F7B_A
-else ifneq ($(filter $(MODEM),NT26K2B1),)
-DUAL_EYE_MODEMPKG := K2B_A
-else ifneq ($(filter $(MODEM),NT26KCNF20NNA),)
-DUAL_EYE_MODEMPKG := K2F_A
-else ifneq ($(filter $(MODEM),NT26F6D0_GL),)
-DUAL_EYE_MODEMPKG := F6D_GL
-endif
-endif
-
-DUAL_EYE_LIB_DIR := $(TOP)/$(DUAL_EYE_DIR)/lib/$(DUAL_EYE_MODEMPKG)
-
 BUILD_DRIVER_LCD_EN := y
 
 CFLAGS_INC  += -I $(TOP)/$(DUAL_EYE_DIR)/inc
@@ -37,17 +18,8 @@ CFLAGS_DEFS += -DAPPDEMO_LVGL_DUAL_EYE_EN
 
 CFLAGS_DEFS += -DLV_LVGL_H_INCLUDE_SIMPLE
 
-DUAL_EYE_LIBS := $(wildcard $(DUAL_EYE_LIB_DIR)/*.a)
-ifneq ($(DUAL_EYE_LIBS),)
-PREBUILDLIBS += $(DUAL_EYE_LIBS)
-else
-$(warning demo_lvgl_dual_eye libs not found for MODEM=$(MODEM) MODEMPKG=$(DUAL_EYE_MODEMPKG): $(DUAL_EYE_LIB_DIR))
-endif
-
 DEMO_COBJSTEMP += $(DUAL_EYE_DIR)/dual_eye_lcd.o
 DEMO_COBJSTEMP += $(DUAL_EYE_DIR)/dual_eye_gui.o
 DEMO_COBJSTEMP += $(DUAL_EYE_DIR)/dual_eye_gif_dec.o
-DEMO_COBJSTEMP += $(DUAL_EYE_DIR)/dual_eye_mm_adapter.o
-DEMO_COBJSTEMP += $(DUAL_EYE_DIR)/dual_eye_vpu_adapter.o
 DEMO_COBJSTEMP += $(DUAL_EYE_DIR)/res_gif_5.o
 DEMO_COBJSTEMP += $(DUAL_EYE_DIR)/res_gif_6.o

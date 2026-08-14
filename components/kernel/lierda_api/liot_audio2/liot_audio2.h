@@ -12,9 +12,14 @@
 #ifndef __LIOT_AUDIO_H_
 #define __LIOT_AUDIO_H_
 
+#include "liot_type.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/** Maximum ANS EQ band count */
+#define L_AUD_ANS_EQ_BAND_MAX 32
 
 /**
  * @enum Liot_AudErr_e
@@ -31,6 +36,8 @@ typedef enum {
     L_AUD_ERR_LEVEL_TRIGGER,    /*!< Level trigger configuration failed */
     L_AUD_ERR_NOMEM,            /*!< Out of memory */
     L_AUD_ERR_FILE,             /*!< File operation error */
+    L_AUD_ERR_TIMEOUT,          /*!< Operation timed out */
+    L_AUD_ERR_NO_SUPPORT,       /*!< Operation no support*/
 } Liot_AudErr_e;
 
 /**
@@ -180,7 +187,42 @@ typedef struct
     Liot_AudSample_e samples;    /*!< Audio sample rate */
     Liot_AudCb_t callback;       /*!< Audio event callback (can be NULL) */
     void *cbContext;             /*!< User context passed to callback */
+    uint8_t use3A;               /*!< 1=enable VEM 3A path, 0=original DMA path (default) */
 } Liot_AudHwConfig_t;
+
+/**
+ * @struct Liot_AudAnsConfig_t
+ * @brief Audio ANS configuration.
+ */
+typedef struct {
+    int8_t    bypass;
+    int8_t    mode;
+    int16_t   eqBypass;
+    uint16_t  eqBand[L_AUD_ANS_EQ_BAND_MAX];
+} Liot_AudAnsConfig_t;
+
+/**
+ * @struct Liot_AudAgcConfig_t
+ * @brief Audio AGC configuration.
+ */
+typedef struct {
+    int8_t     bypass;
+    int8_t     targetLevel;
+    int8_t     compressionGain;
+    int8_t     limiterEnable;
+} Liot_AudAgcConfig_t;
+
+/**
+ * @struct Liot_AudAecConfig_t
+ * @brief Audio AEC configuration.
+ */
+typedef struct {
+    int8_t      bypass;
+    int16_t     delay;
+    int8_t      cngMode;
+    int8_t      echoMode;
+    int8_t      nlpFlag;
+} Liot_AudAecConfig_t;
 
 /**
  * @brief Initialize the audio driver
@@ -337,6 +379,61 @@ Liot_AudErr_e Liot_AudioMp3StreamPlay(uint8_t* data, int datalen);
  * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
  */
 Liot_AudErr_e Liot_AudioMp3StreamStop(void);
+
+/**
+ * @brief Audio record stream callback function type
+ * @param pcmData Pointer to VEM processed PCM data
+ * @param len Length of PCM data in bytes
+ */
+typedef void (*Liot_AudRecordCb_t)(uint8_t* pcmData, uint16_t len);
+
+/**
+ * @brief Set 3A ANS parameters
+ * @param cfg Pointer to ANS configuration
+ * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
+ */
+Liot_AudErr_e Liot_AudioSetAns(Liot_AudAnsConfig_t *cfg);
+
+/**
+ * @brief Set 3A AGC parameters
+ * @param cfg Pointer to AGC configuration
+ * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
+ */
+Liot_AudErr_e Liot_AudioSetAgc(Liot_AudAgcConfig_t *cfg);
+
+/**
+ * @brief Set 3A AEC parameters
+ * @param cfg Pointer to AEC configuration
+ * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
+ */
+Liot_AudErr_e Liot_AudioSetAec(Liot_AudAecConfig_t *cfg);
+
+/**
+ * @brief Start PCM stream recording
+ * @param callback Callback for recorded PCM data
+ * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
+ */
+Liot_AudErr_e Liot_AudioRecordStream(Liot_AudRecordCb_t callback);
+
+/**
+ * @brief Stop PCM stream recording
+ * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
+ */
+Liot_AudErr_e Liot_AudioRecordStreamStop(void);
+
+/**
+ * @brief Play PCM stream data
+ * @param data Pointer to PCM data buffer
+ * @param len Length of PCM data in bytes
+ * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
+ */
+Liot_AudErr_e Liot_AudioPlayStream(uint8_t* data, uint16_t len);
+
+/**
+ * @brief Stop PCM stream playback
+ * @return L_AUD_ERR_SUCCESS if successful, otherwise error code
+ */
+Liot_AudErr_e Liot_AudioPlayStreamStop(void);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -3,7 +3,7 @@
 ###########################################################
 SDK_VERSION_MAJOR ?= 1
 SDK_VERSION_MINOR ?= 6
-SDK_VERSION_PATCH ?= beta
+SDK_VERSION_PATCH ?= 02_beta
 SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
 
 ###########################################################
@@ -40,11 +40,35 @@ BUILD_DRIVER_CH390_EN ?= n
 ###########################################################
 BUILD_COMP_TTS_EN ?= n
 # TTS_RESOURCE_TYPE values
-# 8k_zh		: 8K采样率+中文
-# 16k_zh	: 16K采样率+中文
-# 8k_en		: 8K采样率+英语
-# 16k_en	: 16K采样率+英语
+# 8k_zh		: 8K采样率+中文（8k sample rate）
+# 16k_zh	: 16K采样率+中文（16k sample rate）
+# 8k_en		: 8K采样率+英语（8k sample rate + english）
+# 16k_en	: 16K采样率+英语（16k sample rate + english）
 TTS_RESOURCE_TYPE ?= 8k_zh
+
+###########################################################
+# preset file ctrl
+# 
+# The preset file during the second burn will erase the file
+# system, and the original files will disappear. If you want
+# your original files to remain, please export the original
+# file system image and specify its path, preset file will
+# append the files in your image.
+# 
+# 第二次烧录时的预设文件会擦除文件系统，原来的文件会消失，
+# 如果你希望自己原来的文件继续存在，请将原来的文件系统镜像导出，
+# 并指定镜像的路径，预设文件会在指定文件系统中追加的文件。
+#
+# inside LFS : INSIDE_LFS_BIN="export image dir"
+# external FLASH LFS : EXT_LFS_BIN="export image dir"
+#
+# BUILD_PRESET_FILE_INSIDELFS_EN: inside LFS
+# BUILD_PRESET_FILE_EXTFLASHLFS_EN: external FLASH LFS
+###########################################################
+BUILD_COMP_PRESETFILE_EN ?= y
+
+BUILD_PRESET_FILE_INSIDELFS_EN ?= n
+BUILD_PRESET_FILE_EXTFLASHLFS_EN ?= n
 
 ###########################################################
 # thirdparty lib ctrl
@@ -64,15 +88,6 @@ BUILD_THPART_AMR_DECODER_ENABLE ?= n
 BUILD_THPART_MP3_ENABLE ?= n
 BUILD_THPART_VSIM_ENABLE ?= n
 BUILD_THPART_ZLIB_ENABLE ?= n
-
-###########################################################
-# ext flash image ctrl (parsed from config/default.ini [EXTFLASH IMAGE])
-###########################################################
-DEFINI       ?= $(TOP)/config/default.ini
-EF_IMAGE_EN  ?= $(shell sed -n '/\[EXTFLASH IMAGE\]/,/\[/{s/^efImageEn=//p}' $(DEFINI))
-EF_SPI_PORT  ?= $(shell sed -n '/\[EXTFLASH IMAGE\]/,/\[/{s/^efSpiPort=//p}' $(DEFINI))
-EF_LFS_LNA   ?= $(shell sed -n '/\[EXTFLASH IMAGE\]/,/\[/{s/^efLfsLna=//p}' $(DEFINI))
-EF_LFS_SIZE  ?= $(shell sed -n '/\[EXTFLASH IMAGE\]/,/\[/{s/^efLfsSize=//p}' $(DEFINI))
 
 ###########################################################
 # user test demo ctrl

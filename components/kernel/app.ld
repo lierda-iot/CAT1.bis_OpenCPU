@@ -35,6 +35,9 @@ SECTIONS
     *(.data*)
     *(.sect_ap_psram_p0_data.*)
     *(.sect_ap_ps_psram_p0_data.*)
+    *(.sect_platFPSRAMRamcode_text_cust.*)
+    *(.sect_platFPSRAMRWData_data_cust.*)
+    *(.sect_platFMRamcode_text.*)
     . = ALIGN(4);
   } >RAM AT>FLASH
 
@@ -46,6 +49,7 @@ SECTIONS
     Image$$LOAD_DRAM_SHARED$$ZI$$Base = .;
 		__bss_start__ = .;
 		*(.bss*)
+    *(.sect_platFMZIData_bss.*)
     *(.sect_*_bss* .bss*)
     *(.sect_ap_psram_p0_bss.*)
     *(.sect_ap_ps_psram_p0_bss.*)

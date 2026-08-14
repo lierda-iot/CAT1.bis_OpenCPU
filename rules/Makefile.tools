@@ -58,6 +58,12 @@ else
 GEN_IORESOURCE ?= $(TOP)/tools/precfg/ioResource.exe
 endif
 
+ifeq ($(BUILD_ENV),linux)
+LFSUTIL ?= $(TOP)/tools/lfsutil/lfsutil
+else
+LFSUTIL ?= $(TOP)/tools/lfsutil/lfsutil.exe
+endif
+
 NULL_DEVICE := /dev/null 2>&1
 
 GET_TIMESTAMP = date +%s%3N

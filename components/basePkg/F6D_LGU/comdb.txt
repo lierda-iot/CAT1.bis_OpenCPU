@@ -1,8 +1,8 @@
 DbVersion
-1944037623,100
+1037502500,100
 <end>
 BuildInfo
-The current data file was built by the Application Ver. 2.2.83.223, Thu Aug  6 07:49:48 2026
+The current data file was built by the Application Ver. 2.2.83.223, Fri Aug 14 16:36:21 2026
 <end>
 EnumVals
 0,0,0,0,PHY_ONLINE,PHY_ICS_MODULE,PhyIcsMeasMainEntrance_0,P_INFO,swLogPrintf("ICS MEAS of euArfcn %d will be started ");
@@ -12842,29 +12842,29 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 786432,1611169791,0,0,CUSTOMER,LIOT_APP,liot_hal_lcd_init_1,P_VALUE,swLogPrintf("init fail lspi need dma callback ");
 786432,1611171839,0,0,CUSTOMER,LIOT_APP,Liot_LspiAllocHandle_1,P_VALUE,swLogPrintf("LspiAllocHandle fail ");
 786432,1611172864,0,0,CUSTOMER,LIOT_APP,Liot_LspiInit,P_VALUE,swLogPrintf("Lspi ( %d ) , dmaChl ( %d ) , sync ( %d ) , Height ( %d ) , width ( %d ) ");
-786432,1611174144,0,0,CUSTOMER,LIOT_APP,Liot_LspiSend_0,P_VALUE,swLogPrintf("Lspihdl %d SendData len = %d ");
-786432,1611177983,0,0,CUSTOMER,LIOT_APP,Liot_LspiSendCmd_0,P_VALUE,swLogDump("");
-786432,1611180031,0,0,CUSTOMER,LIOT_APP,HTTPClient_105,P_INFO,swLogPrintf("Could not find host ");
-786432,1611180288,0,0,CUSTOMER,LIOT_APP,HTTPClient_110,P_INFO,swLogPrintf("Scheme str is too small ( %d > = %d ) ");
-786432,1611182336,0,0,CUSTOMER,LIOT_APP,HTTPClient_159,P_INFO,swLogPrintf("Host str is too small ( %d > = %d ) ");
-786432,1611184384,0,0,CUSTOMER,LIOT_APP,HTTPClient_179,P_INFO,swLogPrintf("Path str is too small ( %d > = %d ) ");
-786432,1611187475,0,0,CUSTOMER,LIOT_APP,HTTPClient_191,P_INFO,swLogPrintf("parseURL{url(%s),host(%s),maxHostLen(%d),port(%d),path(%s),maxPathLen(%d)}\r \n ");
-786432,1611190271,0,0,CUSTOMER,LIOT_APP,HTTPClient_271,P_INFO,swLogPrintf("http_client ( ssl ) : send failed \n ");
-786432,1611190272,0,0,CUSTOMER,LIOT_APP,HTTPClient_886,P_INFO,swLogPrintf("parseURL returned %d ");
-786432,1611194367,0,0,CUSTOMER,LIOT_APP,HTTPClient_931,P_INFO,swLogPrintf("send auth ( if defined ) ");
-786432,1611194887,0,0,CUSTOMER,LIOT_APP,HTTPClient_935,P_INFO,swLogPrintf("( %s , %s ) = > ( %s ) ");
-786432,1611196417,0,0,CUSTOMER,LIOT_APP,HTTPClient_946,P_INFO,swLogPrintf("httpSendHeader custheader :{%s}");
-786432,1611198721,0,0,CUSTOMER,LIOT_APP,HTTPClient_1004,P_INFO,swLogPrintf("httpSendHeader send head : %s , headlen : %d ");
-786432,1611200513,0,0,CUSTOMER,LIOT_APP,HTTPClient_1712,P_INFO,swLogPrintf("httpConnect parse url : [ %s ] ");
-786432,1611202560,0,0,CUSTOMER,LIOT_APP,HTTPClient_1716,P_INFO,swLogPrintf("parseURL returned %d ");
-786432,1611204609,0,0,CUSTOMER,LIOT_APP,HTTPClient_1733,P_INFO,swLogPrintf("httpConnect Scheme : %s ");
-786432,1611206657,0,0,CUSTOMER,LIOT_APP,HTTPClient_1734,P_INFO,swLogPrintf("httpConnect Host : %s ");
-786432,1611208704,0,0,CUSTOMER,LIOT_APP,HTTPClient_1735,P_INFO,swLogPrintf("httpConnect Port : %d ");
-786432,1611210753,0,0,CUSTOMER,LIOT_APP,HTTPClient_1736,P_INFO,swLogPrintf("httpConnect Path : %s ");
-786432,1611212800,0,0,CUSTOMER,LIOT_APP,HTTPClient_1768,P_INFO,swLogPrintf("httpSendRequest ret : %d ");
-786432,1611216895,0,0,CUSTOMER,LIOT_APP,HTTPClient_1791,P_INFO,swLogPrintf("httpClose ");
-786432,1611218943,0,0,CUSTOMER,LIOT_APP,HTTPClient_1804,P_INFO,swLogPrintf("Receiving response ");
-786432,1611218945,0,0,CUSTOMER,LIOT_APP,LWS_LOG,P_VALUE,swLogPrintf("%s ");
+786432,1611175935,0,0,CUSTOMER,LIOT_APP,HTTPClient_105,P_INFO,swLogPrintf("Could not find host ");
+786432,1611176192,0,0,CUSTOMER,LIOT_APP,HTTPClient_110,P_INFO,swLogPrintf("Scheme str is too small ( %d > = %d ) ");
+786432,1611178240,0,0,CUSTOMER,LIOT_APP,HTTPClient_159,P_INFO,swLogPrintf("Host str is too small ( %d > = %d ) ");
+786432,1611180288,0,0,CUSTOMER,LIOT_APP,HTTPClient_179,P_INFO,swLogPrintf("Path str is too small ( %d > = %d ) ");
+786432,1611183379,0,0,CUSTOMER,LIOT_APP,HTTPClient_191,P_INFO,swLogPrintf("parseURL{url(%s),host(%s),maxHostLen(%d),port(%d),path(%s),maxPathLen(%d)}\r \n ");
+786432,1611186175,0,0,CUSTOMER,LIOT_APP,HTTPClient_271,P_INFO,swLogPrintf("http_client ( ssl ) : send failed \n ");
+786432,1611186176,0,0,CUSTOMER,LIOT_APP,HTTPClient_886,P_INFO,swLogPrintf("parseURL returned %d ");
+786432,1611190271,0,0,CUSTOMER,LIOT_APP,HTTPClient_931,P_INFO,swLogPrintf("send auth ( if defined ) ");
+786432,1611190791,0,0,CUSTOMER,LIOT_APP,HTTPClient_935,P_INFO,swLogPrintf("( %s , %s ) = > ( %s ) ");
+786432,1611192321,0,0,CUSTOMER,LIOT_APP,HTTPClient_946,P_INFO,swLogPrintf("httpSendHeader custheader :{%s}");
+786432,1611194625,0,0,CUSTOMER,LIOT_APP,HTTPClient_1004,P_INFO,swLogPrintf("httpSendHeader send head : %s , headlen : %d ");
+786432,1611196417,0,0,CUSTOMER,LIOT_APP,HTTPClient_1712,P_INFO,swLogPrintf("httpConnect parse url : [ %s ] ");
+786432,1611198464,0,0,CUSTOMER,LIOT_APP,HTTPClient_1716,P_INFO,swLogPrintf("parseURL returned %d ");
+786432,1611200513,0,0,CUSTOMER,LIOT_APP,HTTPClient_1733,P_INFO,swLogPrintf("httpConnect Scheme : %s ");
+786432,1611202561,0,0,CUSTOMER,LIOT_APP,HTTPClient_1734,P_INFO,swLogPrintf("httpConnect Host : %s ");
+786432,1611204608,0,0,CUSTOMER,LIOT_APP,HTTPClient_1735,P_INFO,swLogPrintf("httpConnect Port : %d ");
+786432,1611206657,0,0,CUSTOMER,LIOT_APP,HTTPClient_1736,P_INFO,swLogPrintf("httpConnect Path : %s ");
+786432,1611208704,0,0,CUSTOMER,LIOT_APP,HTTPClient_1768,P_INFO,swLogPrintf("httpSendRequest ret : %d ");
+786432,1611212799,0,0,CUSTOMER,LIOT_APP,HTTPClient_1791,P_INFO,swLogPrintf("httpClose ");
+786432,1611214847,0,0,CUSTOMER,LIOT_APP,HTTPClient_1804,P_INFO,swLogPrintf("Receiving response ");
+786432,1611214849,0,0,CUSTOMER,LIOT_APP,LWS_LOG,P_VALUE,swLogPrintf("%s ");
+786432,1611216897,0,0,CUSTOMER,LIOT_APP,ssl_cli_1056,P_INFO,swLogPrintf("client hello , random bytes : %s ");
+786432,1611218945,0,0,CUSTOMER,LIOT_APP,ssl_tls_1175,P_INFO,swLogPrintf("master secret : %s ");
 787456,1612710400,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1297,P_INFO,swLogPrintf("UTC UTCtimer1 0x%x , UTCtimer2 0x%x , local timeZone %d ");
 787456,1612711936,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1305,P_INFO,swLogPrintf("ctzuValue %d ");
 787456,1612714496,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1317,P_INFO,swLogPrintf("Local UTCtimer1 0x%x , UTCtimer2 0x%x , timeZone %d ");
@@ -13044,39 +13044,39 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 787456,1613070848,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_313,P_INFO,swLogPrintf("set gpio cfg : pinNum %d , direct %d , value %d ");
 787456,1613072384,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_327,P_INFO,swLogPrintf("AT GPIO %d not found ");
 787456,1613074944,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_337,P_INFO,swLogPrintf("initial gpio function pinNum %d , direct %d , value %d ");
-787456,1613076481,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_574,P_INFO,swLogPrintf("refPsQCFG paraStr is %s ");
-787456,1613078784,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_601,P_INFO,swLogPrintf("chanid %d urc_cache %d ");
-787456,1613081348,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_691,P_INFO,swLogPrintf("+QCFG : valFlag = %d , paraLen = %d , LteBandStr = %s , LteBandDec = %d ");
-787456,1613084671,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_741,P_INFO,swLogPrintf("+QCFG : using 64-bit all bands ( B1-B64 ) ");
-787456,1613086719,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_748,P_INFO,swLogPrintf("+QCFG : ALL BANDS requested , getting supported bands... ");
-787456,1613086720,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_756,P_INFO,swLogPrintf("+QCFG : got %d supported bands ");
-787456,1613088768,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_765,P_INFO,swLogPrintf("+QCFG : band %d ");
-787456,1613090816,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_773,P_INFO,swLogPrintf("+QCFG : setting %d bands ");
-787456,1613094911,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_785,P_INFO,swLogPrintf("+QCFG : failed to get supported bands ");
-787456,1613095168,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_796,P_INFO,swLogPrintf("+QCFG : DEC value = %u ( 0x%x ) ");
-787456,1613096960,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_808,P_INFO,swLogPrintf("+QCFG : band %d ");
-787456,1613099265,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_828,P_INFO,swLogPrintf("+QCFG : skip 0x , now = %s , len = %d ");
-787456,1613101313,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_835,P_INFO,swLogPrintf("+QCFG : hex string = %s , len = %d ");
-787456,1613103360,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_853,P_INFO,swLogPrintf("+QCFG : part%d = 0x%x ");
-787456,1613105664,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_873,P_INFO,swLogPrintf("+QCFG : band %d ( part%d , bit%d ) ");
-787456,1613107200,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_880,P_INFO,swLogPrintf("+QCFG : unknown valFlag = %d ");
-787456,1613109248,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_885,P_INFO,swLogPrintf("+QCFG : total %d bands ");
-787456,1613111296,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_892,P_INFO,swLogPrintf("+QCFG : setting %d bands ");
-787456,1613113344,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_896,P_INFO,swLogPrintf("+QCFG : invalid band number %d ");
-787456,1613115392,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1057,P_INFO,swLogPrintf("token is ret = %d ");
-787456,1613117440,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1078,P_INFO,swLogPrintf("Liot_qcfg_cfg_set fail ret %d ");
-787456,1613121535,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1083,P_INFO,swLogPrintf("Liot_qcfg_cfg_set succ ");
-787456,1613121536,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1124,P_INFO,swLogPrintf("token is ret = %d ");
-787456,1613123585,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1129,P_INFO,swLogPrintf("paraStr is %s ");
-787456,1613125888,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1163,P_INFO,swLogPrintf("duration %d count %d ");
-787456,1613129727,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1166,P_INFO,swLogPrintf("ri cfg is same ");
-787456,1613129728,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1200,P_INFO,swLogPrintf("Liot_qcfg_cfg_set fail ret %d ");
-787456,1613133823,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1205,P_INFO,swLogPrintf("Liot_qcfg_cfg_set succ ");
-787456,1613133824,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1228,P_INFO,swLogPrintf("Liot_qcfg_cfg_set fail ret %d ");
-787456,1613137919,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1233,P_INFO,swLogPrintf("Liot_qcfg_cfg_set succ ");
-787456,1613138176,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1291,P_INFO,swLogPrintf("chanid %d urc_cache %d ");
-787456,1613140224,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1351,P_INFO,swLogPrintf("chanid %d EcbcinfoWithBandFlag %d ");
-787456,1613142017,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1763,P_INFO,swLogPrintf("AT CMD , QINDCFG , invalid param URC : %s ");
+787456,1613076481,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_578,P_INFO,swLogPrintf("refPsQCFG paraStr is %s ");
+787456,1613078784,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_605,P_INFO,swLogPrintf("chanid %d urc_cache %d ");
+787456,1613081348,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_695,P_INFO,swLogPrintf("+QCFG : valFlag = %d , paraLen = %d , LteBandStr = %s , LteBandDec = %d ");
+787456,1613084671,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_745,P_INFO,swLogPrintf("+QCFG : using 64-bit all bands ( B1-B64 ) ");
+787456,1613086719,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_752,P_INFO,swLogPrintf("+QCFG : ALL BANDS requested , getting supported bands... ");
+787456,1613086720,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_760,P_INFO,swLogPrintf("+QCFG : got %d supported bands ");
+787456,1613088768,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_769,P_INFO,swLogPrintf("+QCFG : band %d ");
+787456,1613090816,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_777,P_INFO,swLogPrintf("+QCFG : setting %d bands ");
+787456,1613094911,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_789,P_INFO,swLogPrintf("+QCFG : failed to get supported bands ");
+787456,1613095168,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_800,P_INFO,swLogPrintf("+QCFG : DEC value = %u ( 0x%x ) ");
+787456,1613096960,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_812,P_INFO,swLogPrintf("+QCFG : band %d ");
+787456,1613099265,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_832,P_INFO,swLogPrintf("+QCFG : skip 0x , now = %s , len = %d ");
+787456,1613101313,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_839,P_INFO,swLogPrintf("+QCFG : hex string = %s , len = %d ");
+787456,1613103360,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_857,P_INFO,swLogPrintf("+QCFG : part%d = 0x%x ");
+787456,1613105664,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_877,P_INFO,swLogPrintf("+QCFG : band %d ( part%d , bit%d ) ");
+787456,1613107200,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_884,P_INFO,swLogPrintf("+QCFG : unknown valFlag = %d ");
+787456,1613109248,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_889,P_INFO,swLogPrintf("+QCFG : total %d bands ");
+787456,1613111296,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_896,P_INFO,swLogPrintf("+QCFG : setting %d bands ");
+787456,1613113344,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_900,P_INFO,swLogPrintf("+QCFG : invalid band number %d ");
+787456,1613115392,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1061,P_INFO,swLogPrintf("token is ret = %d ");
+787456,1613117440,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1082,P_INFO,swLogPrintf("Liot_qcfg_cfg_set fail ret %d ");
+787456,1613121535,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1087,P_INFO,swLogPrintf("Liot_qcfg_cfg_set succ ");
+787456,1613121536,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1128,P_INFO,swLogPrintf("token is ret = %d ");
+787456,1613123585,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1133,P_INFO,swLogPrintf("paraStr is %s ");
+787456,1613125888,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1167,P_INFO,swLogPrintf("duration %d count %d ");
+787456,1613129727,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1170,P_INFO,swLogPrintf("ri cfg is same ");
+787456,1613129728,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1204,P_INFO,swLogPrintf("Liot_qcfg_cfg_set fail ret %d ");
+787456,1613133823,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1209,P_INFO,swLogPrintf("Liot_qcfg_cfg_set succ ");
+787456,1613133824,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1232,P_INFO,swLogPrintf("Liot_qcfg_cfg_set fail ret %d ");
+787456,1613137919,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1237,P_INFO,swLogPrintf("Liot_qcfg_cfg_set succ ");
+787456,1613138176,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1295,P_INFO,swLogPrintf("chanid %d urc_cache %d ");
+787456,1613140224,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1355,P_INFO,swLogPrintf("chanid %d EcbcinfoWithBandFlag %d ");
+787456,1613142017,0,0,CUSTOMER,LIOT_REF_MAGIC,q_ctrl_at_1767,P_INFO,swLogPrintf("AT CMD , QINDCFG , invalid param URC : %s ");
 787456,1613144323,0,0,CUSTOMER,LIOT_REF_MAGIC,q_file_at_31,P_INFO,swLogPrintf("match file name : %s <-> %s ");
 787456,1613146112,0,0,CUSTOMER,LIOT_REF_MAGIC,q_file_task_37,P_INFO,swLogPrintf("XOR : %X ");
 787456,1613148419,0,0,CUSTOMER,LIOT_REF_MAGIC,q_file_task_178,P_INFO,swLogPrintf("%s / %s is exist ");
@@ -14681,42 +14681,6 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 807936,1654675455,0,0,CUSTOMER,LIOT_OPEN_SPI,liot_spi_370,P_INFO,swLogPrintf("spi Initialize suc. ");
 807936,1654677503,0,0,CUSTOMER,LIOT_OPEN_SPI,liot_spi_392,P_INFO,swLogPrintf("Control FAIL ");
 807936,1654679551,0,0,CUSTOMER,LIOT_OPEN_SPI,liot_spi_398,P_INFO,swLogPrintf("Uninitialize FAIL ");
-808960,1656750336,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_44,P_INFO,swLogPrintf("%p %d ");
-808960,1656752384,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_58,P_INFO,swLogPrintf("nParamID %d nParamValue %d ");
-808960,1656756223,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_76,P_INFO,swLogPrintf("input param is invalid \r \n ");
-808960,1656758271,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_80,P_INFO,swLogPrintf("lierda tts init!!!! \r \n ");
-808960,1656760319,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_85,P_INFO,swLogPrintf("resource not set \r \n ");
-808960,1656762367,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_93,P_INFO,swLogPrintf("Malloc failed \r \n ");
-808960,1656762368,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_106,P_INFO,swLogPrintf("ivTTS_Create return 0x%X \n ");
-808960,1656764416,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_116,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_OUTPUT_CALLBACK return 0x%x \r \n ");
-808960,1656766464,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_126,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_PARAMCH_CALLBACK return 0x%X \r \n ");
-808960,1656768512,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_136,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_PROGRESS_CALLBACK return 0x%X \r \n ");
-808960,1656770560,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_146,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_INPUT_CODEPAGE return 0x%X \r \n ");
-808960,1656772608,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_156,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_LANGUAGE return 0x%X \r \n ");
-808960,1656774656,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_166,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_VOLUME return 0x%X \r \n ");
-808960,1656776704,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_176,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_VOICE_SPEED return 0x%X \r \n ");
-808960,1656778752,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_190,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_ROLE return 0x%X \r \n ");
-808960,1656780800,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_202,P_INFO,swLogPrintf("ivTTS_GetVersion return 0x%X \r \n ");
-808960,1656783360,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_206,P_INFO,swLogPrintf("read tts lib majorVer / %d , minorVer / %d , revVer / %d ");
-808960,1656786943,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_209,P_INFO,swLogPrintf("ivTTS init success ");
-808960,1656786944,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_222,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656788992,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_236,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656791040,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_245,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656793088,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_253,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656795136,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_262,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656797184,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_297,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656799232,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_337,P_INFO,swLogPrintf("get %d param fail ");
-808960,1656801536,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_343,P_INFO,swLogPrintf("type %d nParamValue is %d ");
-808960,1656803328,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_375,P_INFO,swLogPrintf("UTF-8 source is wrong : %d ");
-808960,1656805376,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_396,P_INFO,swLogPrintf("GBK trans wrong : %d ");
-808960,1656807425,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_407,P_INFO,swLogPrintf("Sucess!!The gbk context is : %s ");
-808960,1656811519,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_411,P_INFO,swLogPrintf("fail!!The gbk context ");
-808960,1656813567,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_422,P_INFO,swLogPrintf("liot_tts_set_resource Entry failed ");
-808960,1656815615,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_446,P_INFO,swLogPrintf("invalid param ");
-808960,1656815616,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_453,P_INFO,swLogPrintf("ivTTS_SynthText failed / 0x%x ");
-808960,1656819711,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_458,P_INFO,swLogPrintf("ivTTS_SynthText succ ");
-808960,1656819712,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_467,P_INFO,swLogPrintf("ivTTS_Exit failed / 0x%x ");
-808960,1656823807,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_471,P_INFO,swLogPrintf("ivTTS_Exit succ ");
 811008,1660944385,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_112,P_INFO,swLogPrintf("GNSS get location : %s ");
 811008,1660946433,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_244,P_INFO,swLogPrintf("GNSS get nmea : %s ");
 812032,1663041536,0,0,CUSTOMER,LIOT_CUST,liot_ch390_112,P_INFO,swLogPrintf("CH390 [ %d ] spi driver not found ");
@@ -15480,5 +15444,5 @@ MW_INFO_PHY_EDRX_PARAM,midWareNvmInfoPhyEdrxParam
 plat_config,plat_config_fs_t
 <end>
 OptionalSegment
-optional_sk_01,6EE99949E5013EDAEB1132B89CAD98A4D47372D8491C4CED356E3C7FC787271E
+optional_sk_01,97DCA3FF718F7C6BCE8540A7D7663A5E4420B535DDBD5345CBF70395F705080A
 <end>

@@ -1,8 +1,8 @@
 DbVersion
-2272227328,100
+2113614942,100
 <end>
 BuildInfo
-The current data file was built by the Application Ver. 2.2.83.223, Fri Jul 31 17:36:38 2026
+The current data file was built by the Application Ver. 2.2.83.223, Fri Aug 14 17:41:45 2026
 <end>
 EnumVals
 0,0,0,0,PHY_ONLINE,PHY_ICS_MODULE,PhyIcsMeasMainEntrance_0,P_INFO,swLogPrintf("ICS MEAS of euArfcn %d will be started ");
@@ -2939,118 +2939,131 @@ bc3112a9e2fbdb9f07f91df38d28f8f634b252a85b42aaa8492f7b40ff9be0c9785d835c8948e0b8
 272384,558029312,0,0,PLAT_AP,ATCMD,appGetWifiScanInfo_warn,P_WARNING,swLogPrintf("appGetWifiScanInfo invalid Params , maxTimeOut ( %ld ) should NOT less than round ( %d ) * scanTimeOut ( %d ) * 1000 ");
 272384,558032895,0,0,PLAT_AP,ATCMD,liotGetWifiScanInfo_info,P_INFO,swLogPrintf("liotGetWifiScanInfo api ");
 272384,558033408,0,0,PLAT_AP,ATCMD,liotGetWifiScanInfo_warn,P_WARNING,swLogPrintf("liotGetWifiScanInfo invalid Params , maxTimeOut ( %ld ) should NOT less than round ( %d ) * scanTimeOut ( %d ) * 1000 ");
-273408,559939840,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_1,P_WARNING,swLogPrintf("AT CMD , invalid pre-defined AT , no AT name , pPreCmd->cmdType is %d , pPreCmd->paramMaxNum is %d ");
-273408,559941889,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_1,P_WARNING,swLogPrintf("AT CMD : %s , name len : %d , is 0 , or greater than 32 ");
-273408,559943681,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_2,P_WARNING,swLogPrintf("AT CMD : %s , time out can ' t set to 0 ");
-273408,559945729,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_3,P_WARNING,swLogPrintf("AT CMD : %s , basic AT name not right ");
-273408,559947777,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_invalid_ext_1,P_WARNING,swLogPrintf("AT CMD : %s , extended CHAR is not right ");
-273408,559949825,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_4,P_WARNING,swLogPrintf("AT CMD : %s , extended AT name not right ");
-273408,559951873,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_5,P_WARNING,swLogPrintf("AT CMD : %s , proc func is NULL ");
-273408,559953921,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_6,P_WARNING,swLogPrintf("AT CMD : %s , too many param > = 32 ");
-273408,559955969,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_7,P_WARNING,swLogPrintf("AT CMD : %s , pre-defined param list is NULL ");
-273408,559958529,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_8,P_WARNING,swLogPrintf("AT CMD : %s , basic AT CMD , paramMaxNum : %d , type : %d , not valid ");
-273408,559960320,0,0,PLAT_AP,ATCMD_PARSER,atcStartAsynTimer_1,P_VALUE,swLogPrintf("AT CMD , start guard time ( %u ) : %d ms ");
-273408,559962113,0,0,PLAT_AP,ATCMD_PARSER,atcFindPreDefinedAtInfo_w_1,P_WARNING,swLogPrintf("AT CMD , AT : %s , grep map not found AT info , try string compare ");
-273408,559964161,0,0,PLAT_AP,ATCMD_PARSER,atcDecJsonParam_warning_1,P_WARNING,swLogPrintf("AT CMD , invalid JSON param : %s ");
-273408,559966208,0,0,PLAT_AP,ATCMD_PARSER,atcDecBasicAtParam_num_w_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
-273408,559968772,0,0,PLAT_AP,ATCMD_PARSER,atcDecBasicAtParam_num_w_2,P_WARNING,swLogPrintf("AT CMD , the %d param is numeric type : %d , invlaid input : %s ");
-273408,559970560,0,0,PLAT_AP,ATCMD_PARSER,atcDecBasicAtParam_warn_str_1,P_WARNING,swLogPrintf("AT CMD , the %d param , type : %d is must , can ' t missing ");
-273408,559972865,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_bs_warn_1,P_WARNING,swLogPrintf("AT CMD , basic AT : %s , but attribute not right , paramMaxNum : %d , type : %d ");
-273408,559974656,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_num_warn_1,P_WARNING,swLogPrintf("AT CMD , the %d param is numeric type , but contain : %d \" , invalid ");
-273408,559976448,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_num_warn_2,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
-273408,559979008,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_num_warn_3,P_WARNING,swLogPrintf("AT CMD , the %d param is numeric type : %d , invlaid input : %d ");
-273408,559980544,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_json_1,P_WARNING,swLogPrintf("AT CMD , the %d param JSON is must , can ' t missing ");
-273408,559982592,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_str_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
-273408,559984640,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_last_mix_1,P_WARNING,swLogPrintf("AT CMD , the %d param LAST MIX STR is must , can ' t missing ");
-273408,559986688,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_mix_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
-273408,559988736,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_must_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
-273408,559990785,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_check_1,P_WARNING,swLogPrintf("AT CMD , can ' t find handler / procFunc for AT : %s ");
-273408,559992833,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_check_2,P_WARNING,swLogPrintf("AT CMD , AT : %s , is action command , not support READ operation ");
-273408,559994881,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_param_warn_1,P_WARNING,swLogPrintf("AT CMD : %s , decode param_value failed ");
-273408,559996928,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_warning_no_timeout_1,P_WARNING,swLogPrintf("AT CMD , RIL AT , no valid time out set , use the AT CMD default value : %d seconds ");
-273408,559998976,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_warning_no_timeout_2,P_WARNING,swLogPrintf("AT CMD , no time out set , use the default value : %d seconds ");
-273408,560001025,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_proc_warn_1,P_WARNING,swLogPrintf("AT CMD : %s , funcProc failed ");
-273408,560003840,0,0,PLAT_AP,ATCMD_PARSER,atcGetAtLine_mis_w_1,P_WARNING,swLogPrintf("AT CHAN : %d , get / proc a new line , but previous ending not done : %d , %d , %d ");
-273408,560005376,0,0,PLAT_AP,ATCMD_PARSER,atcGetAtLine_w_1,P_WARNING,swLogPrintf("AT CMD , input AT CMD too long : %d > %d , not support , discard it ");
-273408,560007168,0,0,PLAT_AP,ATCMD_PARSER,atcDecodeOneNode_pending_1,P_WARNING,swLogPrintf("AT CMD , one AT is ongoing , pending current one , input len : %d ");
-273408,560009472,0,0,PLAT_AP,ATCMD_PARSER,atcDecodeOneNode_1,P_ERROR,swLogPrintf("AT CMD , too much pending AT input , pendingLen : %d / pendingNodeNum : %d , discard all ");
-273408,560011264,0,0,PLAT_AP,ATCMD_PARSER,atcDecOneNode_next_1,P_INFO,swLogPrintf("AT CMD , chan Id : %d , current line done , check next.. ");
-273408,560013568,0,0,PLAT_AP,ATCMD_PARSER,atcDecodeOneNode_warn_1,P_ERROR,swLogPrintf("AT CMD , too much pending AT input , pendingLen : %d / pendingNodeNum : %d , discard all ");
-273408,560015872,0,0,PLAT_AP,ATCMD_PARSER,atcDecOneApiNode_warning_1,P_WARNING,swLogPrintf("AT CMD , too much pending RIL AT input , pendingLen : %d / currentLen : %d / pendingNodeNum : %d , discard current one ");
-273408,560017408,0,0,PLAT_AP,ATCMD_PARSER,atcDecOneApiNode_pending_1,P_WARNING,swLogPrintf("AT CMD , one RIL AT is ongoing , pending current one , input len : %d ");
-273408,560019968,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtInDataState_0,P_INFO,swLogPrintf("AT CMD , chan Id : %d , dataState : %d , recv data len : %d ");
-273408,560022016,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtInDataState_w_state_0,P_WARNING,swLogPrintf("AT CMD , chan Id : %d , dataState : %d , proc data return failed : %d , chanState change back to : COMMAND STATE ");
-273408,560025599,0,0,PLAT_AP,ATCMD_PARSER,atcBeHandshakeInput_1,P_INFO,swLogPrintf("AT CMD , Handshake RESP : KSDH ");
-273408,560025856,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_state_0,P_WARNING,swLogPrintf("AT CMD , chanId : %d , waiting for the handshake cnf to enter state : %d , discard this dirty data ");
-273408,560027904,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_state_1,P_INFO,swLogPrintf("AT CMD , chanId : %d , state is : %d , not CMD state , don ' t need to decode AT ");
-273408,560031743,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_info_1,P_INFO,swLogDump("AT CMD , RECV dump : ");
-273408,560032000,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_info_2,P_INFO,swLogPrintf("AT chanId : %d , recv long AT , length : %d ");
-273408,560035839,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_info_3,P_INFO,swLogDump("AT CMD , RECV dump : ");
-273408,560035840,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdContinueReqSig_w_1,P_WARNING,swLogPrintf("AT CHAN : %d , proc SIG_AT_CMD_CONTINUE_REQ , but another AT is ongoing , and guard timer is runing ");
-273408,560037888,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdContinueReqSig_next_1,P_INFO,swLogPrintf("AT CMD , chan Id : %d , current line done , check next.. ");
-273408,560039936,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdDataModeHSCnfSig_1,P_INFO,swLogPrintf("AT CMD , chan Id : %d , rcv SIG_AT_CMD_DATA_MODE_HS_CNF , ready to enter data mode! ");
-273408,560041984,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdDataModeHSCnfSig_2,P_WARNING,swLogPrintf("AT CMD , chan Id : %d , unexpect SIG_AT_CMD_DATA_MODE_HS_CNF , pls , check it! ");
-273408,560046079,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_ril_1,P_ERROR,swLogPrintf("AT CMD , can ' t register AT channel , with reserved name : RILAPI ");
-273408,560046081,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_info_1,P_INFO,swLogPrintf("AT CMD , register USB AT channel : %s ");
-273408,560048129,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_default_warning_1,P_WARNING,swLogPrintf("AT CMD , USB channel already registered : %s , re-init ");
-273408,560050177,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_uart_1,P_INFO,swLogPrintf("AT CMD , register UART AT channel : %s ");
-273408,560052225,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_uart_warning_1,P_WARNING,swLogPrintf("AT CMD , UART channel already registered : %s , re-init ");
-273408,560054273,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_warning_1,P_WARNING,swLogPrintf("AT CMD , Chan name already registered : %s ");
-273408,560056321,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_warning_2,P_WARNING,swLogPrintf("AT CMD , No channel left for request channName : %s ");
-273408,560058368,0,0,PLAT_AP,ATCMD_PARSER,atcGetEntityById_warning_1,P_WARNING,swLogPrintf("AT CMD , can ' t get AT entity by chanId : %d ");
-273408,560060416,0,0,PLAT_AP,ATCMD_PARSER,atcStopAsynTimer_1,P_VALUE,swLogPrintf("AT CMD , stop guard time : %u ");
-273408,560062464,0,0,PLAT_AP,ATCMD_PARSER,atcStopAsynTimer_101,P_WARNING,swLogPrintf("AT CMD , stop timer get AT entity by tid : %d ");
-273408,560065280,0,0,PLAT_AP,ATCMD_PARSER,atcRestartGuardTimer_warning_1,P_WARNING,swLogPrintf("AT CMD , chanId : %d , Tid : %d / %d , guarding timer not running , or new value invalid : %d , can ' t restart AT guard timer. ");
-273408,560066560,0,0,PLAT_AP,ATCMD_PARSER,atcRestartGuardTimer_1,P_VALUE,swLogPrintf("AT CMD , restart guard time : %d ms ");
-273408,560068864,0,0,PLAT_AP,ATCMD_PARSER,atcAsynTimerExpiry_warning_1,P_WARNING,swLogPrintf("AT CMD. channId : %d , tid : %d , guard timer expiry ");
-273408,560070912,0,0,PLAT_AP,ATCMD_PARSER,atcAsynTimerExpiry_warning_2,P_WARNING,swLogPrintf("AT CMD. channId : %d , tid : %d , guard timer expiry ");
-273408,560073216,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_1,P_SIG,swLogPrintf("AT CMD. chanId : %d , channel state change from : %d to %d ");
-273408,560075008,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_data_mode_HS,P_SIG,swLogPrintf("AT CMD. chanId : %d , before enter channel state %d , handshake with CCIO and wait result! ");
-273408,560076800,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_pmu_1,P_SIG,swLogPrintf("AT CMD , UART channel enter state : %d , wait for more input , not allow enter SLEEP1 ");
-273408,560080895,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_pmu_2,P_SIG,swLogPrintf("AT CMD , UART channel back to online state , allow enter SLEEP1 ");
-273408,560081408,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineDataState_1,P_SIG,swLogPrintf("AT CMD , chanId : %d , enter online data state , from : %d to %d ");
-273408,560083200,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineDataState_data_mode_HS,P_SIG,swLogPrintf("AT CMD. chanId : %d , before enter online data state %d , handshake with CCIO and wait result! ");
-273408,560084992,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineDataState_pmu_1,P_SIG,swLogPrintf("AT CMD , UART channel enter data state : %d , wait for more input , not allow enter SLEEP1 ");
-273408,560087296,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineCommandState_w_1,P_WARNING,swLogPrintf("AT CMD , chanId : %d , cur state : %d , not data state , can ' t change to ATC_ONLINE_COMMAND_STATE ");
-273408,560089600,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineCommandState_1,P_SIG,swLogPrintf("AT CMD , chanId : %d , enter ATC_ONLINE_COMMAND_STATE , from : %d to %d ");
-273408,560093183,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineCommandState_pmu_2,P_SIG,swLogPrintf("AT CMD , UART channel back to online command state , allow enter SLEEP1 ");
-273408,560093440,0,0,PLAT_AP,ATCMD_PARSER,atcEnterCommandState_1,P_SIG,swLogPrintf("AT CMD , chanId : %d , enter ATC_COMMAND_STATE , from : %d ");
-273408,560097279,0,0,PLAT_AP,ATCMD_PARSER,atcEnterCommandState_pmu_1,P_SIG,swLogPrintf("AT CMD , UART channel back to command state , allow enter SLEEP1 ");
-273408,560099327,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_dump_1,P_INFO,swLogDump("AT CMD , RIL AT dump : ");
-273408,560099328,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_info_1,P_INFO,swLogPrintf("AT RIL , recv long AT , length : %d ");
-273408,560103423,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_dump_2,P_INFO,swLogDump("AT CMD , RIL AT dump : ");
-273408,560103936,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_warning_1,P_WARNING,swLogPrintf("AT CMD , RIL input AT not valid , startIdx : %d , len : %d , CHAR : 0x%x ");
-273408,560105728,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_warning_2,P_WARNING,swLogPrintf("AT CMD , RIL input AT not right , not end with <S3> ( \ r \ \n ) , ending : %d , %d ");
-273408,560107776,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_warning_3,P_WARNING,swLogPrintf("AT CMD , RIL input AT not right , not support multi-AT-line , ending : %d , %d ");
-273408,560111615,0,0,PLAT_AP,ATCMD_PARSER,atcRilRegisterUrcCallback_warning_1,P_WARNING,swLogPrintf("AT RIL channel , register URC channel , but already registered before , replace new one ");
-273408,560111616,0,0,PLAT_AP,ATCMD_PARSER,atcDeRegisterAtChannelCallback_warning_1,P_WARNING,swLogPrintf("AT CMD , deregister AT chan : %d , but can ' t find AT entity ");
-273408,560113664,0,0,PLAT_AP,ATCMD_PARSER,atcDeRegisterAtChannelCallback_api_1,P_WARNING,swLogPrintf("AT CMD , can ' t deregister RIL AT chan : %d ");
-273408,560115712,0,0,PLAT_AP,ATCMD_PARSER,atcDeRegisterAtChannelCallback_no_init_1,P_WARNING,swLogPrintf("AT CMD , deregister AT chan : %d , but AT entity is not init , don ' t need to de-reg ");
-273408,560117760,0,0,PLAT_AP,ATCMD_PARSER,atcEndResetSystem_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try reset UE , but can ' t find AT entity ");
-273408,560119808,0,0,PLAT_AP,ATCMD_PARSER,atcEndResetSystem_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try reset UE , no heap memory left ");
-273408,560121856,0,0,PLAT_AP,ATCMD_PARSER,atcEndPowerOff_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try poweroff UE , but can ' t find AT entity ");
-273408,560123904,0,0,PLAT_AP,ATCMD_PARSER,atcEndPowerOff_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try poweroff UE , no heap memory left ");
-273408,560126208,0,0,PLAT_AP,ATCMD_PARSER,atcEndSetBaudrate_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try set baudrate to : %d , invalid input ");
-273408,560128256,0,0,PLAT_AP,ATCMD_PARSER,atcEndSetBaudrate_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try set baudrate to : %d , no heap memory left ");
-273408,560130304,0,0,PLAT_AP,ATCMD_PARSER,atcEndStartCmuxMode_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try start cmux mode : %d , invalid input ");
-273408,560132352,0,0,PLAT_AP,ATCMD_PARSER,atcEndStartCmuxMode_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try start cmux mode : %d , no heap memory left ");
-273408,560134144,0,0,PLAT_AP,ATCMD_PARSER,atcDiscardAllPendingAt_s_1,P_SIG,swLogPrintf("AT CHAN : %d , discard all pending AT ");
-273408,560136448,0,0,PLAT_AP,ATCMD_PARSER,atcDtrEventCallback_s_1,P_SIG,swLogPrintf("AT CHAN : %d , chanState : %d , recv DTR event ");
-273408,560138752,0,0,PLAT_AP,ATCMD_PARSER,atcDtrEventCallback_ret_w_1,P_WARNING,swLogPrintf("AT CHAN : %d , chanState : %d , proc DTR event ret err : %d ");
-273408,560140544,0,0,PLAT_AP,ATCMD_PARSER,atcDtrEventCallback_s_2,P_VALUE,swLogPrintf("AT CHAN : %d , chanState : %d , not need proc DTR event ");
-273408,560142594,0,0,PLAT_AP,ATCMD_PARSER,mmGetPlmnNumeric_0,P_WARNING,swLogPrintf("AT CMD , invalid PLMN , format : %d , name : %s ");
-273408,560144385,0,0,PLAT_AP,ATCMD_PARSER,mmGetPlmnNumeric_1,P_WARNING,swLogPrintf("AT CMD , PLMN Numeric : %s ");
-273408,560146690,0,0,PLAT_AP,ATCMD_PARSER,mmCOPS_0,P_WARNING,swLogPrintf("AT CMD , invalid PLMN , format : %d , name : %s ");
-273408,560150527,0,0,PLAT_AP,ATCMD_PARSER,mmCCIOTOPT_1,P_WARNING,swLogPrintf("ATCMD , invalid ATCMD : AT+CCIOTOPT ");
-273408,560150528,0,0,PLAT_AP,ATCMD_PARSER,simCRSM_0,P_VALUE,swLogPrintf("<data> legnth : %d ");
-273408,560154623,0,0,PLAT_AP,ATCMD_PARSER,nmECSTKCFG_invalid_alphabet,P_WARNING,swLogPrintf("AT CMD , invalid alphabet in ECSTKCFG ");
-273408,560156671,0,0,PLAT_AP,ATCMD_PARSER,nmECSTKCFG_invalidrespTimeout,P_WARNING,swLogPrintf("AT CMD , invalid respTimeout in ECSTKCFG ");
-273408,560158719,0,0,PLAT_AP,ATCMD_PARSER,nmECSTKCFG_invalid_mode,P_WARNING,swLogPrintf("AT CMD , invalid mode in ECSTKCFG ");
-273408,560158721,0,0,PLAT_AP,ATCMD_PARSER,OperatorStringToNumericPlmn_1,P_WARNING,swLogPrintf("invalid input PLMN : %s ");
-273408,560160769,0,0,PLAT_AP,ATCMD_PARSER,OperatorStringToNumericPlmn_2,P_WARNING,swLogPrintf("invalid input PLMN : %s ");
-273408,560162817,0,0,PLAT_AP,ATCMD_PARSER,mmSetEhplmnList_1,P_WARNING,swLogPrintf("invalid plmnList : %s ");
-273408,560164865,0,0,PLAT_AP,ATCMD_PARSER,mmSetEhplmnList_2,P_WARNING,swLogPrintf("PLMN : %s convert fail ");
-273408,560166912,0,0,PLAT_AP,ATCMD_PARSER,mmSetEhplmnList_3,P_WARNING,swLogPrintf("PLMN length : %d is incorrect ");
+273408,559941631,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_1,P_WARNING,swLogPrintf("AT CMD , check fail , cat enable / disable , in ECNETCLATCFG ");
+273408,559943679,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_cid_1,P_WARNING,swLogPrintf("AT CMD , check fail , clat cid , in ECNETCLATCFG ");
+273408,559945727,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip6prefixlen_1,P_WARNING,swLogPrintf("AT CMD , check fail , clat cid , in ECNETCLATCFG ");
+273408,559947775,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip6prefixlen_2,P_WARNING,swLogPrintf("AT CMD , check fail , clat cid , in ECNETCLATCFG ");
+273408,559949823,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip6prefix_2,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip6 prefix , in ECNETCLATCFG ");
+273408,559951871,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip6prefix_3,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip6 prefix , in ECNETCLATCFG ");
+273408,559953919,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip4localaddr_1,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip4 local address , in ECNETCLATCFG ");
+273408,559955967,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip4localaddr_2,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip4 local address , in ECNETCLATCFG ");
+273408,559958015,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip4dnsserver1_1,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip4 dns server 1 address , in ECNETCLATCFG ");
+273408,559960063,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip4dnsserver1_2,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip4 dns server 1 address , in ECNETCLATCFG ");
+273408,559962111,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip4dnsserver2_1,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip4 dns server 2 address , in ECNETCLATCFG ");
+273408,559964159,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ip4dnsserver2_2,P_WARNING,swLogPrintf("AT CMD , check fail , clat ip4 dns server 2 address , in ECNETCLATCFG ");
+273408,559966207,0,0,PLAT_AP,ATCMD_PARSER,nmECNETCLATCFG_clat_ipv6_prefix_diosovery_enabled,P_WARNING,swLogPrintf("AT CMD , check fail , clat discovery enable / disable , in ECNETCLATCFG ");
+273408,559966464,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_1,P_WARNING,swLogPrintf("AT CMD , invalid pre-defined AT , no AT name , pPreCmd->cmdType is %d , pPreCmd->paramMaxNum is %d ");
+273408,559968513,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_1,P_WARNING,swLogPrintf("AT CMD : %s , name len : %d , is 0 , or greater than 32 ");
+273408,559970305,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_2,P_WARNING,swLogPrintf("AT CMD : %s , time out can ' t set to 0 ");
+273408,559972353,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_3,P_WARNING,swLogPrintf("AT CMD : %s , basic AT name not right ");
+273408,559974401,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_invalid_ext_1,P_WARNING,swLogPrintf("AT CMD : %s , extended CHAR is not right ");
+273408,559976449,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_4,P_WARNING,swLogPrintf("AT CMD : %s , extended AT name not right ");
+273408,559978497,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_5,P_WARNING,swLogPrintf("AT CMD : %s , proc func is NULL ");
+273408,559980545,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_6,P_WARNING,swLogPrintf("AT CMD : %s , too many param > = 32 ");
+273408,559982593,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_7,P_WARNING,swLogPrintf("AT CMD : %s , pre-defined param list is NULL ");
+273408,559985153,0,0,PLAT_AP,ATCMD_PARSER,atcCheckPreDefinedTable_warning_8,P_WARNING,swLogPrintf("AT CMD : %s , basic AT CMD , paramMaxNum : %d , type : %d , not valid ");
+273408,559986944,0,0,PLAT_AP,ATCMD_PARSER,atcStartAsynTimer_1,P_VALUE,swLogPrintf("AT CMD , start guard time ( %u ) : %d ms ");
+273408,559988737,0,0,PLAT_AP,ATCMD_PARSER,atcFindPreDefinedAtInfo_w_1,P_WARNING,swLogPrintf("AT CMD , AT : %s , grep map not found AT info , try string compare ");
+273408,559990785,0,0,PLAT_AP,ATCMD_PARSER,atcDecJsonParam_warning_1,P_WARNING,swLogPrintf("AT CMD , invalid JSON param : %s ");
+273408,559992832,0,0,PLAT_AP,ATCMD_PARSER,atcDecBasicAtParam_num_w_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
+273408,559995396,0,0,PLAT_AP,ATCMD_PARSER,atcDecBasicAtParam_num_w_2,P_WARNING,swLogPrintf("AT CMD , the %d param is numeric type : %d , invlaid input : %s ");
+273408,559997184,0,0,PLAT_AP,ATCMD_PARSER,atcDecBasicAtParam_warn_str_1,P_WARNING,swLogPrintf("AT CMD , the %d param , type : %d is must , can ' t missing ");
+273408,559999489,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_bs_warn_1,P_WARNING,swLogPrintf("AT CMD , basic AT : %s , but attribute not right , paramMaxNum : %d , type : %d ");
+273408,560001280,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_num_warn_1,P_WARNING,swLogPrintf("AT CMD , the %d param is numeric type , but contain : %d \" , invalid ");
+273408,560003072,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_num_warn_2,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
+273408,560005632,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_num_warn_3,P_WARNING,swLogPrintf("AT CMD , the %d param is numeric type : %d , invlaid input : %d ");
+273408,560007168,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_json_1,P_WARNING,swLogPrintf("AT CMD , the %d param JSON is must , can ' t missing ");
+273408,560009216,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_str_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
+273408,560011264,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_last_mix_1,P_WARNING,swLogPrintf("AT CMD , the %d param LAST MIX STR is must , can ' t missing ");
+273408,560013312,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_mix_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
+273408,560015360,0,0,PLAT_AP,ATCMD_PARSER,atcDecAtParam_warn_must_1,P_WARNING,swLogPrintf("AT CMD , the %d param is must , can ' t missing ");
+273408,560017409,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_check_1,P_WARNING,swLogPrintf("AT CMD , can ' t find handler / procFunc for AT : %s ");
+273408,560019457,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_check_2,P_WARNING,swLogPrintf("AT CMD , AT : %s , is action command , not support READ operation ");
+273408,560021505,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_param_warn_1,P_WARNING,swLogPrintf("AT CMD : %s , decode param_value failed ");
+273408,560023552,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_warning_no_timeout_1,P_WARNING,swLogPrintf("AT CMD , RIL AT , no valid time out set , use the AT CMD default value : %d seconds ");
+273408,560025600,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_warning_no_timeout_2,P_WARNING,swLogPrintf("AT CMD , no time out set , use the default value : %d seconds ");
+273408,560027649,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmd_proc_warn_1,P_WARNING,swLogPrintf("AT CMD : %s , funcProc failed ");
+273408,560030464,0,0,PLAT_AP,ATCMD_PARSER,atcGetAtLine_mis_w_1,P_WARNING,swLogPrintf("AT CHAN : %d , get / proc a new line , but previous ending not done : %d , %d , %d ");
+273408,560032000,0,0,PLAT_AP,ATCMD_PARSER,atcGetAtLine_w_1,P_WARNING,swLogPrintf("AT CMD , input AT CMD too long : %d > %d , not support , discard it ");
+273408,560033792,0,0,PLAT_AP,ATCMD_PARSER,atcDecodeOneNode_pending_1,P_WARNING,swLogPrintf("AT CMD , one AT is ongoing , pending current one , input len : %d ");
+273408,560036096,0,0,PLAT_AP,ATCMD_PARSER,atcDecodeOneNode_1,P_ERROR,swLogPrintf("AT CMD , too much pending AT input , pendingLen : %d / pendingNodeNum : %d , discard all ");
+273408,560037888,0,0,PLAT_AP,ATCMD_PARSER,atcDecOneNode_next_1,P_INFO,swLogPrintf("AT CMD , chan Id : %d , current line done , check next.. ");
+273408,560040192,0,0,PLAT_AP,ATCMD_PARSER,atcDecodeOneNode_warn_1,P_ERROR,swLogPrintf("AT CMD , too much pending AT input , pendingLen : %d / pendingNodeNum : %d , discard all ");
+273408,560042496,0,0,PLAT_AP,ATCMD_PARSER,atcDecOneApiNode_warning_1,P_WARNING,swLogPrintf("AT CMD , too much pending RIL AT input , pendingLen : %d / currentLen : %d / pendingNodeNum : %d , discard current one ");
+273408,560044032,0,0,PLAT_AP,ATCMD_PARSER,atcDecOneApiNode_pending_1,P_WARNING,swLogPrintf("AT CMD , one RIL AT is ongoing , pending current one , input len : %d ");
+273408,560046592,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtInDataState_0,P_INFO,swLogPrintf("AT CMD , chan Id : %d , dataState : %d , recv data len : %d ");
+273408,560048640,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtInDataState_w_state_0,P_WARNING,swLogPrintf("AT CMD , chan Id : %d , dataState : %d , proc data return failed : %d , chanState change back to : COMMAND STATE ");
+273408,560052223,0,0,PLAT_AP,ATCMD_PARSER,atcBeHandshakeInput_1,P_INFO,swLogPrintf("AT CMD , Handshake RESP : KSDH ");
+273408,560052480,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_state_0,P_WARNING,swLogPrintf("AT CMD , chanId : %d , waiting for the handshake cnf to enter state : %d , discard this dirty data ");
+273408,560054528,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_state_1,P_INFO,swLogPrintf("AT CMD , chanId : %d , state is : %d , not CMD state , don ' t need to decode AT ");
+273408,560058367,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_info_1,P_INFO,swLogDump("AT CMD , RECV dump : ");
+273408,560058624,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_info_2,P_INFO,swLogPrintf("AT chanId : %d , recv long AT , length : %d ");
+273408,560062463,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdStrReqSig_info_3,P_INFO,swLogDump("AT CMD , RECV dump : ");
+273408,560062464,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdContinueReqSig_w_1,P_WARNING,swLogPrintf("AT CHAN : %d , proc SIG_AT_CMD_CONTINUE_REQ , but another AT is ongoing , and guard timer is runing ");
+273408,560064512,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdContinueReqSig_next_1,P_INFO,swLogPrintf("AT CMD , chan Id : %d , current line done , check next.. ");
+273408,560066560,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdDataModeHSCnfSig_1,P_INFO,swLogPrintf("AT CMD , chan Id : %d , rcv SIG_AT_CMD_DATA_MODE_HS_CNF , ready to enter data mode! ");
+273408,560068608,0,0,PLAT_AP,ATCMD_PARSER,atcProcAtCmdDataModeHSCnfSig_2,P_WARNING,swLogPrintf("AT CMD , chan Id : %d , unexpect SIG_AT_CMD_DATA_MODE_HS_CNF , pls , check it! ");
+273408,560072703,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_ril_1,P_ERROR,swLogPrintf("AT CMD , can ' t register AT channel , with reserved name : RILAPI ");
+273408,560072705,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_info_1,P_INFO,swLogPrintf("AT CMD , register USB AT channel : %s ");
+273408,560074753,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_default_warning_1,P_WARNING,swLogPrintf("AT CMD , USB channel already registered : %s , re-init ");
+273408,560076801,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_uart_1,P_INFO,swLogPrintf("AT CMD , register UART AT channel : %s ");
+273408,560078849,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_uart_warning_1,P_WARNING,swLogPrintf("AT CMD , UART channel already registered : %s , re-init ");
+273408,560080897,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_warning_1,P_WARNING,swLogPrintf("AT CMD , Chan name already registered : %s ");
+273408,560082945,0,0,PLAT_AP,ATCMD_PARSER,atcRegisterAtChannelCallback_warning_2,P_WARNING,swLogPrintf("AT CMD , No channel left for request channName : %s ");
+273408,560084992,0,0,PLAT_AP,ATCMD_PARSER,atcGetEntityById_warning_1,P_WARNING,swLogPrintf("AT CMD , can ' t get AT entity by chanId : %d ");
+273408,560087040,0,0,PLAT_AP,ATCMD_PARSER,atcStopAsynTimer_1,P_VALUE,swLogPrintf("AT CMD , stop guard time : %u ");
+273408,560089088,0,0,PLAT_AP,ATCMD_PARSER,atcStopAsynTimer_101,P_WARNING,swLogPrintf("AT CMD , stop timer get AT entity by tid : %d ");
+273408,560091904,0,0,PLAT_AP,ATCMD_PARSER,atcRestartGuardTimer_warning_1,P_WARNING,swLogPrintf("AT CMD , chanId : %d , Tid : %d / %d , guarding timer not running , or new value invalid : %d , can ' t restart AT guard timer. ");
+273408,560093184,0,0,PLAT_AP,ATCMD_PARSER,atcRestartGuardTimer_1,P_VALUE,swLogPrintf("AT CMD , restart guard time : %d ms ");
+273408,560095488,0,0,PLAT_AP,ATCMD_PARSER,atcAsynTimerExpiry_warning_1,P_WARNING,swLogPrintf("AT CMD. channId : %d , tid : %d , guard timer expiry ");
+273408,560097536,0,0,PLAT_AP,ATCMD_PARSER,atcAsynTimerExpiry_warning_2,P_WARNING,swLogPrintf("AT CMD. channId : %d , tid : %d , guard timer expiry ");
+273408,560099840,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_1,P_SIG,swLogPrintf("AT CMD. chanId : %d , channel state change from : %d to %d ");
+273408,560101632,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_data_mode_HS,P_SIG,swLogPrintf("AT CMD. chanId : %d , before enter channel state %d , handshake with CCIO and wait result! ");
+273408,560103424,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_pmu_1,P_SIG,swLogPrintf("AT CMD , UART channel enter state : %d , wait for more input , not allow enter SLEEP1 ");
+273408,560107519,0,0,PLAT_AP,ATCMD_PARSER,atcChangeChannelState_pmu_2,P_SIG,swLogPrintf("AT CMD , UART channel back to online state , allow enter SLEEP1 ");
+273408,560108032,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineDataState_1,P_SIG,swLogPrintf("AT CMD , chanId : %d , enter online data state , from : %d to %d ");
+273408,560109824,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineDataState_data_mode_HS,P_SIG,swLogPrintf("AT CMD. chanId : %d , before enter online data state %d , handshake with CCIO and wait result! ");
+273408,560111616,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineDataState_pmu_1,P_SIG,swLogPrintf("AT CMD , UART channel enter data state : %d , wait for more input , not allow enter SLEEP1 ");
+273408,560113920,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineCommandState_w_1,P_WARNING,swLogPrintf("AT CMD , chanId : %d , cur state : %d , not data state , can ' t change to ATC_ONLINE_COMMAND_STATE ");
+273408,560116224,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineCommandState_1,P_SIG,swLogPrintf("AT CMD , chanId : %d , enter ATC_ONLINE_COMMAND_STATE , from : %d to %d ");
+273408,560119807,0,0,PLAT_AP,ATCMD_PARSER,atcEnterOnlineCommandState_pmu_2,P_SIG,swLogPrintf("AT CMD , UART channel back to online command state , allow enter SLEEP1 ");
+273408,560120064,0,0,PLAT_AP,ATCMD_PARSER,atcEnterCommandState_1,P_SIG,swLogPrintf("AT CMD , chanId : %d , enter ATC_COMMAND_STATE , from : %d ");
+273408,560123903,0,0,PLAT_AP,ATCMD_PARSER,atcEnterCommandState_pmu_1,P_SIG,swLogPrintf("AT CMD , UART channel back to command state , allow enter SLEEP1 ");
+273408,560125951,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_dump_1,P_INFO,swLogDump("AT CMD , RIL AT dump : ");
+273408,560125952,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_info_1,P_INFO,swLogPrintf("AT RIL , recv long AT , length : %d ");
+273408,560130047,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_dump_2,P_INFO,swLogDump("AT CMD , RIL AT dump : ");
+273408,560130560,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_warning_1,P_WARNING,swLogPrintf("AT CMD , RIL input AT not valid , startIdx : %d , len : %d , CHAR : 0x%x ");
+273408,560132352,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_warning_2,P_WARNING,swLogPrintf("AT CMD , RIL input AT not right , not end with <S3> ( \ r \ \n ) , ending : %d , %d ");
+273408,560134400,0,0,PLAT_AP,ATCMD_PARSER,atcRilAtCmdApiCallback_warning_3,P_WARNING,swLogPrintf("AT CMD , RIL input AT not right , not support multi-AT-line , ending : %d , %d ");
+273408,560138239,0,0,PLAT_AP,ATCMD_PARSER,atcRilRegisterUrcCallback_warning_1,P_WARNING,swLogPrintf("AT RIL channel , register URC channel , but already registered before , replace new one ");
+273408,560138240,0,0,PLAT_AP,ATCMD_PARSER,atcDeRegisterAtChannelCallback_warning_1,P_WARNING,swLogPrintf("AT CMD , deregister AT chan : %d , but can ' t find AT entity ");
+273408,560140288,0,0,PLAT_AP,ATCMD_PARSER,atcDeRegisterAtChannelCallback_api_1,P_WARNING,swLogPrintf("AT CMD , can ' t deregister RIL AT chan : %d ");
+273408,560142336,0,0,PLAT_AP,ATCMD_PARSER,atcDeRegisterAtChannelCallback_no_init_1,P_WARNING,swLogPrintf("AT CMD , deregister AT chan : %d , but AT entity is not init , don ' t need to de-reg ");
+273408,560144384,0,0,PLAT_AP,ATCMD_PARSER,atcEndResetSystem_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try reset UE , but can ' t find AT entity ");
+273408,560146432,0,0,PLAT_AP,ATCMD_PARSER,atcEndResetSystem_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try reset UE , no heap memory left ");
+273408,560148480,0,0,PLAT_AP,ATCMD_PARSER,atcEndPowerOff_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try poweroff UE , but can ' t find AT entity ");
+273408,560150528,0,0,PLAT_AP,ATCMD_PARSER,atcEndPowerOff_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try poweroff UE , no heap memory left ");
+273408,560152832,0,0,PLAT_AP,ATCMD_PARSER,atcEndSetBaudrate_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try set baudrate to : %d , invalid input ");
+273408,560154880,0,0,PLAT_AP,ATCMD_PARSER,atcEndSetBaudrate_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try set baudrate to : %d , no heap memory left ");
+273408,560156928,0,0,PLAT_AP,ATCMD_PARSER,atcEndStartCmuxMode_warning_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try start cmux mode : %d , invalid input ");
+273408,560158976,0,0,PLAT_AP,ATCMD_PARSER,atcEndStartCmuxMode_mem_1,P_WARNING,swLogPrintf("AT CMD , AT chan : %d , try start cmux mode : %d , no heap memory left ");
+273408,560160768,0,0,PLAT_AP,ATCMD_PARSER,atcDiscardAllPendingAt_s_1,P_SIG,swLogPrintf("AT CHAN : %d , discard all pending AT ");
+273408,560163072,0,0,PLAT_AP,ATCMD_PARSER,atcDtrEventCallback_s_1,P_SIG,swLogPrintf("AT CHAN : %d , chanState : %d , recv DTR event ");
+273408,560165376,0,0,PLAT_AP,ATCMD_PARSER,atcDtrEventCallback_ret_w_1,P_WARNING,swLogPrintf("AT CHAN : %d , chanState : %d , proc DTR event ret err : %d ");
+273408,560167168,0,0,PLAT_AP,ATCMD_PARSER,atcDtrEventCallback_s_2,P_VALUE,swLogPrintf("AT CHAN : %d , chanState : %d , not need proc DTR event ");
+273408,560169218,0,0,PLAT_AP,ATCMD_PARSER,mmGetPlmnNumeric_0,P_WARNING,swLogPrintf("AT CMD , invalid PLMN , format : %d , name : %s ");
+273408,560171009,0,0,PLAT_AP,ATCMD_PARSER,mmGetPlmnNumeric_1,P_WARNING,swLogPrintf("AT CMD , PLMN Numeric : %s ");
+273408,560173314,0,0,PLAT_AP,ATCMD_PARSER,mmCOPS_0,P_WARNING,swLogPrintf("AT CMD , invalid PLMN , format : %d , name : %s ");
+273408,560177151,0,0,PLAT_AP,ATCMD_PARSER,mmCCIOTOPT_1,P_WARNING,swLogPrintf("ATCMD , invalid ATCMD : AT+CCIOTOPT ");
+273408,560177152,0,0,PLAT_AP,ATCMD_PARSER,simCRSM_0,P_VALUE,swLogPrintf("<data> legnth : %d ");
+273408,560181247,0,0,PLAT_AP,ATCMD_PARSER,nmECSTKCFG_invalid_alphabet,P_WARNING,swLogPrintf("AT CMD , invalid alphabet in ECSTKCFG ");
+273408,560183295,0,0,PLAT_AP,ATCMD_PARSER,nmECSTKCFG_invalidrespTimeout,P_WARNING,swLogPrintf("AT CMD , invalid respTimeout in ECSTKCFG ");
+273408,560185343,0,0,PLAT_AP,ATCMD_PARSER,nmECSTKCFG_invalid_mode,P_WARNING,swLogPrintf("AT CMD , invalid mode in ECSTKCFG ");
+273408,560185345,0,0,PLAT_AP,ATCMD_PARSER,OperatorStringToNumericPlmn_1,P_WARNING,swLogPrintf("invalid input PLMN : %s ");
+273408,560187393,0,0,PLAT_AP,ATCMD_PARSER,OperatorStringToNumericPlmn_2,P_WARNING,swLogPrintf("invalid input PLMN : %s ");
+273408,560189441,0,0,PLAT_AP,ATCMD_PARSER,mmSetEhplmnList_1,P_WARNING,swLogPrintf("invalid plmnList : %s ");
+273408,560191489,0,0,PLAT_AP,ATCMD_PARSER,mmSetEhplmnList_2,P_WARNING,swLogPrintf("PLMN : %s convert fail ");
+273408,560193536,0,0,PLAT_AP,ATCMD_PARSER,mmSetEhplmnList_3,P_WARNING,swLogPrintf("PLMN length : %d is incorrect ");
 274432,562038783,0,0,PLAT_AP,ATCMD_EXEC,RfAtNstCmdPreHandle_1,P_INFO,swLogPrintf("AT+ECRFNST : crc check error ");
 274432,562040831,0,0,PLAT_AP,ATCMD_EXEC,RfAtNstCmdPreHandle_2,P_INFO,swLogPrintf("AT+ECRFNST : data unfinished ");
 274432,562040832,0,0,PLAT_AP,ATCMD_EXEC,RfAtNstCmdPreHandle_3,P_INFO,swLogPrintf("AT+ECRFNST : ResumeTrans , tempBlockCounter = %d ");
@@ -7222,61 +7235,68 @@ a080b5b422cb93a0d8ece917ddbf49b4aa559b0814e18f352ae4f91fa0d2e831d82c2054d145be31
 535552,1096816639,0,0,PS1,LTE_RRC_DL_CCCH_DUMP,EcommDumpErrcMessage_ConnRej,P_SIG,swLogDumpPolling("RrcConnectionReject ");
 535552,1096818687,0,0,PS1,LTE_RRC_DL_CCCH_DUMP,EcommDumpErrcMessage_Setup,P_SIG,swLogDumpPolling("RrcConnectionSetup ");
 535552,1096820735,0,0,PS1,LTE_RRC_DL_CCCH_DUMP,EcommDumpErrcMessage_DlCcch,P_SIG,swLogDumpPolling("Invalid DL_CCCH_Message ");
-65be4646aa3af4dffcbbfb16eaadbd377fe0eb340d5e7bb11f2562687d230d1aecdadb0847bdfb7451b9d0f203598714f078515dc0616458d9cdddb655e4d377562433599a3167ae521ddaab327710f042cf8edf1628ec648d52947b785d30d3103a2bb659eb1896e5736084ad93b422575b41d7b1bdbc057132a43350af1f25aad303e0a8f50aba9621ff1c31c8e3f5
-10b3b21a91692bfa75dcce81357922cb1d8caeb222f4d8dfaf754d4e6732a947ecdadb0847bdfb7451b9d0f2035987149c5ec1895c20659cd76073a8b0c9ac304af381efc3b6295e3adf454b0613a26fa930e5677ed822925caf32baf664558124f236c19a9ca393cf17ecb184c9b11ad2ff1b6fb00fce1e3ad6d14f42c30a6a3fae478da7dc9b855efbdc4f186f5f80
-ca0ed16e17c368349c9ab03a4dd4ab88e676af11f014d57d4cb6ec12c4f451baecdadb0847bdfb7451b9d0f203598714613f05dab67b1a770f8cd1a6e61c4b12cca838dc34e9f0d3bddf1ac610037e96a29287527626f21fd86cdd2fa60b4189965ba18c615367ca49ce96b488318775de05e8efbf2c3e1bf8a11d6ffaac359779e10a3f0094495ff27ed0a430ce2dfd
-fe30d8f1a447cfd73e5d36bbd55e38afc8f192f7f563c0fca9038b0eb8d0a9ced227622cb62c878b6bfd3468652833357afc25555e6e5e0193bd886058b718c9d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb10910561302f18f43fee8a5966a0340b039cfb627c92bea0d366eaf235dc6ef5aa980c5ca485a2ce5d791c31bf7a44fb5babd2ebb5c624eec996b7114f83b023ca163ce1e8
-80d35fabb9d5f7e44772216c05535c7a24b4e938c5176f1f0073befd7a1a517cd227622cb62c878b6bfd346865283335ccefdd9d103613a047f6368eb83489177333bd55815a5857815b4e2b5359b41b8e757382449614dfc694f425ae56291221361d7921f69002053f0a8b5f553019f13386f3ce5df389a00bf447cd0e6280ab43b6c76f967512df087e37df8b8f8d
-0bbe8052cc7bfdf56dfdc6c0bb3e00b30dc6ef786c9e28c02eeb5feec4a38ef1d227622cb62c878b6bfd346865283335274fc14ac38065a2b76c671342300461d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb109105613052b4bf00f0a31231202d40e2878b94077a9000958783f7ffff3fe06bec67b318562319686a4bae3ce7d3cc81e1519f52
-fb98f1647e33aba6853f89d5c51d23cf1d8caeb222f4d8dfaf754d4e6732a947d227622cb62c878b6bfd346865283335fc1ed759e1ef5994d3cbbd97e11ed46c7333bd55815a5857815b4e2b5359b41b8e757382449614dfc694f425ae562912a4fa2240953846bdb61e094b79c80af1d23c7c9a32283ed41322d8ba41e6674ccf4c0916cde52e41670b6da48ccc38fa
-fb98f1647e33aba6853f89d5c51d23cfc1b68efab2f04c4ddb45fe9a4b25b29bd227622cb62c878b6bfd346865283335df05079051b8fbc1e1be969418693e03566e053547c45d3baf2f05d7daa9399ce0b1d6b2443053222487ee3e261ad80504d4c5d7ca068406f082754080fb867590dbb251bb56d8e54f9263a1477b8091e467306422f05e45da14383148d3145bdb126dbcc514d4f16b2dfadfb4719a18413ea30857fc537a0d145feb0556c732
-ddf558e7d695a1af1b0f359c9089ea2ec8f192f7f563c0fca9038b0eb8d0a9ced227622cb62c878b6bfd3468652833358b109d07bfac2adc11312517136e6816a7a95ebde1e895beb20e3fc8dfd0b551f78d3ec4493987b7a5330be70f5ecc9fe3a8989d3dffb1e163deea6a6c764c9585bf832c9db2896dbf1830637bacd1419fb98ab3e0ea42f7480c5c0295dcd293cf4c0916cde52e41670b6da48ccc38fa
-2a4ab50a6f038ca05f0719bed897b86def0a2c74d9f4a8cc8d3b19e1fedd9b62d227622cb62c878b6bfd346865283335b59a6512ef08b6514edc2e003fa835a8c5f72f91a3803076f44db8b447f932ace3c1d1231c64fe72df060e5c30073a1c930ba3dc244d57ae67cee26b67990afbb81fdf65c6a7e2ae2768694dc25b116bf1b74de95ada7309dbe75293f5f7bcbd
-2a4ab50a6f038ca05f0719bed897b86d0dc6ef786c9e28c02eeb5feec4a38ef1d227622cb62c878b6bfd346865283335e4afd953d96b933c86fb0bc7b6e2c3e485b39e8d5eb64ef5329025e5a7d9c456f78d3ec4493987b7a5330be70f5ecc9fe3a8989d3dffb1e163deea6a6c764c959649b90de1b797fad8345bc14c9c59b4e8291013be567f9e608ec5617f6c8ae9a37323a7a80c9451c71b4cdaa6daea03
-be722f01a1d7dd80d04f0c2bdbcf3729ffac9af451e8a728348113fbc04c3aa1d227622cb62c878b6bfd3468652833357fd7c252c55e4966220016ebd4c391c117b11b53c22247fcfacfda6159e3695b2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf70dfc0649fa80c3c24e3a567413f77337bb23cc98c1a45615d9d4e43ecd62efb748423d52ade7bd6c08f1e815dbda8dc
-2838ff45052742fff1b8c0bd22b357f7c1b68efab2f04c4ddb45fe9a4b25b29bd227622cb62c878b6bfd346865283335864e809528d2f7271b10f6793d7d07333192660805ab9adc9374d895c8b6abaf04d4c5d7ca068406f082754080fb8675bc085ab3a71fdb8cea0529d3e53a0f2d98389d333ab74c02a84e027331a155f3964be9df616f16318d68c3d6f9242e91413ea30857fc537a0d145feb0556c732
-71835c16506d08d26614aef73052818e97ce0679ff5d8d720321a92629af2e71d227622cb62c878b6bfd3468652833352ad97f520a0f74cfd8f997f0e82130cfd9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb1091056130bdd76987cd8b7f95d9a7f5c7ffa1401935b4305ec76a08e08d3eb07276d7850b1aae70d92a408f33391688991d66282f
-71835c16506d08d26614aef73052818e24b4e938c5176f1f0073befd7a1a517cd227622cb62c878b6bfd346865283335d00b9d7c47393429604eff183d70f700d0340d91cf1ef115f46236651dbe4d8b8a8ec35e921fc2c9cbea954c5c27cd9cb560480e25871efce6f705f4819e0d88e467306422f05e45da14383148d3145bdb126dbcc514d4f16b2dfadfb4719a18413ea30857fc537a0d145feb0556c732
-cff332165b17829f9aeff73f5283e8f80dc6ef786c9e28c02eeb5feec4a38ef1d227622cb62c878b6bfd346865283335a59f08530a01a4dd1ad33fb4716fd90317b11b53c22247fcfacfda6159e3695b2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf5d2bb21f83b607eb5454c4f266b581f97bb23cc98c1a45615d9d4e43ecd62efb748423d52ade7bd6c08f1e815dbda8dc
-60e2a8ae83a8e5a11f6db0cb942435741d8caeb222f4d8dfaf754d4e6732a947d227622cb62c878b6bfd346865283335d278a22fb8b319cb6476cdf20c28cd83d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb1091056130ef03a29186db3727dee0c17da05dee417bf33790c792ebb8c6d01246d40f4ee61aae70d92a408f33391688991d66282f
-a8172403f7a7c00775443d8fd13b3bbde676af11f014d57d4cb6ec12c4f451bad227622cb62c878b6bfd346865283335eae7b6d4682113c0dd826728683d16314af381efc3b6295e3adf454b0613a26fa930e5677ed822925caf32baf66455810a8692e9f8b7fc4538ba26a76ba7abbccec9d5fcc14b45ca9c1416274c619dbd3b381fd9a799cd0e909ee34612de74c2cf4c0916cde52e41670b6da48ccc38fa
-ccbc904dbf3f096d9dcd5f90e81123c6c8f192f7f563c0fca9038b0eb8d0a9ced227622cb62c878b6bfd346865283335f1a8cf2fc0aba1adbe9e01ed647b8a53d0340d91cf1ef115f46236651dbe4d8b8a8ec35e921fc2c9cbea954c5c27cd9cd406743470d5bfabfe074e916d799050e467306422f05e45da14383148d3145bdb126dbcc514d4f16b2dfadfb4719a18413ea30857fc537a0d145feb0556c732
-5f1ecf883046b5efd69a61faf892b9af24b4e938c5176f1f0073befd7a1a517cd227622cb62c878b6bfd34686528333501d474facc9d93fa4963c1a0f9a0cb8217b11b53c22247fcfacfda6159e3695b2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf8c951b72a9a31335be3b67086981f8e87bb23cc98c1a45615d9d4e43ecd62efb748423d52ade7bd6c08f1e815dbda8dc
-4ac61213fb8fa7679b76171f388b8cc97fe0eb340d5e7bb11f2562687d230d1ad227622cb62c878b6bfd3468652833359f303c3e46851811e8dce47f95c7d143d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb1091056130ef03a29186db3727dee0c17da05dee417bb805cab21128791ab61aff70ba4f041aae70d92a408f33391688991d66282f
-8d5911805f8a966be6804b28ae7bc9831d8caeb222f4d8dfaf754d4e6732a947d227622cb62c878b6bfd3468652833356ba7a30fc6e5d71288f57383e66ed5fc2ded7509670df73860cc9d0fe527d35bca2ed863ff2aa1b279ad66249ff30305861dd14825a6bac9cf49dcafa2fb0dee102aa0be0fef0e3e6d196eb94830137cd01901a6ed1eead093b726b48fc655dc995935cadff1027ecc65fc36bf8477c4d51feed07217341f2a43828540ab2721a591dd4377f3be3605fbb25176f51c8b3dfa24f3dd87dfd434ec551c37c415ce
-71cf97b5bf1e6b696a3c753be3f01b7ae676af11f014d57d4cb6ec12c4f451bad227622cb62c878b6bfd34686528333596b2d8683860b63a7dbd567cf287d15e374951b542ed38a1128d11948b57f77a208b6dea7c95eeaa21b9f130043ea0ff44c51fec2ecab8c63ba10d1fe6620345536f9841801693e92d804cc2276a865b5772b667f6e9ec22e38d79f1a1681d4a995935cadff1027ecc65fc36bf8477c4d51feed07217341f2a43828540ab2721a591dd4377f3be3605fbb25176f51c8b3dfa24f3dd87dfd434ec551c37c415ce
-db0061a06dcbe3756ff9b058dcef5d910dc6ef786c9e28c02eeb5feec4a38ef1d227622cb62c878b6bfd3468652833356ded17b1589612ae1745a05e28aec86af78d3ec4493987b7a5330be70f5ecc9f72d269bb829bba8095a6e0155eb3a67318d51298446dfe14c996e619d5eff480f667273370fa36c839b1cf6f48bb8c76d9bd99b0d6f0e12c8b65bcd40962dfe9748423d52ade7bd6c08f1e815dbda8dc
-8d2b0e9418a3a88a8850d396cec3ca5d24b4e938c5176f1f0073befd7a1a517cb91deaf7de9dcd8f72eeac8827f8c72967512579714c060aba5f3afe11aff32042cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff4515608560d033c15f6801dd323d9c5b2fcedc736723ebb10f25435b4dc8b97b56527
-cc9b9c47e5bb7b8cfc49a82c55074ed27fe0eb340d5e7bb11f2562687d230d1ab91deaf7de9dcd8f72eeac8827f8c7292c767927f9b27adffe1a7fdc5a8a003642cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff451568d60cfc42ee72c38216c4e68502f4f510ad466575caf1d62e277f8e2f3c7c9ba182a20b769631dd25da68cfc9c5140fc
-ea03d66ec4acede265552dcff8346b20c8f192f7f563c0fca9038b0eb8d0a9ceb91deaf7de9dcd8f72eeac8827f8c7291ec4c96eb89be14ee92773185801cf0342cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff4515656eb4a68236afd1c50d430927f8f7f776f12bb9e0f5d0a56bb5047d84c490b48c6edc3a5283a4535b358fddbdea81f55
-b8abbab6c2fe3b0b6eeac164b46aad51e676af11f014d57d4cb6ec12c4f451bab91deaf7de9dcd8f72eeac8827f8c729a33cea1f0146326c0acd3b25ef3906dea930e5677ed822925caf32baf6645581cad7ca826bc7551161925e09f83815f8a1bdbde1770dfbb9cc2b77c5e1b2a7e430da2de3352c18f6e7bf9353a52d6415
-7e74f40f9227ac3320beb385819e090e97ce0679ff5d8d720321a92629af2e71b91deaf7de9dcd8f72eeac8827f8c729913a02f54a4f8cdffb0ec411626562cf42cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff45156b3ad66e6e7aeaed721169820dc9ab89892e988b7d890f4c95ce11dcc0b52a480961573f74fda69ba7b40dc78665810339b26317175d6c2a6f3d1c4dd47ac9293
-7e74f40f9227ac3320beb385819e090e24b4e938c5176f1f0073befd7a1a517c15a447522a79e118dd247ed41e8cc9c9c9b6adcfcae65ee1980c1ba37c93131f3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e185a7c9864b29c74634c0ad083cab7ae6f986c96f03a4cadf849bb403476e3a264641ef09f6607d0e97ab84ce9c206ab32c10ae1a15978e58d6c328c1379ef0b573dfa24f3dd87dfd434ec551c37c415ce
-c5c740469118f6dc3d541a18c0855c760dc6ef786c9e28c02eeb5feec4a38ef1655bf9963f91320dfeb7a498c007051d55e10e85b8f5ed0b7bf58a6dd93e3f74d0340d91cf1ef115f46236651dbe4d8b8a8ec35e921fc2c9cbea954c5c27cd9ca959cbfb1f255a3a43dd4e1ae0160dc6bd6b7b039391ed9ef62b6709fde327570ef58c887eb79c06d1ca0292641975fa00f4ee3ec8cddec2d3a5b6fcb5e37c97c41dc71d2d26c7fdaa38ad4387786975
-b92c0eca24a3eb9b6caa725bf3495b47ffac9af451e8a728348113fbc04c3aa141ee287f95dcc4baa8673699ff152ef5c9b6adcfcae65ee1980c1ba37c93131f3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18f4c47aacc09e6f86831b1b94955de37147f5f3bf45f0bad94af4b5b15be9f92cde3880dfb833ad78c7c8772a2d9b8d1fb1d5c209b5aec0c80f6a952e361a1c366c8aa7302d6ec9948a8dd0ebef9e97af
-7429824121b31ab1f95fb2567dd9f069c1b68efab2f04c4ddb45fe9a4b25b29bc6d18fb21be2f77c7fa92153cd1d6767e28eda9fc3367a94896a22793f50a38f966b7c2393df47b61f2c3480ea270eebf78d3ec4493987b7a5330be70f5ecc9f192ef7c7472d78b391e8418993bd4a311a540a3778efb074da3597950d8b38a5ce1576d80a4821c82203f255f63ad4998797581b8e2a31218fbcc3b8ce35f8ba4eaf4b90b01c63b8009000fe0dfe2b345b4bd998b76cb7ed9a7257ca624cedc1
-c3e318d4673bed34541632b5d38fe24b97ce0679ff5d8d720321a92629af2e71be0c44695eda586f1b30f8b0f9f720e786987a28dc83e69a2cde4d057872083e17365091178a62d7243a08296288d5db42cf8edf1628ec648d52947b785d30d3d0e442c7412ffe4fb893fb00d960db24a29a9b78bcdfd78b338183f9775274f8d360b6e9f65704f0cce6763075b34d345ffb8b3a6a9ae922fbfffa9bd002e4dc
-efe97a6f7c32903edc3da20ca6c24853c8f192f7f563c0fca9038b0eb8d0a9cebe0c44695eda586f1b30f8b0f9f720e79ac439453d5f9e4b9f2bf84aca2725fc3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e187669cc38b5ae4bf2541f5402e09c59ae17f500ff6d7cd65e309e912382821378d97fec4dae6ce527ab075fc80f04602acb28405ab8472c988f168c7e79874bd0
-e6bbb43957b6fdf8fe2e6a401106c72ec1b68efab2f04c4ddb45fe9a4b25b29bbe0c44695eda586f1b30f8b0f9f720e78771e56a5687ecb3ca509b045a0a1c59db195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb8675ee74c73fecf8b8ff8b60eb3f656b391ab347e66b625b9a1056b314aaebbee9005e80775a920d1ce9cdae74a50055437a3dfa24f3dd87dfd434ec551c37c415ce
-55eb5954f814f4e3d1b416b6def77139ffac9af451e8a728348113fbc04c3aa1be0c44695eda586f1b30f8b0f9f720e7bb7fda6be2e4a49d7df39d968063680cdb195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb8675ee74c73fecf8b8ff8b60eb3f656b391a066ce388c64e6ade3c56c02e88c4a228
-8636a385039445499483d48c5b6aaabbe676af11f014d57d4cb6ec12c4f451babe0c44695eda586f1b30f8b0f9f720e75af44f5cbe37349fbf70d295e58d147bdb195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb86755bbe2e486a161efcc9a358542b8adba4d235ccebd275f75f7412bfc181f875ee
-dbf2c253c36060cba9222d54ec1e043697ce0679ff5d8d720321a92629af2e71be0c44695eda586f1b30f8b0f9f720e74d0aa033d9381e97405adef0bfcdaa01db195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb86754f10613904bcfae90e51db68aecfe2711ff467388eef7d6d2c404845156c6858
-dbf2c253c36060cba9222d54ec1e043624b4e938c5176f1f0073befd7a1a517cbe0c44695eda586f1b30f8b0f9f720e7ce1dce761daff139793dae2622bb0cd83996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e187669cc38b5ae4bf2541f5402e09c59ae0cf2991b3a8bab01247b25b534ecb583f119c54c53743b13803f0ce4ab8b5ac0
-58868c696bd4b6ba7593dbfa1fc1deb10dc6ef786c9e28c02eeb5feec4a38ef1be0c44695eda586f1b30f8b0f9f720e78b5812fba8f6d28623e255bd49afcff8db195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb8675ee74c73fecf8b8ff8b60eb3f656b391a066ce388c64e6ade3c56c02e88c4a228
-11ec37a96b86770e0e6802ab0b8ab104ffac9af451e8a728348113fbc04c3aa1be0c44695eda586f1b30f8b0f9f720e74e276a3058e4564d3c687526567055e73996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18dd9c7d7b5407eb1198e01ccbf87911877199f227e6b758bf40ffc7d448445d9b60a420be054fe777811449690acd2dfd42c14f7812cf355fef686b3056a1eb673dfa24f3dd87dfd434ec551c37c415ce
-2fd167f28a3c84eced7da171c84015ace676af11f014d57d4cb6ec12c4f451ba1d4182331996a60062d3edb748ecb047fd3b0eaacf591edeed411321d3f70e22225337f940befa29f54d8cbe3a48a610f78d3ec4493987b7a5330be70f5ecc9f2002d7018e3b9f3ecc377bb6306d9c17513a8a73828d9ed36291e9b4c3c5c322a1e5fdd8b4f9ee759d970d5a08e8d1a77f67b17406ddd6f2b17cd10e75e2c3d3abe35f7893f0a2f11b6eaae12e17edef
-b39181891a7046fa71b247a45c1630727fe0eb340d5e7bb11f2562687d230d1a1d4182331996a60062d3edb748ecb047fd3b0eaacf591edeed411321d3f70e22024fed55725e681ad9f2d5eb25d785e7f78d3ec4493987b7a5330be70f5ecc9f2002d7018e3b9f3ecc377bb6306d9c17513a8a73828d9ed36291e9b4c3c5c322a1e5fdd8b4f9ee759d970d5a08e8d1a7603a40e2d960f2dd26330faf57f0f27456787c49dbe12b089654163b08b789416ab6ddfe7c7a030315e1e59f46f26cc0
-95ab6bbcd6141686db532f2b29ed19b8ef0a2c74d9f4a8cc8d3b19e1fedd9b621d4182331996a60062d3edb748ecb0471574a90a89553b121376a227022c34a09bf61cbf3cad0a8591df8f6c827835b6d52c46c4c4e5e492cad49b2f6556ee35b1017231f31674a64e8187cbd3f5b70a6a74cb7baf052226ee2f9f3ee96e33f5c99deecdbc2707687f43ad9b0c5eea1d9db049339cd05f3c2f7b6313ebea46c5753df88ddc32da2362230510e0cd209f3dfa24f3dd87dfd434ec551c37c415ce
-8f4d2f94d090db5960a37c3cbdb3469de676af11f014d57d4cb6ec12c4f451ba1d4182331996a60062d3edb748ecb0471574a90a89553b121376a227022c34a0b142fe4f0c536e383d487ea91916f899d52c46c4c4e5e492cad49b2f6556ee35b1017231f31674a64e8187cbd3f5b70a6a74cb7baf052226ee2f9f3ee96e33f5c99deecdbc2707687f43ad9b0c5eea1d9db049339cd05f3c2f7b6313ebea46c5beed15879c566ac26bd9be6beb1e940869ce1149422d459aaff5a0df543b9bfb3dfa24f3dd87dfd434ec551c37c415ce
-beb89a43871266d8aae33cdf6b5ca80d97ce0679ff5d8d720321a92629af2e711d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f61262dd734020507995101b8b58c4bbdcc7333bd55815a5857815b4e2b5359b41b8e757382449614dfc694f425ae56291209719f1a3a62feabf7a5249cf1f7c8fce92b50e88fa1c794724de2eec0a4717b1a31e213f95976d6e5e03491443ee5353e694fb07ee0df6c52ea61377c19c28b9fa128ef8071119b1d6a71891309ea440a0b99266a107fd062228683d9abc372
-a727c55330ec6cfae28d90dfd714ffd4e676af11f014d57d4cb6ec12c4f451ba1d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f61fd616677a479613134e3240d273446c73996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18e624aeb9aa3f9e01bc9c53ae37244a7421bb8f4f0beb08272c80b98a3a148e3916eb65000ff47230a2a0926bb8ddaa468e340c06c23e03bc6bf00cd8c80f6abf5ffb8b3a6a9ae922fbfffa9bd002e4dc
-cfe3b9b772f464cbdfc90da0f19df09497ce0679ff5d8d720321a92629af2e711d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f615746ff1c5f0ec8533b49f6709ea39c1c3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18e624aeb9aa3f9e01bc9c53ae37244a7421bb8f4f0beb08272c80b98a3a148e39a391e43fcac506acb4078aaa28bbc34e4adc57ffc6fc3a75b97fb2219d4690e0
-b27bf09d67a8868f85f8994c8a216b36ef0a2c74d9f4a8cc8d3b19e1fedd9b621d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f6115537ff27c1aeb0bdc96b226ad76bc883996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18e624aeb9aa3f9e01bc9c53ae37244a7421bb8f4f0beb08272c80b98a3a148e3916eb65000ff47230a2a0926bb8ddaa468e340c06c23e03bc6bf00cd8c80f6abf5ffb8b3a6a9ae922fbfffa9bd002e4dc
-784038783f3f847739bb520f0969475b7fe0eb340d5e7bb11f2562687d230d1a08b175918991d3d05c92df6ab2d0fea3862a5a4ef9b73c951d9191a53c6187c7ec3aa3f36bba3b6bbfbf11eda61c213842cf8edf1628ec648d52947b785d30d3103a2bb659eb1896e5736084ad93b422773d09a53de4639fba5c96ca6c6fb5440114f25f22fd7a579dd39e224174721a
-de552ef3a741f2ceb399701691e8a9b61d8caeb222f4d8dfaf754d4e6732a94708b175918991d3d05c92df6ab2d0fea3bbce262997db7d10279bcbabc960c846be80af1ad98fa434a12ccb8d9a30775f2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf5cb69fdf929b6ef7561225fe8b6b9092c802b19496554533787cdae4fb13c7b95ffb8b3a6a9ae922fbfffa9bd002e4dc
-4d12007626090137869eabe428a5d053e676af11f014d57d4cb6ec12c4f451ba08b175918991d3d05c92df6ab2d0fea3c79849f87b933f5b53ce7f0d93edcdb5508d3375c900a8b6646ec6ba17fede86f78d3ec4493987b7a5330be70f5ecc9fe3a8989d3dffb1e163deea6a6c764c957ace1d4125902813834c321f0aaa769a7fbcd573ae0edfa096716b8c2aa494f35d10a23c631df3413b5eb19891db8089
-6db8c6c632b40193e6c7003e92e16d8997ce0679ff5d8d720321a92629af2e7108b175918991d3d05c92df6ab2d0fea3523af51b30d2dc9fb904a44739b71954d5f68e48442ef7ae1d71cbffa689bb67208b6dea7c95eeaa21b9f130043ea0ff44c51fec2ecab8c63ba10d1fe6620345708419e0bd19fc2947fd0629644062c47f77c3a33ab4b12c269379f5a2fb913c0114f25f22fd7a579dd39e224174721a
-a83b5142625115fbcd50dc9c2fd4061eef0a2c74d9f4a8cc8d3b19e1fedd9b6208b175918991d3d05c92df6ab2d0fea34d8e1b11f1bb0572d7a92181c396554ed9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb10910561302965a2b9ada4ed6d04da867eb6637d7a738214f76a46a66a673919459a5afac25d10a23c631df3413b5eb19891db8089
+65be4646aa3af4dffcbbfb16eaadbd377fe0eb340d5e7bb11f2562687d230d1a982501d0a4681c7c7c155ba8dadd0331a1ef250aafb26e1f29a49c82254725f3e0b1d6b2443053222487ee3e261ad80504d4c5d7ca068406f082754080fb86755ab92a5b381792561cf9709f0ecde3c1d2792c1aa00872ea896627f9aa6c87ba
+65be4646aa3af4dffcbbfb16eaadbd37ffac9af451e8a728348113fbc04c3aa1e5edc0979d8ffed672fc9e2baa0fef843c652f5d00accba0182df57d4c1893fd3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e1808fea3c795b9a0e345c6ec6576705b65e8291013be567f9e608ec5617f6c8ae90e09099cec56b3080b4873f6d95ec0a5
+10b3b21a91692bfa75dcce81357922cbc1b68efab2f04c4ddb45fe9a4b25b29be5edc0979d8ffed672fc9e2baa0fef847121ca7081a6c12035c8170db022f2784af381efc3b6295e3adf454b0613a26fa930e5677ed822925caf32baf664558124f236c19a9ca393cf17ecb184c9b11a133248ae8f008de7355840e469099a463c647071f1facdf56bd82ef27df87737
+47592717cf96df022c74484fe0df6ffc24b4e938c5176f1f0073befd7a1a517ce5edc0979d8ffed672fc9e2baa0fef8473996663a2017f7da7b6d77a536f1e893996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18cf6e449db81636e942b4583d68ae68c0275862079eaa3a457204df55d1f6ef609c34d26433684cbe9e09f8911c60ae535a70f92a33d382b50f14bbe1b4a46cc73dfa24f3dd87dfd434ec551c37c415ce
+80d35fabb9d5f7e44772216c05535c7a24b4e938c5176f1f0073befd7a1a517ce5edc0979d8ffed672fc9e2baa0fef846dec9fb241ebb43c8255d68371b7c92e4af381efc3b6295e3adf454b0613a26fa930e5677ed822925caf32baf664558124f236c19a9ca393cf17ecb184c9b11a9aa7a654bbe4f6ae8ff4c5570e746c6c3c647071f1facdf56bd82ef27df87737
+0bbe8052cc7bfdf56dfdc6c0bb3e00b30dc6ef786c9e28c02eeb5feec4a38ef1e5edc0979d8ffed672fc9e2baa0fef84274fc14ac38065a2b76c671342300461d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb109105613052b4bf00f0a31231202d40e2878b94077a9000958783f7ffff3fe06bec67b31897ae1d8e6403e41af4cf17fbfd286948
+fb98f1647e33aba6853f89d5c51d23cf1d8caeb222f4d8dfaf754d4e6732a947e5edc0979d8ffed672fc9e2baa0fef84fc1ed759e1ef5994d3cbbd97e11ed46c7333bd55815a5857815b4e2b5359b41b8e757382449614dfc694f425ae562912068885728accedd923decb613a14cbf86c7ac173ed96cf48a731b4a2eeb34cda5ffb8b3a6a9ae922fbfffa9bd002e4dc
+fba4a1637091c18ee614b56c9379af39e676af11f014d57d4cb6ec12c4f451baecdadb0847bdfb7451b9d0f203598714f078515dc0616458d9cdddb655e4d377562433599a3167ae521ddaab327710f042cf8edf1628ec648d52947b785d30d3103a2bb659eb1896e5736084ad93b422575b41d7b1bdbc057132a43350af1f25aad303e0a8f50aba9621ff1c31c8e3f5
+06968af7a51a6264f09d6d2ece73d20b97ce0679ff5d8d720321a92629af2e71ecdadb0847bdfb7451b9d0f2035987149c5ec1895c20659cd76073a8b0c9ac304af381efc3b6295e3adf454b0613a26fa930e5677ed822925caf32baf664558124f236c19a9ca393cf17ecb184c9b11ad2ff1b6fb00fce1e3ad6d14f42c30a6a3fae478da7dc9b855efbdc4f186f5f80
+2a4ab50a6f038ca05f0719bed897b86def0a2c74d9f4a8cc8d3b19e1fedd9b62ecdadb0847bdfb7451b9d0f203598714613f05dab67b1a770f8cd1a6e61c4b12cca838dc34e9f0d3bddf1ac610037e96a29287527626f21fd86cdd2fa60b4189965ba18c615367ca49ce96b488318775de05e8efbf2c3e1bf8a11d6ffaac359779e10a3f0094495ff27ed0a430ce2dfd
+2a4ab50a6f038ca05f0719bed897b86d0dc6ef786c9e28c02eeb5feec4a38ef1d227622cb62c878b6bfd3468652833357afc25555e6e5e0193bd886058b718c9d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb10910561302f18f43fee8a5966a0340b039cfb627c92bea0d366eaf235dc6ef5aa980c5ca485a2ce5d791c31bf7a44fb5babd2ebb5c624eec996b7114f83b023ca163ce1e8
+be722f01a1d7dd80d04f0c2bdbcf3729ffac9af451e8a728348113fbc04c3aa1d227622cb62c878b6bfd346865283335ccefdd9d103613a047f6368eb83489177333bd55815a5857815b4e2b5359b41b8e757382449614dfc694f425ae56291221361d7921f69002053f0a8b5f553019f13386f3ce5df389a00bf447cd0e6280ab43b6c76f967512df087e37df8b8f8d
+2838ff45052742fff1b8c0bd22b357f7c1b68efab2f04c4ddb45fe9a4b25b29bd227622cb62c878b6bfd346865283335274fc14ac38065a2b76c671342300461d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb109105613052b4bf00f0a31231202d40e2878b94077a9000958783f7ffff3fe06bec67b318562319686a4bae3ce7d3cc81e1519f52
+71835c16506d08d26614aef73052818e97ce0679ff5d8d720321a92629af2e71d227622cb62c878b6bfd346865283335fc1ed759e1ef5994d3cbbd97e11ed46c7333bd55815a5857815b4e2b5359b41b8e757382449614dfc694f425ae562912a4fa2240953846bdb61e094b79c80af1d23c7c9a32283ed41322d8ba41e6674ccf4c0916cde52e41670b6da48ccc38fa
+71835c16506d08d26614aef73052818e24b4e938c5176f1f0073befd7a1a517cd227622cb62c878b6bfd346865283335df05079051b8fbc1e1be969418693e03566e053547c45d3baf2f05d7daa9399ce0b1d6b2443053222487ee3e261ad80504d4c5d7ca068406f082754080fb867590dbb251bb56d8e54f9263a1477b8091e467306422f05e45da14383148d3145bdb126dbcc514d4f16b2dfadfb4719a18413ea30857fc537a0d145feb0556c732
+cff332165b17829f9aeff73f5283e8f80dc6ef786c9e28c02eeb5feec4a38ef1d227622cb62c878b6bfd3468652833358b109d07bfac2adc11312517136e6816a7a95ebde1e895beb20e3fc8dfd0b551f78d3ec4493987b7a5330be70f5ecc9fe3a8989d3dffb1e163deea6a6c764c9585bf832c9db2896dbf1830637bacd1419fb98ab3e0ea42f7480c5c0295dcd293cf4c0916cde52e41670b6da48ccc38fa
+60e2a8ae83a8e5a11f6db0cb942435741d8caeb222f4d8dfaf754d4e6732a947d227622cb62c878b6bfd346865283335b59a6512ef08b6514edc2e003fa835a8c5f72f91a3803076f44db8b447f932ace3c1d1231c64fe72df060e5c30073a1c930ba3dc244d57ae67cee26b67990afbb81fdf65c6a7e2ae2768694dc25b116bf1b74de95ada7309dbe75293f5f7bcbd
+60e2a8ae83a8e5a11f6db0cb94243574c1b68efab2f04c4ddb45fe9a4b25b29bd227622cb62c878b6bfd346865283335e4afd953d96b933c86fb0bc7b6e2c3e485b39e8d5eb64ef5329025e5a7d9c456f78d3ec4493987b7a5330be70f5ecc9fe3a8989d3dffb1e163deea6a6c764c959649b90de1b797fad8345bc14c9c59b4e8291013be567f9e608ec5617f6c8ae9a37323a7a80c9451c71b4cdaa6daea03
+ccbc904dbf3f096d9dcd5f90e81123c6c8f192f7f563c0fca9038b0eb8d0a9ced227622cb62c878b6bfd3468652833357fd7c252c55e4966220016ebd4c391c117b11b53c22247fcfacfda6159e3695b2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf70dfc0649fa80c3c24e3a567413f77337bb23cc98c1a45615d9d4e43ecd62efb748423d52ade7bd6c08f1e815dbda8dc
+5f1ecf883046b5efd69a61faf892b9af24b4e938c5176f1f0073befd7a1a517cd227622cb62c878b6bfd346865283335864e809528d2f7271b10f6793d7d07333192660805ab9adc9374d895c8b6abaf04d4c5d7ca068406f082754080fb8675bc085ab3a71fdb8cea0529d3e53a0f2d98389d333ab74c02a84e027331a155f3964be9df616f16318d68c3d6f9242e91413ea30857fc537a0d145feb0556c732
+4ac61213fb8fa7679b76171f388b8cc97fe0eb340d5e7bb11f2562687d230d1ad227622cb62c878b6bfd3468652833352ad97f520a0f74cfd8f997f0e82130cfd9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb1091056130bdd76987cd8b7f95d9a7f5c7ffa1401935b4305ec76a08e08d3eb07276d7850b1aae70d92a408f33391688991d66282f
+4ac61213fb8fa7679b76171f388b8cc9ffac9af451e8a728348113fbc04c3aa1d227622cb62c878b6bfd346865283335d00b9d7c47393429604eff183d70f700d0340d91cf1ef115f46236651dbe4d8b8a8ec35e921fc2c9cbea954c5c27cd9cb560480e25871efce6f705f4819e0d88e467306422f05e45da14383148d3145bdb126dbcc514d4f16b2dfadfb4719a18413ea30857fc537a0d145feb0556c732
+8d5911805f8a966be6804b28ae7bc983c1b68efab2f04c4ddb45fe9a4b25b29bd227622cb62c878b6bfd346865283335a59f08530a01a4dd1ad33fb4716fd90317b11b53c22247fcfacfda6159e3695b2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf5d2bb21f83b607eb5454c4f266b581f97bb23cc98c1a45615d9d4e43ecd62efb748423d52ade7bd6c08f1e815dbda8dc
+8d2b0e9418a3a88a8850d396cec3ca5d97ce0679ff5d8d720321a92629af2e71d227622cb62c878b6bfd346865283335d278a22fb8b319cb6476cdf20c28cd83d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb1091056130ef03a29186db3727dee0c17da05dee417bf33790c792ebb8c6d01246d40f4ee61aae70d92a408f33391688991d66282f
+4f8011fed51614414280d3df22d696d7ef0a2c74d9f4a8cc8d3b19e1fedd9b62d227622cb62c878b6bfd346865283335eae7b6d4682113c0dd826728683d16314af381efc3b6295e3adf454b0613a26fa930e5677ed822925caf32baf66455810a8692e9f8b7fc4538ba26a76ba7abbccec9d5fcc14b45ca9c1416274c619dbd3b381fd9a799cd0e909ee34612de74c2cf4c0916cde52e41670b6da48ccc38fa
+4f8011fed51614414280d3df22d696d70dc6ef786c9e28c02eeb5feec4a38ef1d227622cb62c878b6bfd346865283335f1a8cf2fc0aba1adbe9e01ed647b8a53d0340d91cf1ef115f46236651dbe4d8b8a8ec35e921fc2c9cbea954c5c27cd9cd406743470d5bfabfe074e916d799050e467306422f05e45da14383148d3145bdb126dbcc514d4f16b2dfadfb4719a18413ea30857fc537a0d145feb0556c732
+cc9b9c47e5bb7b8cfc49a82c55074ed2ffac9af451e8a728348113fbc04c3aa1d227622cb62c878b6bfd34686528333501d474facc9d93fa4963c1a0f9a0cb8217b11b53c22247fcfacfda6159e3695b2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf8c951b72a9a31335be3b67086981f8e87bb23cc98c1a45615d9d4e43ecd62efb748423d52ade7bd6c08f1e815dbda8dc
+b8abbab6c2fe3b0b6eeac164b46aad51e676af11f014d57d4cb6ec12c4f451bad227622cb62c878b6bfd3468652833359f303c3e46851811e8dce47f95c7d143d9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb1091056130ef03a29186db3727dee0c17da05dee417bb805cab21128791ab61aff70ba4f041aae70d92a408f33391688991d66282f
+7e74f40f9227ac3320beb385819e090e97ce0679ff5d8d720321a92629af2e71d227622cb62c878b6bfd3468652833356ba7a30fc6e5d71288f57383e66ed5fc2ded7509670df73860cc9d0fe527d35bca2ed863ff2aa1b279ad66249ff30305861dd14825a6bac9cf49dcafa2fb0dee102aa0be0fef0e3e6d196eb94830137cd01901a6ed1eead093b726b48fc655dc995935cadff1027ecc65fc36bf8477c4d51feed07217341f2a43828540ab2721a591dd4377f3be3605fbb25176f51c8b3dfa24f3dd87dfd434ec551c37c415ce
+c5c740469118f6dc3d541a18c0855c76ef0a2c74d9f4a8cc8d3b19e1fedd9b62d227622cb62c878b6bfd34686528333596b2d8683860b63a7dbd567cf287d15e374951b542ed38a1128d11948b57f77a208b6dea7c95eeaa21b9f130043ea0ff44c51fec2ecab8c63ba10d1fe6620345536f9841801693e92d804cc2276a865b5772b667f6e9ec22e38d79f1a1681d4a995935cadff1027ecc65fc36bf8477c4d51feed07217341f2a43828540ab2721a591dd4377f3be3605fbb25176f51c8b3dfa24f3dd87dfd434ec551c37c415ce
+4aec93123d0881189d42cdd7e0061fa3c1b68efab2f04c4ddb45fe9a4b25b29bd227622cb62c878b6bfd3468652833356ded17b1589612ae1745a05e28aec86af78d3ec4493987b7a5330be70f5ecc9f72d269bb829bba8095a6e0155eb3a67318d51298446dfe14c996e619d5eff480f667273370fa36c839b1cf6f48bb8c76d9bd99b0d6f0e12c8b65bcd40962dfe9748423d52ade7bd6c08f1e815dbda8dc
+b92c0eca24a3eb9b6caa725bf3495b47ffac9af451e8a728348113fbc04c3aa1b91deaf7de9dcd8f72eeac8827f8c72967512579714c060aba5f3afe11aff32042cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff4515608560d033c15f6801dd323d9c5b2fcedc736723ebb10f25435b4dc8b97b56527
+559b152eccfc9db1e30a0264494ee5e8e676af11f014d57d4cb6ec12c4f451bab91deaf7de9dcd8f72eeac8827f8c7292c767927f9b27adffe1a7fdc5a8a003642cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff451568d60cfc42ee72c38216c4e68502f4f510ad466575caf1d62e277f8e2f3c7c9ba182a20b769631dd25da68cfc9c5140fc
+398ec47647c9683bc1fbaa6b848542240dc6ef786c9e28c02eeb5feec4a38ef1b91deaf7de9dcd8f72eeac8827f8c7291ec4c96eb89be14ee92773185801cf0342cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff4515656eb4a68236afd1c50d430927f8f7f776f12bb9e0f5d0a56bb5047d84c490b48c6edc3a5283a4535b358fddbdea81f55
+6ec0c9413102e2edb9feba2f06d25941ef0a2c74d9f4a8cc8d3b19e1fedd9b62b91deaf7de9dcd8f72eeac8827f8c729a33cea1f0146326c0acd3b25ef3906dea930e5677ed822925caf32baf6645581cad7ca826bc7551161925e09f83815f8a1bdbde1770dfbb9cc2b77c5e1b2a7e430da2de3352c18f6e7bf9353a52d6415
+55eb5954f814f4e3d1b416b6def771397fe0eb340d5e7bb11f2562687d230d1ab91deaf7de9dcd8f72eeac8827f8c729913a02f54a4f8cdffb0ec411626562cf42cf8edf1628ec648d52947b785d30d3d59bd4de983f0374ef6a59ad1ff45156b3ad66e6e7aeaed721169820dc9ab89892e988b7d890f4c95ce11dcc0b52a480961573f74fda69ba7b40dc78665810339b26317175d6c2a6f3d1c4dd47ac9293
+55eb5954f814f4e3d1b416b6def77139ffac9af451e8a728348113fbc04c3aa115a447522a79e118dd247ed41e8cc9c9c9b6adcfcae65ee1980c1ba37c93131f3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e185a7c9864b29c74634c0ad083cab7ae6f986c96f03a4cadf849bb403476e3a264641ef09f6607d0e97ab84ce9c206ab32c10ae1a15978e58d6c328c1379ef0b573dfa24f3dd87dfd434ec551c37c415ce
+1257227dd053ae23552a708c0b2306c5c1b68efab2f04c4ddb45fe9a4b25b29b655bf9963f91320dfeb7a498c007051d55e10e85b8f5ed0b7bf58a6dd93e3f74d0340d91cf1ef115f46236651dbe4d8b8a8ec35e921fc2c9cbea954c5c27cd9ca959cbfb1f255a3a43dd4e1ae0160dc6bd6b7b039391ed9ef62b6709fde327570ef58c887eb79c06d1ca0292641975fa00f4ee3ec8cddec2d3a5b6fcb5e37c97c41dc71d2d26c7fdaa38ad4387786975
+85edf76ee1cf9a8b566c2b27b97e7eb6c8f192f7f563c0fca9038b0eb8d0a9ce41ee287f95dcc4baa8673699ff152ef5c9b6adcfcae65ee1980c1ba37c93131f3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18f4c47aacc09e6f86831b1b94955de37147f5f3bf45f0bad94af4b5b15be9f92cde3880dfb833ad78c7c8772a2d9b8d1fb1d5c209b5aec0c80f6a952e361a1c366c8aa7302d6ec9948a8dd0ebef9e97af
+dbf2c253c36060cba9222d54ec1e043624b4e938c5176f1f0073befd7a1a517cc6d18fb21be2f77c7fa92153cd1d6767e28eda9fc3367a94896a22793f50a38f966b7c2393df47b61f2c3480ea270eebf78d3ec4493987b7a5330be70f5ecc9f192ef7c7472d78b391e8418993bd4a311a540a3778efb074da3597950d8b38a5ce1576d80a4821c82203f255f63ad4998797581b8e2a31218fbcc3b8ce35f8ba4eaf4b90b01c63b8009000fe0dfe2b345b4bd998b76cb7ed9a7257ca624cedc1
+11ec37a96b86770e0e6802ab0b8ab1047fe0eb340d5e7bb11f2562687d230d1abe0c44695eda586f1b30f8b0f9f720e786987a28dc83e69a2cde4d057872083e17365091178a62d7243a08296288d5db42cf8edf1628ec648d52947b785d30d3d0e442c7412ffe4fb893fb00d960db24a29a9b78bcdfd78b338183f9775274f8d360b6e9f65704f0cce6763075b34d345ffb8b3a6a9ae922fbfffa9bd002e4dc
+ec780a69b986668539663b31f72b4cfd0dc6ef786c9e28c02eeb5feec4a38ef1be0c44695eda586f1b30f8b0f9f720e79ac439453d5f9e4b9f2bf84aca2725fc3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e187669cc38b5ae4bf2541f5402e09c59ae17f500ff6d7cd65e309e912382821378d97fec4dae6ce527ab075fc80f04602acb28405ab8472c988f168c7e79874bd0
+afb9e6a8dee99895d3955ee28af9041c24b4e938c5176f1f0073befd7a1a517cbe0c44695eda586f1b30f8b0f9f720e78771e56a5687ecb3ca509b045a0a1c59db195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb8675ee74c73fecf8b8ff8b60eb3f656b391ab347e66b625b9a1056b314aaebbee9005e80775a920d1ce9cdae74a50055437a3dfa24f3dd87dfd434ec551c37c415ce
+dc0d2ea09a8b71552d88c217d58e7836c8f192f7f563c0fca9038b0eb8d0a9cebe0c44695eda586f1b30f8b0f9f720e7bb7fda6be2e4a49d7df39d968063680cdb195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb8675ee74c73fecf8b8ff8b60eb3f656b391a066ce388c64e6ade3c56c02e88c4a228
+a7aa1f2127afa25b786fc18cc44d9f0aef0a2c74d9f4a8cc8d3b19e1fedd9b62be0c44695eda586f1b30f8b0f9f720e75af44f5cbe37349fbf70d295e58d147bdb195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb86755bbe2e486a161efcc9a358542b8adba4d235ccebd275f75f7412bfc181f875ee
+4d42b08ede7311c9294bd0f2491001987fe0eb340d5e7bb11f2562687d230d1abe0c44695eda586f1b30f8b0f9f720e74d0aa033d9381e97405adef0bfcdaa01db195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb86754f10613904bcfae90e51db68aecfe2711ff467388eef7d6d2c404845156c6858
+4d42b08ede7311c9294bd0f249100198ffac9af451e8a728348113fbc04c3aa1be0c44695eda586f1b30f8b0f9f720e7ce1dce761daff139793dae2622bb0cd83996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e187669cc38b5ae4bf2541f5402e09c59ae0cf2991b3a8bab01247b25b534ecb583f119c54c53743b13803f0ce4ab8b5ac0
+6e7fa831555859ab62732fa1518435f7c1b68efab2f04c4ddb45fe9a4b25b29bbe0c44695eda586f1b30f8b0f9f720e78b5812fba8f6d28623e255bd49afcff8db195934c19c2bd4c72ca2abccd54e0704d4c5d7ca068406f082754080fb8675ee74c73fecf8b8ff8b60eb3f656b391a066ce388c64e6ade3c56c02e88c4a228
+33c7f3f45c8b02d0ff74d3b36104ad35c8f192f7f563c0fca9038b0eb8d0a9cebe0c44695eda586f1b30f8b0f9f720e74e276a3058e4564d3c687526567055e73996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18dd9c7d7b5407eb1198e01ccbf87911877199f227e6b758bf40ffc7d448445d9b60a420be054fe777811449690acd2dfd42c14f7812cf355fef686b3056a1eb673dfa24f3dd87dfd434ec551c37c415ce
+b27bf09d67a8868f85f8994c8a216b36ef0a2c74d9f4a8cc8d3b19e1fedd9b621d4182331996a60062d3edb748ecb047fd3b0eaacf591edeed411321d3f70e22225337f940befa29f54d8cbe3a48a610f78d3ec4493987b7a5330be70f5ecc9f2002d7018e3b9f3ecc377bb6306d9c17513a8a73828d9ed36291e9b4c3c5c322a1e5fdd8b4f9ee759d970d5a08e8d1a77f67b17406ddd6f2b17cd10e75e2c3d3abe35f7893f0a2f11b6eaae12e17edef
+cf7a1f8d4eb4966e16a19fc0670ffa86e676af11f014d57d4cb6ec12c4f451ba1d4182331996a60062d3edb748ecb047fd3b0eaacf591edeed411321d3f70e22024fed55725e681ad9f2d5eb25d785e7f78d3ec4493987b7a5330be70f5ecc9f2002d7018e3b9f3ecc377bb6306d9c17513a8a73828d9ed36291e9b4c3c5c322a1e5fdd8b4f9ee759d970d5a08e8d1a7603a40e2d960f2dd26330faf57f0f27456787c49dbe12b089654163b08b789416ab6ddfe7c7a030315e1e59f46f26cc0
+f5589fc037cf316272c93a006eb3d5511d8caeb222f4d8dfaf754d4e6732a9471d4182331996a60062d3edb748ecb0471574a90a89553b121376a227022c34a09bf61cbf3cad0a8591df8f6c827835b6d52c46c4c4e5e492cad49b2f6556ee35b1017231f31674a64e8187cbd3f5b70a6a74cb7baf052226ee2f9f3ee96e33f5c99deecdbc2707687f43ad9b0c5eea1d9db049339cd05f3c2f7b6313ebea46c5753df88ddc32da2362230510e0cd209f3dfa24f3dd87dfd434ec551c37c415ce
+fd63b0a56a54ecedca7473a2d71240c8ef0a2c74d9f4a8cc8d3b19e1fedd9b621d4182331996a60062d3edb748ecb0471574a90a89553b121376a227022c34a0b142fe4f0c536e383d487ea91916f899d52c46c4c4e5e492cad49b2f6556ee35b1017231f31674a64e8187cbd3f5b70a6a74cb7baf052226ee2f9f3ee96e33f5c99deecdbc2707687f43ad9b0c5eea1d9db049339cd05f3c2f7b6313ebea46c5beed15879c566ac26bd9be6beb1e940869ce1149422d459aaff5a0df543b9bfb3dfa24f3dd87dfd434ec551c37c415ce
+e31b0767fadace1603b66834498d83cd7fe0eb340d5e7bb11f2562687d230d1a1d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f61262dd734020507995101b8b58c4bbdcc7333bd55815a5857815b4e2b5359b41b8e757382449614dfc694f425ae56291209719f1a3a62feabf7a5249cf1f7c8fce92b50e88fa1c794724de2eec0a4717b1a31e213f95976d6e5e03491443ee5353e694fb07ee0df6c52ea61377c19c28b9fa128ef8071119b1d6a71891309ea440a0b99266a107fd062228683d9abc372
+638293b4b27ab4f4d8fd180b54a05002ef0a2c74d9f4a8cc8d3b19e1fedd9b621d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f61fd616677a479613134e3240d273446c73996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18e624aeb9aa3f9e01bc9c53ae37244a7421bb8f4f0beb08272c80b98a3a148e3916eb65000ff47230a2a0926bb8ddaa468e340c06c23e03bc6bf00cd8c80f6abf5ffb8b3a6a9ae922fbfffa9bd002e4dc
+1ea815a6f43b0b9c6ad9f92da9ea4bf27fe0eb340d5e7bb11f2562687d230d1a1d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f615746ff1c5f0ec8533b49f6709ea39c1c3996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18e624aeb9aa3f9e01bc9c53ae37244a7421bb8f4f0beb08272c80b98a3a148e39a391e43fcac506acb4078aaa28bbc34e4adc57ffc6fc3a75b97fb2219d4690e0
+7c31d57ce4f8d840990c8b15d45223141d8caeb222f4d8dfaf754d4e6732a9471d4182331996a60062d3edb748ecb04721df898fd036b4add3a8981058d90f6115537ff27c1aeb0bdc96b226ad76bc883996613b6e1c3dcf4a98afba81506c6606e1c188453f56ac03bde90069904e18e624aeb9aa3f9e01bc9c53ae37244a7421bb8f4f0beb08272c80b98a3a148e3916eb65000ff47230a2a0926bb8ddaa468e340c06c23e03bc6bf00cd8c80f6abf5ffb8b3a6a9ae922fbfffa9bd002e4dc
+87cd6c95fe4951de59909cded637954ee676af11f014d57d4cb6ec12c4f451ba08b175918991d3d05c92df6ab2d0fea3862a5a4ef9b73c951d9191a53c6187c7ec3aa3f36bba3b6bbfbf11eda61c213842cf8edf1628ec648d52947b785d30d3103a2bb659eb1896e5736084ad93b422773d09a53de4639fba5c96ca6c6fb5440114f25f22fd7a579dd39e224174721a
+2017958346d98299168768b37f21332097ce0679ff5d8d720321a92629af2e7108b175918991d3d05c92df6ab2d0fea3bbce262997db7d10279bcbabc960c846be80af1ad98fa434a12ccb8d9a30775f2c646423176fcca19ed8a1b846df547e55bb14e77ec1105f2c8153c2ee2d6fbf5cb69fdf929b6ef7561225fe8b6b9092c802b19496554533787cdae4fb13c7b95ffb8b3a6a9ae922fbfffa9bd002e4dc
+a6509d743ca2cccbc4d43aefd4620ef9ef0a2c74d9f4a8cc8d3b19e1fedd9b6208b175918991d3d05c92df6ab2d0fea3c79849f87b933f5b53ce7f0d93edcdb5508d3375c900a8b6646ec6ba17fede86f78d3ec4493987b7a5330be70f5ecc9fe3a8989d3dffb1e163deea6a6c764c957ace1d4125902813834c321f0aaa769a7fbcd573ae0edfa096716b8c2aa494f35d10a23c631df3413b5eb19891db8089
+d742ed3edd155b18ef215aa0ea86e6097fe0eb340d5e7bb11f2562687d230d1a08b175918991d3d05c92df6ab2d0fea3523af51b30d2dc9fb904a44739b71954d5f68e48442ef7ae1d71cbffa689bb67208b6dea7c95eeaa21b9f130043ea0ff44c51fec2ecab8c63ba10d1fe6620345708419e0bd19fc2947fd0629644062c47f77c3a33ab4b12c269379f5a2fb913c0114f25f22fd7a579dd39e224174721a
+65112e3cb29bc6d89e65e3d7535099151d8caeb222f4d8dfaf754d4e6732a94708b175918991d3d05c92df6ab2d0fea34d8e1b11f1bb0572d7a92181c396554ed9df680a5b11d46ecab1dbb4f4dffa5ce2b2f82ebec06616ec59fb10910561302965a2b9ada4ed6d04da867eb6637d7a738214f76a46a66a673919459a5afac25d10a23c631df3413b5eb19891db8089
 536576,1098909695,0,0,PS1,LTE_RRC_DL_DCCH_DUMP,EcommDumpErrcMessage_DlTrans,P_SIG,swLogDumpPolling("DlInformationTransfer ");
 536576,1098911743,0,0,PS1,LTE_RRC_DL_DCCH_DUMP,EcommDumpErrcMessage_Recfg,P_SIG,swLogDumpPolling("RrcConnectionReconfiguration ");
 536576,1098913791,0,0,PS1,LTE_RRC_DL_DCCH_DUMP,EcommDumpErrcMessage_Rel,P_SIG,swLogDumpPolling("RrcConnectionRelease ");
@@ -11740,61 +11760,61 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 786432,1610643456,0,0,CUSTOMER,LIOT_APP,lierda_light_147,P_INFO,swLogPrintf("urc recv event 0x%x ");
 786432,1610645504,0,0,CUSTOMER,LIOT_APP,lierda_light_180,P_INFO,swLogPrintf("pPsPkgDataTransStateInd.bPkgDataTrans %d ");
 786432,1610647552,0,0,CUSTOMER,LIOT_APP,lierda_light_274,P_INFO,swLogPrintf("After light Sleep1 %d ");
-786432,1610649601,0,0,CUSTOMER,LIOT_APP,lierda_nvram_159,P_INFO,swLogPrintf("can ' t open / create file %s ");
-786432,1610651904,0,0,CUSTOMER,LIOT_APP,lierda_nvram_173,P_INFO,swLogPrintf("OsaFwrite fail %d size %d. ");
-786432,1610653952,0,0,CUSTOMER,LIOT_APP,lierda_nvram_177,P_INFO,swLogPrintf("offset is %d writeSize %d ");
-786432,1610656256,0,0,CUSTOMER,LIOT_APP,lierda_nvram_200,P_INFO,swLogPrintf("input param is invalid %p %p %d ");
-786432,1610657793,0,0,CUSTOMER,LIOT_APP,lierda_nvram_209,P_INFO,swLogPrintf("can ' t open file %s ");
-786432,1610659841,0,0,CUSTOMER,LIOT_APP,lierda_nvram_217,P_INFO,swLogPrintf("get %s file size fail. ");
-786432,1610662145,0,0,CUSTOMER,LIOT_APP,lierda_nvram_224,P_INFO,swLogPrintf("input buf size %s is too small , filesize %d ");
-786432,1610664192,0,0,CUSTOMER,LIOT_APP,lierda_nvram_237,P_INFO,swLogPrintf("OsaFread fail %d size %d. ");
-786432,1610665985,0,0,CUSTOMER,LIOT_APP,lierda_nvram_266,P_INFO,swLogPrintf("file %s not exist. ");
-786432,1610668033,0,0,CUSTOMER,LIOT_APP,lierda_nvram_270,P_INFO,swLogPrintf("file %s exist. ");
-786432,1610670080,0,0,CUSTOMER,LIOT_APP,lierda_nvram_501,P_INFO,swLogPrintf("cfg type is invalid %d. ");
-786432,1610672384,0,0,CUSTOMER,LIOT_APP,lierda_nvram_529,P_INFO,swLogPrintf("input param is invalid %d %p ");
-786432,1610676223,0,0,CUSTOMER,LIOT_APP,lierda_nvram_535,P_INFO,swLogPrintf("value not change , return ");
-786432,1610676224,0,0,CUSTOMER,LIOT_APP,lierda_nvram_786,P_INFO,swLogPrintf("cfg type is invalid %d. ");
-786432,1610680319,0,0,CUSTOMER,LIOT_APP,lierda_nvram_794,P_INFO,swLogPrintf("update cfg succ. ");
-786432,1610682367,0,0,CUSTOMER,LIOT_APP,lierda_nvram_798,P_INFO,swLogPrintf("update cfg fail. ");
-786432,1610684415,0,0,CUSTOMER,LIOT_APP,lierda_nvram_803,P_INFO,swLogPrintf("read cfg fail. ");
-786432,1610684672,0,0,CUSTOMER,LIOT_APP,lierda_nvram_818,P_INFO,swLogPrintf("input param is invalid %d %p ");
-786432,1610686464,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1032,P_INFO,swLogPrintf("cfg type is invalid %d. ");
-786432,1610690559,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1041,P_INFO,swLogPrintf("read cfg fail. ");
-786432,1610690560,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1056,P_INFO,swLogPrintf("input param is invalid %p ");
-786432,1610692608,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1101,P_INFO,swLogPrintf("cfg type is invalid %d. ");
-786432,1610696703,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1109,P_INFO,swLogPrintf("value not change , return ");
-786432,1610698751,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1115,P_INFO,swLogPrintf("update cfg succ. ");
-786432,1610700799,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1119,P_INFO,swLogPrintf("update cfg fail. ");
-786432,1610702847,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1124,P_INFO,swLogPrintf("read cfg fail. ");
-786432,1610704895,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1149,P_INFO,swLogPrintf("read cfg succ. ");
-786432,1610706943,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1165,P_INFO,swLogPrintf("read cfg fail. ");
-786432,1610708991,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1176,P_INFO,swLogPrintf("The file exists but the size does not match. Attempting to delete it. ");
-786432,1610711039,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1268,P_INFO,swLogPrintf("save default cfg succ. ");
-786432,1610713087,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1272,P_INFO,swLogPrintf("save default cfg fail. ");
-786432,1610713089,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1365,P_INFO,swLogPrintf("file %s exist ");
-786432,1610715136,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1368,P_INFO,swLogPrintf("value 0x%x ");
-786432,1610717185,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1385,P_INFO,swLogPrintf("file %s not exist ");
-786432,1610719233,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1519,P_INFO,swLogPrintf("file %s exist ");
-786432,1610721280,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1522,P_INFO,swLogPrintf("value 0x%x ");
-786432,1610723329,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1539,P_INFO,swLogPrintf("file %s not exist ");
-786432,1610725377,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1548,P_INFO,swLogPrintf("file %s not exist ");
-786432,1610729471,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1556,P_INFO,swLogPrintf("get CFG_INDEX_LUIMDUAL failed ");
-786432,1610729472,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1560,P_INFO,swLogPrintf("isLUimDualEn is %u ");
-786432,1610732032,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1592,P_INFO,swLogPrintf("input param is invalid %p %p %d ");
-786432,1610735615,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1602,P_INFO,swLogPrintf("qFileOpen fail. ");
-786432,1610735616,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1612,P_INFO,swLogPrintf("can ' t OsaFseek file ret %d ");
-786432,1610737920,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1624,P_INFO,swLogPrintf("OsaFread fail %d size %d. ");
-786432,1610740224,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1652,P_INFO,swLogPrintf("input param is invalid %p %p %d ");
-786432,1610741761,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1662,P_INFO,swLogPrintf("qFileOpen %s fail. ");
-786432,1610743808,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1675,P_INFO,swLogPrintf("OsaFseek %d fail. ");
-786432,1610745856,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1683,P_INFO,swLogPrintf("malloc buf %d fail ");
-786432,1610748160,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1696,P_INFO,swLogPrintf("OsaFread fail %d size %d. ");
-786432,1610751999,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1702,P_INFO,swLogPrintf("OsaFread succ ");
-786432,1610752000,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1707,P_INFO,swLogPrintf("OsaFseek fail ret %d ");
-786432,1610754304,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1715,P_INFO,swLogPrintf("OsaFwrite fail %d size %d. ");
-786432,1610758143,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1719,P_INFO,swLogPrintf("OsaFwrite succ ");
-786432,1610758144,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1724,P_INFO,swLogPrintf("OsaFseek %d succ. ");
-786432,1610760448,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1729,P_INFO,swLogPrintf("OsaFwrite fail %d size %d. ");
+786432,1610649601,0,0,CUSTOMER,LIOT_APP,lierda_nvram_168,P_INFO,swLogPrintf("can ' t open / create file %s ");
+786432,1610651904,0,0,CUSTOMER,LIOT_APP,lierda_nvram_182,P_INFO,swLogPrintf("OsaFwrite fail %d size %d. ");
+786432,1610653952,0,0,CUSTOMER,LIOT_APP,lierda_nvram_186,P_INFO,swLogPrintf("offset is %d writeSize %d ");
+786432,1610656256,0,0,CUSTOMER,LIOT_APP,lierda_nvram_209,P_INFO,swLogPrintf("input param is invalid %p %p %d ");
+786432,1610657793,0,0,CUSTOMER,LIOT_APP,lierda_nvram_218,P_INFO,swLogPrintf("can ' t open file %s ");
+786432,1610659841,0,0,CUSTOMER,LIOT_APP,lierda_nvram_226,P_INFO,swLogPrintf("get %s file size fail. ");
+786432,1610662145,0,0,CUSTOMER,LIOT_APP,lierda_nvram_233,P_INFO,swLogPrintf("input buf size %s is too small , filesize %d ");
+786432,1610664192,0,0,CUSTOMER,LIOT_APP,lierda_nvram_246,P_INFO,swLogPrintf("OsaFread fail %d size %d. ");
+786432,1610665985,0,0,CUSTOMER,LIOT_APP,lierda_nvram_275,P_INFO,swLogPrintf("file %s not exist. ");
+786432,1610668033,0,0,CUSTOMER,LIOT_APP,lierda_nvram_279,P_INFO,swLogPrintf("file %s exist. ");
+786432,1610670080,0,0,CUSTOMER,LIOT_APP,lierda_nvram_528,P_INFO,swLogPrintf("cfg type is invalid %d. ");
+786432,1610672384,0,0,CUSTOMER,LIOT_APP,lierda_nvram_556,P_INFO,swLogPrintf("input param is invalid %d %p ");
+786432,1610676223,0,0,CUSTOMER,LIOT_APP,lierda_nvram_562,P_INFO,swLogPrintf("value not change , return ");
+786432,1610676224,0,0,CUSTOMER,LIOT_APP,lierda_nvram_822,P_INFO,swLogPrintf("cfg type is invalid %d. ");
+786432,1610680319,0,0,CUSTOMER,LIOT_APP,lierda_nvram_830,P_INFO,swLogPrintf("update cfg succ. ");
+786432,1610682367,0,0,CUSTOMER,LIOT_APP,lierda_nvram_834,P_INFO,swLogPrintf("update cfg fail. ");
+786432,1610684415,0,0,CUSTOMER,LIOT_APP,lierda_nvram_839,P_INFO,swLogPrintf("read cfg fail. ");
+786432,1610684672,0,0,CUSTOMER,LIOT_APP,lierda_nvram_854,P_INFO,swLogPrintf("input param is invalid %d %p ");
+786432,1610686464,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1076,P_INFO,swLogPrintf("cfg type is invalid %d. ");
+786432,1610690559,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1085,P_INFO,swLogPrintf("read cfg fail. ");
+786432,1610690560,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1100,P_INFO,swLogPrintf("input param is invalid %p ");
+786432,1610692608,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1145,P_INFO,swLogPrintf("cfg type is invalid %d. ");
+786432,1610696703,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1153,P_INFO,swLogPrintf("value not change , return ");
+786432,1610698751,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1159,P_INFO,swLogPrintf("update cfg succ. ");
+786432,1610700799,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1163,P_INFO,swLogPrintf("update cfg fail. ");
+786432,1610702847,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1168,P_INFO,swLogPrintf("read cfg fail. ");
+786432,1610704895,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1193,P_INFO,swLogPrintf("read cfg succ. ");
+786432,1610706943,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1209,P_INFO,swLogPrintf("read cfg fail. ");
+786432,1610708991,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1220,P_INFO,swLogPrintf("The file exists but the size does not match. Attempting to delete it. ");
+786432,1610711039,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1321,P_INFO,swLogPrintf("save default cfg succ. ");
+786432,1610713087,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1325,P_INFO,swLogPrintf("save default cfg fail. ");
+786432,1610713089,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1418,P_INFO,swLogPrintf("file %s exist ");
+786432,1610715136,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1421,P_INFO,swLogPrintf("value 0x%x ");
+786432,1610717185,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1438,P_INFO,swLogPrintf("file %s not exist ");
+786432,1610719233,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1572,P_INFO,swLogPrintf("file %s exist ");
+786432,1610721280,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1575,P_INFO,swLogPrintf("value 0x%x ");
+786432,1610723329,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1592,P_INFO,swLogPrintf("file %s not exist ");
+786432,1610725377,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1601,P_INFO,swLogPrintf("file %s not exist ");
+786432,1610729471,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1609,P_INFO,swLogPrintf("get CFG_INDEX_LUIMDUAL failed ");
+786432,1610729472,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1613,P_INFO,swLogPrintf("isLUimDualEn is %u ");
+786432,1610732032,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1645,P_INFO,swLogPrintf("input param is invalid %p %p %d ");
+786432,1610735615,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1655,P_INFO,swLogPrintf("qFileOpen fail. ");
+786432,1610735616,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1665,P_INFO,swLogPrintf("can ' t OsaFseek file ret %d ");
+786432,1610737920,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1677,P_INFO,swLogPrintf("OsaFread fail %d size %d. ");
+786432,1610740224,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1705,P_INFO,swLogPrintf("input param is invalid %p %p %d ");
+786432,1610741761,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1715,P_INFO,swLogPrintf("qFileOpen %s fail. ");
+786432,1610743808,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1728,P_INFO,swLogPrintf("OsaFseek %d fail. ");
+786432,1610745856,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1736,P_INFO,swLogPrintf("malloc buf %d fail ");
+786432,1610748160,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1749,P_INFO,swLogPrintf("OsaFread fail %d size %d. ");
+786432,1610751999,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1755,P_INFO,swLogPrintf("OsaFread succ ");
+786432,1610752000,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1760,P_INFO,swLogPrintf("OsaFseek fail ret %d ");
+786432,1610754304,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1768,P_INFO,swLogPrintf("OsaFwrite fail %d size %d. ");
+786432,1610758143,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1772,P_INFO,swLogPrintf("OsaFwrite succ ");
+786432,1610758144,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1777,P_INFO,swLogPrintf("OsaFseek %d succ. ");
+786432,1610760448,0,0,CUSTOMER,LIOT_APP,lierda_nvram_1782,P_INFO,swLogPrintf("OsaFwrite fail %d size %d. ");
 786432,1610764287,0,0,CUSTOMER,LIOT_APP,lierda_sim_hotplug_121,P_INFO,swLogPrintf("simdet timeout.. ");
 786432,1610766335,0,0,CUSTOMER,LIOT_APP,lierda_sim_hotplug_127,P_INFO,swLogPrintf("simdet check timeout.. ");
 786432,1610768383,0,0,CUSTOMER,LIOT_APP,lierda_sim_hotplug_133,P_INFO,swLogPrintf("clean... ");
@@ -11940,29 +11960,29 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 786432,1611055103,0,0,CUSTOMER,LIOT_APP,liot_hal_lcd_init_1,P_VALUE,swLogPrintf("init fail lspi need dma callback ");
 786432,1611057151,0,0,CUSTOMER,LIOT_APP,Liot_LspiAllocHandle_1,P_VALUE,swLogPrintf("LspiAllocHandle fail ");
 786432,1611058176,0,0,CUSTOMER,LIOT_APP,Liot_LspiInit,P_VALUE,swLogPrintf("Lspi ( %d ) , dmaChl ( %d ) , sync ( %d ) , Height ( %d ) , width ( %d ) ");
-786432,1611059456,0,0,CUSTOMER,LIOT_APP,Liot_LspiSend_0,P_VALUE,swLogPrintf("Lspihdl %d SendData len = %d ");
-786432,1611063295,0,0,CUSTOMER,LIOT_APP,Liot_LspiSendCmd_0,P_VALUE,swLogDump("");
-786432,1611065343,0,0,CUSTOMER,LIOT_APP,HTTPClient_105,P_INFO,swLogPrintf("Could not find host ");
-786432,1611065600,0,0,CUSTOMER,LIOT_APP,HTTPClient_110,P_INFO,swLogPrintf("Scheme str is too small ( %d > = %d ) ");
-786432,1611067648,0,0,CUSTOMER,LIOT_APP,HTTPClient_159,P_INFO,swLogPrintf("Host str is too small ( %d > = %d ) ");
-786432,1611069696,0,0,CUSTOMER,LIOT_APP,HTTPClient_179,P_INFO,swLogPrintf("Path str is too small ( %d > = %d ) ");
-786432,1611072787,0,0,CUSTOMER,LIOT_APP,HTTPClient_191,P_INFO,swLogPrintf("parseURL{url(%s),host(%s),maxHostLen(%d),port(%d),path(%s),maxPathLen(%d)}\r \n ");
-786432,1611075583,0,0,CUSTOMER,LIOT_APP,HTTPClient_271,P_INFO,swLogPrintf("http_client ( ssl ) : send failed \n ");
-786432,1611075584,0,0,CUSTOMER,LIOT_APP,HTTPClient_886,P_INFO,swLogPrintf("parseURL returned %d ");
-786432,1611079679,0,0,CUSTOMER,LIOT_APP,HTTPClient_931,P_INFO,swLogPrintf("send auth ( if defined ) ");
-786432,1611080199,0,0,CUSTOMER,LIOT_APP,HTTPClient_935,P_INFO,swLogPrintf("( %s , %s ) = > ( %s ) ");
-786432,1611081729,0,0,CUSTOMER,LIOT_APP,HTTPClient_946,P_INFO,swLogPrintf("httpSendHeader custheader :{%s}");
-786432,1611084033,0,0,CUSTOMER,LIOT_APP,HTTPClient_1004,P_INFO,swLogPrintf("httpSendHeader send head : %s , headlen : %d ");
-786432,1611085825,0,0,CUSTOMER,LIOT_APP,HTTPClient_1712,P_INFO,swLogPrintf("httpConnect parse url : [ %s ] ");
-786432,1611087872,0,0,CUSTOMER,LIOT_APP,HTTPClient_1716,P_INFO,swLogPrintf("parseURL returned %d ");
-786432,1611089921,0,0,CUSTOMER,LIOT_APP,HTTPClient_1733,P_INFO,swLogPrintf("httpConnect Scheme : %s ");
-786432,1611091969,0,0,CUSTOMER,LIOT_APP,HTTPClient_1734,P_INFO,swLogPrintf("httpConnect Host : %s ");
-786432,1611094016,0,0,CUSTOMER,LIOT_APP,HTTPClient_1735,P_INFO,swLogPrintf("httpConnect Port : %d ");
-786432,1611096065,0,0,CUSTOMER,LIOT_APP,HTTPClient_1736,P_INFO,swLogPrintf("httpConnect Path : %s ");
-786432,1611098112,0,0,CUSTOMER,LIOT_APP,HTTPClient_1768,P_INFO,swLogPrintf("httpSendRequest ret : %d ");
-786432,1611102207,0,0,CUSTOMER,LIOT_APP,HTTPClient_1791,P_INFO,swLogPrintf("httpClose ");
-786432,1611104255,0,0,CUSTOMER,LIOT_APP,HTTPClient_1804,P_INFO,swLogPrintf("Receiving response ");
-786432,1611104257,0,0,CUSTOMER,LIOT_APP,LWS_LOG,P_VALUE,swLogPrintf("%s ");
+786432,1611061247,0,0,CUSTOMER,LIOT_APP,HTTPClient_105,P_INFO,swLogPrintf("Could not find host ");
+786432,1611061504,0,0,CUSTOMER,LIOT_APP,HTTPClient_110,P_INFO,swLogPrintf("Scheme str is too small ( %d > = %d ) ");
+786432,1611063552,0,0,CUSTOMER,LIOT_APP,HTTPClient_159,P_INFO,swLogPrintf("Host str is too small ( %d > = %d ) ");
+786432,1611065600,0,0,CUSTOMER,LIOT_APP,HTTPClient_179,P_INFO,swLogPrintf("Path str is too small ( %d > = %d ) ");
+786432,1611068691,0,0,CUSTOMER,LIOT_APP,HTTPClient_191,P_INFO,swLogPrintf("parseURL{url(%s),host(%s),maxHostLen(%d),port(%d),path(%s),maxPathLen(%d)}\r \n ");
+786432,1611071487,0,0,CUSTOMER,LIOT_APP,HTTPClient_271,P_INFO,swLogPrintf("http_client ( ssl ) : send failed \n ");
+786432,1611071488,0,0,CUSTOMER,LIOT_APP,HTTPClient_886,P_INFO,swLogPrintf("parseURL returned %d ");
+786432,1611075583,0,0,CUSTOMER,LIOT_APP,HTTPClient_931,P_INFO,swLogPrintf("send auth ( if defined ) ");
+786432,1611076103,0,0,CUSTOMER,LIOT_APP,HTTPClient_935,P_INFO,swLogPrintf("( %s , %s ) = > ( %s ) ");
+786432,1611077633,0,0,CUSTOMER,LIOT_APP,HTTPClient_946,P_INFO,swLogPrintf("httpSendHeader custheader :{%s}");
+786432,1611079937,0,0,CUSTOMER,LIOT_APP,HTTPClient_1004,P_INFO,swLogPrintf("httpSendHeader send head : %s , headlen : %d ");
+786432,1611081729,0,0,CUSTOMER,LIOT_APP,HTTPClient_1712,P_INFO,swLogPrintf("httpConnect parse url : [ %s ] ");
+786432,1611083776,0,0,CUSTOMER,LIOT_APP,HTTPClient_1716,P_INFO,swLogPrintf("parseURL returned %d ");
+786432,1611085825,0,0,CUSTOMER,LIOT_APP,HTTPClient_1733,P_INFO,swLogPrintf("httpConnect Scheme : %s ");
+786432,1611087873,0,0,CUSTOMER,LIOT_APP,HTTPClient_1734,P_INFO,swLogPrintf("httpConnect Host : %s ");
+786432,1611089920,0,0,CUSTOMER,LIOT_APP,HTTPClient_1735,P_INFO,swLogPrintf("httpConnect Port : %d ");
+786432,1611091969,0,0,CUSTOMER,LIOT_APP,HTTPClient_1736,P_INFO,swLogPrintf("httpConnect Path : %s ");
+786432,1611094016,0,0,CUSTOMER,LIOT_APP,HTTPClient_1768,P_INFO,swLogPrintf("httpSendRequest ret : %d ");
+786432,1611098111,0,0,CUSTOMER,LIOT_APP,HTTPClient_1791,P_INFO,swLogPrintf("httpClose ");
+786432,1611100159,0,0,CUSTOMER,LIOT_APP,HTTPClient_1804,P_INFO,swLogPrintf("Receiving response ");
+786432,1611100161,0,0,CUSTOMER,LIOT_APP,LWS_LOG,P_VALUE,swLogPrintf("%s ");
+786432,1611102209,0,0,CUSTOMER,LIOT_APP,ssl_cli_1056,P_INFO,swLogPrintf("client hello , random bytes : %s ");
+786432,1611104257,0,0,CUSTOMER,LIOT_APP,ssl_tls_1175,P_INFO,swLogPrintf("master secret : %s ");
 787456,1612710400,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1297,P_INFO,swLogPrintf("UTC UTCtimer1 0x%x , UTCtimer2 0x%x , local timeZone %d ");
 787456,1612711936,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1305,P_INFO,swLogPrintf("ctzuValue %d ");
 787456,1612714496,0,0,CUSTOMER,LIOT_REF_MAGIC,atec_mm_1317,P_INFO,swLogPrintf("Local UTCtimer1 0x%x , UTCtimer2 0x%x , timeZone %d ");
@@ -13543,42 +13563,6 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 807936,1654675455,0,0,CUSTOMER,LIOT_OPEN_SPI,liot_spi_370,P_INFO,swLogPrintf("spi Initialize suc. ");
 807936,1654677503,0,0,CUSTOMER,LIOT_OPEN_SPI,liot_spi_392,P_INFO,swLogPrintf("Control FAIL ");
 807936,1654679551,0,0,CUSTOMER,LIOT_OPEN_SPI,liot_spi_398,P_INFO,swLogPrintf("Uninitialize FAIL ");
-808960,1656750336,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_44,P_INFO,swLogPrintf("%p %d ");
-808960,1656752384,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_58,P_INFO,swLogPrintf("nParamID %d nParamValue %d ");
-808960,1656756223,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_76,P_INFO,swLogPrintf("input param is invalid \r \n ");
-808960,1656758271,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_80,P_INFO,swLogPrintf("lierda tts init!!!! \r \n ");
-808960,1656760319,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_85,P_INFO,swLogPrintf("resource not set \r \n ");
-808960,1656762367,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_93,P_INFO,swLogPrintf("Malloc failed \r \n ");
-808960,1656762368,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_106,P_INFO,swLogPrintf("ivTTS_Create return 0x%X \n ");
-808960,1656764416,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_116,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_OUTPUT_CALLBACK return 0x%x \r \n ");
-808960,1656766464,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_126,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_PARAMCH_CALLBACK return 0x%X \r \n ");
-808960,1656768512,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_136,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_PROGRESS_CALLBACK return 0x%X \r \n ");
-808960,1656770560,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_146,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_INPUT_CODEPAGE return 0x%X \r \n ");
-808960,1656772608,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_156,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_LANGUAGE return 0x%X \r \n ");
-808960,1656774656,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_166,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_VOLUME return 0x%X \r \n ");
-808960,1656776704,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_176,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_VOICE_SPEED return 0x%X \r \n ");
-808960,1656778752,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_190,P_INFO,swLogPrintf("ivTTS_SetParam ivTTS_PARAM_ROLE return 0x%X \r \n ");
-808960,1656780800,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_202,P_INFO,swLogPrintf("ivTTS_GetVersion return 0x%X \r \n ");
-808960,1656783360,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_206,P_INFO,swLogPrintf("read tts lib majorVer / %d , minorVer / %d , revVer / %d ");
-808960,1656786943,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_209,P_INFO,swLogPrintf("ivTTS init success ");
-808960,1656786944,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_222,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656788992,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_236,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656791040,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_245,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656793088,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_253,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656795136,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_262,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656797184,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_297,P_INFO,swLogPrintf("input param is invalid %d ");
-808960,1656799232,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_337,P_INFO,swLogPrintf("get %d param fail ");
-808960,1656801536,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_343,P_INFO,swLogPrintf("type %d nParamValue is %d ");
-808960,1656803328,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_375,P_INFO,swLogPrintf("UTF-8 source is wrong : %d ");
-808960,1656805376,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_396,P_INFO,swLogPrintf("GBK trans wrong : %d ");
-808960,1656807425,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_407,P_INFO,swLogPrintf("Sucess!!The gbk context is : %s ");
-808960,1656811519,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_411,P_INFO,swLogPrintf("fail!!The gbk context ");
-808960,1656813567,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_422,P_INFO,swLogPrintf("liot_tts_set_resource Entry failed ");
-808960,1656815615,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_446,P_INFO,swLogPrintf("invalid param ");
-808960,1656815616,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_453,P_INFO,swLogPrintf("ivTTS_SynthText failed / 0x%x ");
-808960,1656819711,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_458,P_INFO,swLogPrintf("ivTTS_SynthText succ ");
-808960,1656819712,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_467,P_INFO,swLogPrintf("ivTTS_Exit failed / 0x%x ");
-808960,1656823807,0,0,CUSTOMER,LIOT_OPEN_TTS,liot_tts_471,P_INFO,swLogPrintf("ivTTS_Exit succ ");
 811008,1660944385,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_112,P_INFO,swLogPrintf("GNSS get location : %s ");
 811008,1660946433,0,0,CUSTOMER,LIOT_OPEN_GNSS,liot_gnss_244,P_INFO,swLogPrintf("GNSS get nmea : %s ");
 812032,1663041536,0,0,CUSTOMER,LIOT_CUST,liot_ch390_112,P_INFO,swLogPrintf("CH390 [ %d ] spi driver not found ");
@@ -13739,9 +13723,23 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 812032,1663358976,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1085,P_INFO,swLogPrintf("exit sleep , wake up for : %d ");
 812032,1663361280,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1102,P_INFO,swLogPrintf("deep slp time : %d , %p ");
 812032,1663363072,0,0,CUSTOMER,LIOT_CUST,bsp_custom_1123,P_INFO,swLogPrintf("app log port : %d ");
-812032,1663365120,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_395,P_INFO,swLogPrintf("applicationsStartup appTaskRef is %p ");
-812032,1663369215,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_421,P_INFO,swLogPrintf("lierda_app_main entry \r \n ");
-812032,1663369217,0,0,CUSTOMER,LIOT_CUST,USERAPP_LOG,P_INFO,swLogPrintf("%s ");
+812032,1663365120,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_55,P_INFO,swLogPrintf("write addr 0x%x \r \n ");
+812032,1663369215,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_59,P_INFO,swLogPrintf("malloc fail \r \n ");
+812032,1663371263,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_66,P_INFO,swLogPrintf("malloc fail \r \n ");
+812032,1663371520,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_83,P_INFO,swLogPrintf("LFS_fileRead fail len %d readlen %d \r \n ");
+812032,1663373824,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_97,P_INFO,swLogPrintf("BSP_QSPI_WRITE_AP_FLASH fail addr 0x%x len 0x%x result %d \r \n ");
+812032,1663375360,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_111,P_INFO,swLogPrintf("upgrade progress is %d%% \n ");
+812032,1663379455,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_134,P_INFO,swLogPrintf("LFS_fileRead fail \r \n ");
+812032,1663381503,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_139,P_INFO,swLogPrintf("magic fail \r \n ");
+812032,1663383551,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_156,P_INFO,swLogPrintf("malloc fail \r \n ");
+812032,1663383553,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_165,P_INFO,swLogPrintf("LFS_fileOpen fail %s \r \n ");
+812032,1663385601,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_170,P_INFO,swLogPrintf("flash fs file : %s open success \r \n ");
+812032,1663389695,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_176,P_INFO,swLogPrintf("liot_check_app_head_info fail \r \n ");
+812032,1663391743,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_185,P_INFO,swLogPrintf("upgrade fail \r \n ");
+812032,1663393791,0,0,CUSTOMER,LIOT_CUST,liot_app_upgrade_194,P_INFO,swLogPrintf("upgrade success continue \r \n ");
+812032,1663393792,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_395,P_INFO,swLogPrintf("applicationsStartup appTaskRef is %p ");
+812032,1663397887,0,0,CUSTOMER,LIOT_CUST,lierda_app_main_421,P_INFO,swLogPrintf("lierda_app_main entry \r \n ");
+812032,1663397889,0,0,CUSTOMER,LIOT_CUST,USERAPP_LOG,P_INFO,swLogPrintf("%s ");
 814080,1667236096,0,0,CUSTOMER,LIOT_FACTORY,lierda_gpio_test_8311_23,P_INFO,swLogPrintf("cnt : %d trunkNum : %d ");
 814080,1667238144,0,0,CUSTOMER,LIOT_FACTORY,lierda_gpio_test_8311_32,P_INFO,swLogPrintf("cnt : %d trunkNum : %d ");
 814080,1667240192,0,0,CUSTOMER,LIOT_FACTORY,lierda_gpio_test_8311_41,P_INFO,swLogPrintf("cnt : %d trunkNum : %d ");
@@ -14318,5 +14316,5 @@ MW_INFO_PHY_EDRX_PARAM,midWareNvmInfoPhyEdrxParam
 plat_config,plat_config_fs_t
 <end>
 OptionalSegment
-optional_sk_01,3D5DBE145A5FD70F3334862B3FA493024F18FC1625037FA6C9059596BF445A76
+optional_sk_01,ED46FDF8356DBDF9D89CE7757B97EC50D1078649D0B0EBC9065E493EA55DB1B5
 <end>
