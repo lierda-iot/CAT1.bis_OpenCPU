@@ -2,6 +2,7 @@
 
 #include "app_config.h"
 #include "watch_display.h"
+#include "watch_drawing.h"
 #include "watch_feature.h"
 #include "watch_player.h"
 #include "watch_protocol.h"
@@ -104,9 +105,12 @@ int watch_action_handle(app_display_action_t action, uint32_t value)
     case APP_DISPLAY_ACTION_MEDIA:
         watch_display_show_unavailable("Media");
         return APP_ERR_NOT_SUPPORTED;
-    case APP_DISPLAY_ACTION_SETTINGS:
-        watch_display_show_unavailable("Settings");
-        return APP_ERR_NOT_SUPPORTED;
+    case APP_DISPLAY_ACTION_DRAWING:
+        ret = watch_drawing_start();
+        if (ret != APP_OK) {
+            watch_display_show_unavailable("Drawing");
+        }
+        return ret;
     case APP_DISPLAY_ACTION_TOOLS:
         watch_display_show_unavailable("Tools");
         return APP_ERR_NOT_SUPPORTED;

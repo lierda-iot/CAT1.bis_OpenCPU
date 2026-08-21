@@ -14,6 +14,7 @@ typedef enum {
     WATCH_SESSION_PLAYER,
     WATCH_SESSION_RECORDER,
     WATCH_SESSION_GIF,
+    WATCH_SESSION_DRAWING,
 } watch_session_t;
 
 typedef int (*watch_session_stop_cb_t)(void);

@@ -119,6 +119,12 @@ int display_lvgl_gif_create(lv_obj_t *root,
 int display_lvgl_gif_start(void);
 void display_lvgl_gif_stop(void);
 void display_lvgl_gif_set_visible(bool visible);
+int display_lvgl_drawing_create(lv_obj_t *root,
+                                lv_coord_t screen_width,
+                                lv_coord_t screen_height);
+int display_lvgl_drawing_start(void);
+void display_lvgl_drawing_stop(void);
+void display_lvgl_drawing_set_visible(bool visible);
 int display_lvgl_player_create(lv_obj_t *root,
                                lv_coord_t screen_width,
                                lv_coord_t screen_height);

@@ -23,7 +23,7 @@ static const app_display_lvgl_launcher_item_t s_launcher_items[APP_DISPLAY_LVGL_
     {"Player", APP_DISPLAY_ACTION_PLAY_MP3},
     {"Recorder", APP_DISPLAY_ACTION_RECORD},
     {"GIF", APP_DISPLAY_ACTION_GIF},
-    {"Settings", APP_DISPLAY_ACTION_SETTINGS},
+    {"Drawing", APP_DISPLAY_ACTION_DRAWING},
     {"Tools", APP_DISPLAY_ACTION_TOOLS},
     {"OTA", APP_DISPLAY_ACTION_OTA},
     {"About", APP_DISPLAY_ACTION_ABOUT},

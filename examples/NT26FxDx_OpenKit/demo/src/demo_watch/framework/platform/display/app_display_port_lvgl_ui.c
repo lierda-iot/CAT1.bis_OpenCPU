@@ -52,13 +52,16 @@ static void display_lvgl_ui_update_content_visibility(void)
 {
     bool show_camera = s_display_lvgl.screen == APP_DISPLAY_SCREEN_CAMERA;
     bool show_gif = s_display_lvgl.screen == APP_DISPLAY_SCREEN_GIF;
+    bool show_drawing = s_display_lvgl.screen == APP_DISPLAY_SCREEN_DRAWING;
     bool show_player = s_display_lvgl.screen == APP_DISPLAY_SCREEN_PLAYER_LIST ||
                        s_display_lvgl.screen == APP_DISPLAY_SCREEN_PLAYER_NOW_PLAYING;
     bool show_recorder = s_display_lvgl.screen == APP_DISPLAY_SCREEN_RECORDER;
 
-    display_lvgl_home_set_visible(!show_camera && !show_gif && !show_player && !show_recorder);
+    display_lvgl_home_set_visible(!show_camera && !show_gif && !show_drawing &&
+                                  !show_player && !show_recorder);
     display_lvgl_camera_set_visible(show_camera);
     display_lvgl_gif_set_visible(show_gif);
+    display_lvgl_drawing_set_visible(show_drawing);
     display_lvgl_player_set_visible(s_display_lvgl.screen);
     display_lvgl_recorder_set_visible(show_recorder);
 }
@@ -106,8 +109,16 @@ void display_lvgl_ui_set_screen(app_display_screen_t screen)
             next_screen = APP_DISPLAY_SCREEN_HOME;
             display_lvgl_gif_stop();
         }
+    } else if (screen == APP_DISPLAY_SCREEN_DRAWING) {
+        ret = display_lvgl_drawing_start();
+        if (ret != APP_OK) {
+            app_log("display drawing start failed: %d, fallback home", ret);
+            next_screen = APP_DISPLAY_SCREEN_HOME;
+            display_lvgl_drawing_stop();
+        }
     } else {
         display_lvgl_gif_stop();
+        display_lvgl_drawing_stop();
     }
     s_display_lvgl.screen = next_screen;
     display_lvgl_ui_update_content_visibility();
@@ -222,6 +233,10 @@ int display_lvgl_ui_create(void)
         return ret;
     }
     ret = display_lvgl_gif_create(s_root_screen, screen_width, screen_height);
+    if (ret != APP_OK) {
+        return ret;
+    }
+    ret = display_lvgl_drawing_create(s_root_screen, screen_width, screen_height);
     if (ret != APP_OK) {
         return ret;
     }

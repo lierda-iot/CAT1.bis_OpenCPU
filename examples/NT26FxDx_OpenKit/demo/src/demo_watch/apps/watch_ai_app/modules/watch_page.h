@@ -15,6 +15,7 @@ typedef enum {
     WATCH_PAGE_PLAYER_NOW_PLAYING,
     WATCH_PAGE_RECORDER,
     WATCH_PAGE_GIF,
+    WATCH_PAGE_DRAWING,
 } watch_page_t;
 
 int watch_page_replace(watch_page_t page);

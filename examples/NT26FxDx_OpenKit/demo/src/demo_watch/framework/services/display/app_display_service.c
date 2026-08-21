@@ -344,8 +344,8 @@ const char *app_display_action_name(app_display_action_t action)
         return "media";
     case APP_DISPLAY_ACTION_GIF:
         return "gif";
-    case APP_DISPLAY_ACTION_SETTINGS:
-        return "settings";
+    case APP_DISPLAY_ACTION_DRAWING:
+        return "drawing";
     case APP_DISPLAY_ACTION_TOOLS:
         return "tools";
     case APP_DISPLAY_ACTION_OTA:

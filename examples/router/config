@@ -2,7 +2,7 @@
 # This is for the reconfiguration of the default switch in "SDK/rules/Makefile.defs".
 # To make it convenient for users to enable different features for different projects.
 ######################################################################################################################
-APP_VERSION = 02
+APP_VERSION = 03
 BUILD_COMP_THIRDPART_EN = y
 BUILD_THPART_LIB1_ENABLE = n
 

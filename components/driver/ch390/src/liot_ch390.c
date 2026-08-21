@@ -25,7 +25,7 @@ typedef struct {
     int32_t (*Transfer)(const void *data_out, void *data_in, uint32_t num);
     uint32_t(*GetDataCount)(void);
     int32_t (*Control)(uint32_t control, uint32_t arg);
-    void    *GetStatus;
+    uint32_t (*GetStatus)(void);
 } const liot_ch390_spi_drv_t;
 
 #define LIOT_SPI_POWER_FULL             2
@@ -85,7 +85,9 @@ static void ctx_wait_spi(liot_ch390_ctx_t *ctx) {
 static uint8_t ctx_spi_exchange(liot_ch390_ctx_t *ctx, uint8_t byte) {
     uint8_t out = 0;
     ctx->spiDrv->Transfer(&byte, &out, 1);
-    ctx_wait_spi(ctx);
+    do {
+        delay_us(1);
+    } while (!(ctx->spiDrv->GetStatus() & 0x80));
     return out;
 }
 

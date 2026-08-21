@@ -11,6 +11,7 @@
 #include "watch_audio.h"
 #include "watch_camera.h"
 #include "watch_display.h"
+#include "watch_drawing.h"
 #include "watch_gif.h"
 #include "watch_network.h"
 #include "watch_protocol.h"
@@ -132,6 +133,10 @@ int watch_ai_app_init(void)
     ret = watch_gif_init();
     if (ret != APP_OK) {
         app_log("watch init gif unavailable: %d", ret);
+    }
+    ret = watch_drawing_init();
+    if (ret != APP_OK) {
+        app_log("watch init drawing unavailable: %d", ret);
     }
     ret = watch_protocol_init();
     if (ret != APP_OK) {

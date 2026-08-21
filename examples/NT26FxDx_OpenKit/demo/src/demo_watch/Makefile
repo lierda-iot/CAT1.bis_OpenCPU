@@ -28,6 +28,7 @@ DEMO_WATCH_CFILES := \
 	$(TOP)/$(DEMO_WATCH_DIR)/apps/watch_ai_app/modules/watch_camera_session.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/apps/watch_ai_app/modules/watch_display.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/apps/watch_ai_app/modules/watch_feature.c \
+	$(TOP)/$(DEMO_WATCH_DIR)/apps/watch_ai_app/modules/watch_drawing.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/apps/watch_ai_app/modules/watch_gif.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/apps/watch_ai_app/modules/watch_network.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/apps/watch_ai_app/modules/watch_page.c \
@@ -52,6 +53,7 @@ DEMO_WATCH_CFILES := \
 	$(TOP)/$(DEMO_WATCH_DIR)/framework/platform/display/app_display_port_lvgl_home.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/framework/platform/display/app_display_port_lvgl_camera.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/framework/platform/display/app_display_port_lvgl_gif.c \
+	$(TOP)/$(DEMO_WATCH_DIR)/framework/platform/display/app_display_port_lvgl_drawing.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/framework/platform/display/app_display_port_lvgl_player.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/framework/platform/display/app_display_port_lvgl_recorder.c \
 	$(TOP)/$(DEMO_WATCH_DIR)/framework/platform/display/app_boot_logo_liot.c \
@@ -85,13 +87,14 @@ DEMO_WATCH_LV_CONF := \
 CFLAGS_DEFS += -DLV_CONF_PATH=$(DEMO_WATCH_LV_CONF)
 
 BUILD_DRIVER_LCD_EN := y
+BUILD_THPART_MP3_ENABLE := y
 BUILD_DRIVER_CAMERA_EN := y
 BUILD_DRIVER_TP_EN := y
 BUILD_DRIVER_GX8006_EN := n
 BUILD_DRIVER_WS2812B_EN := n
 BUILD_COMP_TTS_EN := y
 TTS_RESOURCE_TYPE ?= 8k_zh
-CODE_REGION_ADJUST ?= 0x9A000
+CODE_REGION_ADJUST ?= 0x9B000
 BUILD_PRESET_FILE_EXTFLASHLFS_EN := y
 EXT_LFS_BIN ?= $(TOP)/components/presetfile/extflashlfs/ext_lfs.bin
 EXFLASH_FILES_ROOT_DIR :=

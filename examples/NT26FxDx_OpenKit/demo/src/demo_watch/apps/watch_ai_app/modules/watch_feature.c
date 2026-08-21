@@ -1,6 +1,7 @@
 #include "watch_feature.h"
 
 #include "watch_camera.h"
+#include "watch_drawing.h"
 #include "watch_gif.h"
 #include "watch_player.h"
 #include "watch_page.h"
@@ -24,6 +25,8 @@ int watch_feature_start(app_display_action_t action)
         return watch_scan_start();
     case APP_DISPLAY_ACTION_GIF:
         return watch_gif_start();
+    case APP_DISPLAY_ACTION_DRAWING:
+        return watch_drawing_start();
     case APP_DISPLAY_ACTION_PLAY_MP3:
         return watch_player_start();
     case APP_DISPLAY_ACTION_RECORD:

@@ -12,7 +12,8 @@ GCC_PATH	?= $(TOP)/tools/toolchain/gcc
 BUILDDIR	?= $(TOP)/gccout/$(PROJECT)
 PATH		?= $(TOP)/tools/msys64/usr/bin;$(PATH)
 BASEPACK	?= $(TOP)/baskpack/$(BASEPACK)
-BINNAME		?= $(PROJECT)
+BINNAME	    ?= $(PROJECT)_$(MODEM)
+
 TOOLCHAIN	?= GCC
 
 include ./Makefile.rules

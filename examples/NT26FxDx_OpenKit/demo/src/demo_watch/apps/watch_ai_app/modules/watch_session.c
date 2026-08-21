@@ -25,6 +25,8 @@ const char *watch_session_name(watch_session_t session)
         return "recorder";
     case WATCH_SESSION_GIF:
         return "gif";
+    case WATCH_SESSION_DRAWING:
+        return "drawing";
     default:
         return "unknown";
     }

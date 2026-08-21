@@ -30,6 +30,8 @@ const char *watch_page_name(watch_page_t page)
         return "recorder";
     case WATCH_PAGE_GIF:
         return "gif";
+    case WATCH_PAGE_DRAWING:
+        return "drawing";
     default:
         return "unknown";
     }
@@ -50,6 +52,7 @@ static bool watch_page_valid(watch_page_t page)
     case WATCH_PAGE_PLAYER_NOW_PLAYING:
     case WATCH_PAGE_RECORDER:
     case WATCH_PAGE_GIF:
+    case WATCH_PAGE_DRAWING:
         return true;
     default:
         return false;
@@ -64,7 +67,8 @@ static bool watch_page_is_feature_root(watch_page_t page)
            page == WATCH_PAGE_PLAYER_LIST ||
            page == WATCH_PAGE_PLAYER_NOW_PLAYING ||
            page == WATCH_PAGE_RECORDER ||
-           page == WATCH_PAGE_GIF;
+           page == WATCH_PAGE_GIF ||
+           page == WATCH_PAGE_DRAWING;
 }
 
 static int watch_page_to_screen(watch_page_t page, app_display_screen_t *screen)
@@ -92,6 +96,9 @@ static int watch_page_to_screen(watch_page_t page, app_display_screen_t *screen)
         return APP_OK;
     case WATCH_PAGE_GIF:
         *screen = APP_DISPLAY_SCREEN_GIF;
+        return APP_OK;
+    case WATCH_PAGE_DRAWING:
+        *screen = APP_DISPLAY_SCREEN_DRAWING;
         return APP_OK;
     default:
         return APP_ERR_INVALID_ARG;

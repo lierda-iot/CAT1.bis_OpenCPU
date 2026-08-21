@@ -36,7 +36,7 @@ void Liot_RouterStart(void)
     Liot_RouterNvInit();
 
     Liot_RouterCfg_t routerCfg = {
-        .wanNetmode      = 1,
+        .wanNetmode      = 0,  /* 0: NAT, 1: router */
         .wanCid          = LIOT_ROUTER_WAN_CID,
         .wanTaskPriority = LIOT_ROUTER_TASK_PRIORITY,
         .wanMac          = LIOT_ROUTER_WAN_MAC,
