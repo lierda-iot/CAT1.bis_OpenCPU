@@ -8,6 +8,7 @@
 #include "cmsis_os2.h"
 #include "liot_gpio2.h"
 #include <string.h>
+#include "liot_dev.h"
 
 extern void delay_us(uint32_t us);
 
@@ -86,7 +87,8 @@ static uint8_t ctx_spi_exchange(liot_ch390_ctx_t *ctx, uint8_t byte) {
     uint8_t out = 0;
     ctx->spiDrv->Transfer(&byte, &out, 1);
     do {
-        delay_us(1);
+        delay_us(2);
+        liot_dev_feed_wdt();
     } while (!(ctx->spiDrv->GetStatus() & 0x80));
     return out;
 }

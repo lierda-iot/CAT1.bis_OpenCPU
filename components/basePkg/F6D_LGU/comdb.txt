@@ -1,8 +1,8 @@
 DbVersion
-938356764,100
+4257162937,100
 <end>
 BuildInfo
-The current data file was built by the Application Ver. 2.2.83.223, Thu Aug 20 19:31:09 2026
+The current data file was built by the Application Ver. 2.2.83.223, Fri Aug 21 16:05:19 2026
 <end>
 EnumVals
 0,0,0,0,PHY_ONLINE,PHY_ICS_MODULE,PhyIcsMeasMainEntrance_0,P_INFO,swLogPrintf("ICS MEAS of euArfcn %d will be started ");
@@ -14854,9 +14854,9 @@ cad1be53b20f0e4f5f0414b716064f649301ebd57728e8ed01247c322efd39542c6ceb96884ef4ad
 812032,1663332351,0,0,CUSTOMER,LIOT_CUST,liot_router_http_server_427,P_INFO,swLogPrintf("httpd : bind fail ");
 812032,1663332352,0,0,CUSTOMER,LIOT_CUST,liot_router_http_server_432,P_INFO,swLogPrintf("httpd : listening on : %d ");
 812032,1663334400,0,0,CUSTOMER,LIOT_CUST,liot_router_lan_43,P_INFO,swLogPrintf("LAN%d task started ");
-812032,1663336448,0,0,CUSTOMER,LIOT_CUST,liot_router_lan_71,P_INFO,swLogPrintf("LAN%d link UP ");
-812032,1663338496,0,0,CUSTOMER,LIOT_CUST,liot_router_lan_129,P_INFO,swLogPrintf("LAN [ %d ] init failed , skip ");
-812032,1663340544,0,0,CUSTOMER,LIOT_CUST,liot_router_lan_139,P_INFO,swLogPrintf("LAN [ %d ] active ");
+812032,1663336448,0,0,CUSTOMER,LIOT_CUST,liot_router_lan_72,P_INFO,swLogPrintf("LAN%d link UP ");
+812032,1663338496,0,0,CUSTOMER,LIOT_CUST,liot_router_lan_132,P_INFO,swLogPrintf("LAN [ %d ] init failed , skip ");
+812032,1663340544,0,0,CUSTOMER,LIOT_CUST,liot_router_lan_142,P_INFO,swLogPrintf("LAN [ %d ] active ");
 812032,1663342592,0,0,CUSTOMER,LIOT_CUST,liot_router_main_32,P_INFO,swLogPrintf("MAIN : entering loop , queue = %p ");
 812032,1663345408,0,0,CUSTOMER,LIOT_CUST,liot_router_netif_55,P_INFO,swLogPrintf("netif init , gw = %d.%d.%d.%d ");
 812032,1663348480,0,0,CUSTOMER,LIOT_CUST,liot_router_netif_118,P_INFO,swLogPrintf("ICMP reply to LAN [ %d ] src = %d.%d.%d.%d id = %d seq = %d len = %d ");
@@ -15473,5 +15473,5 @@ MW_INFO_PHY_EDRX_PARAM,midWareNvmInfoPhyEdrxParam
 plat_config,plat_config_fs_t
 <end>
 OptionalSegment
-optional_sk_01,9D7EFC5B79C2F2BE05DDC498BB1E162C73C2ECABE0B4CA2BAF8EA60186E81F53
+optional_sk_01,5828CC673CF34B8AE5473CC74C3447F5E9892F512899ED79BB11E6DEBA887869
 <end>
