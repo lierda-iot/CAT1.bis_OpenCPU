@@ -259,7 +259,9 @@
 
 #define LWIP_LAN_CAP_CHECK_TIMEOUT 1000 //ms
 
+#ifndef LWIP_XLAT_ENABLE
 #define LWIP_XLAT_ENABLE 0
+#endif
 
 #define LWIP_LAN_NET_CHANNEL_NUM          2
 

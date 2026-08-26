@@ -86,10 +86,14 @@ static void ctx_wait_spi(liot_ch390_ctx_t *ctx) {
 static uint8_t ctx_spi_exchange(liot_ch390_ctx_t *ctx, uint8_t byte) {
     uint8_t out = 0;
     ctx->spiDrv->Transfer(&byte, &out, 1);
+#ifdef CHIP_EC718
     do {
         delay_us(2);
         liot_dev_feed_wdt();
     } while (!(ctx->spiDrv->GetStatus() & 0x80));
+#else
+    ctx_wait_spi(ctx);
+#endif
     return out;
 }
 
