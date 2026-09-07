@@ -19,7 +19,7 @@ $(BUILDDIR)/components/precfg/src/defaultini.h:
 	$(Q)$(GEN_DEFCFG) -i $(DEFINI) -o $@
 	$(Q)$(ECHO) "GE $@"
 
-$(BUILDDIR)/components/precfg/src/pin.c:
+$(BUILDDIR)/components/precfg/src/pin.c: $(IOINI)
 	$(Q)$(GEN_IORESOURCE) -i $(IOINI) -o $@
 	$(Q)$(ECHO) "GE $@"
 

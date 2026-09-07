@@ -1,0 +1,53 @@
+######################################################################################################################
+# This is for the reconfiguration of the default switch in "SDK/rules/Makefile.defs".
+# To make it convenient for users to enable different features for different projects.
+######################################################################################################################
+APP_VERSION = 01
+
+BUILD_MODE ?= demo
+CODE_REGION_ADJUST = 0x1F4000
+
+BUILD_DRIVER_LCD_EN = y
+BUILD_DRIVER_TP_EN = y
+BUILD_COMP_THIRDPART_EN = y
+BUILD_THPART_LIB1_ENABLE = n
+EXDEMO_LVGL_USE_SOURCE_LIB = y
+BUILD_LVGL_IMAGE_OPT_ENABLE ?= y
+
+ifeq ($(BUILD_MODE), demo)
+BUILD_THPART_LVGL_ENABLE := y
+else ifeq ($(BUILD_MODE), app)
+BUILD_THPART_LVGL_ENABLE := y
+endif
+
+##############################################################################
+# Hardware ready flags (only effective when BUILD_MODE=demo)
+#
+# Mark a module as 'y' only when its hardware is wired and verified.
+# Setting 'n' excludes the module from compilation entirely.
+# This prevents an unstable module from affecting the rest of the system.
+##############################################################################
+HWDEMO_LCD_EN           ?= n
+HWDEMO_SC7A20H_EN       ?= n
+HWDEMO_GNSS_EN          ?= n
+HWDEMO_EXTFLASH_P25Q64_EN      ?= n
+HWDEMO_EXTFLASH_FS_P25Q64_EN   ?= n
+HWDEMO_LVGL_PHOTO_FS_EN        ?= n
+HWDEMO_SALARY_CALCULATOR_EN    ?= n
+HWDEMO_MP3_EN                  ?= n
+HWDEMO_LOCATION_EN              ?= n
+HWDEMO_LOCATION_HEADLESS_EN     ?= n
+HWDEMO_SOUND_ES8375_EN         ?= y
+HWDEMO_XIAOZHI_EN              ?= y
+
+##############################################################################
+# App feature switches (selected per product; later phases consume these directly)
+##############################################################################
+APP_WATCHFACE_EN               ?= y
+APP_WATCHFACE_EARTH_2015_EN    ?= y
+APP_BAJI_EN                    ?= y
+APP_ATTITUDE_EN                ?= y
+APP_ATTFUN_EN                  ?= n
+APP_SALARY_EN                  ?= n
+APP_MAP_EN                     ?= n
+APP_MP3_EN                     ?= y

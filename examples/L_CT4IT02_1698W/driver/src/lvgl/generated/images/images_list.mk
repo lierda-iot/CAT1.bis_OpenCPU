@@ -1,0 +1,1 @@
+GEN_CSRCS += _watch_360x360.c _baji_360x360.c _attitude_360x360.c _attitudefun_360x360.c _salary_360x360.c _positioning_360x360.c
