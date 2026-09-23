@@ -14,10 +14,14 @@
 #include "lierda_app_main.h"
 #include "liot_os.h"
 #include "liot_power.h"
-#include "tgt_app.h"
 #include "liot_vsim.h"
 #include "liot_datacall.h"
 #include "liot_nw.h"
+#ifdef FEATURE_TGT_VSIM_ENABLE
+#include "tgt_app.h"
+#else
+#error "please set BUILD_THPART_VSIM_ENABLE = y in LSDK/rules/Makefile.defs"
+#endif
 
 typedef enum {
     TGT_SOFTSIM_EV_MIN,

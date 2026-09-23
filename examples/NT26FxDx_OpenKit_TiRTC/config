@@ -1,0 +1,29 @@
+##############################################################################
+# NT26FxDx_OpenKit_TiRTC project configuration
+##############################################################################
+APP_VERSION = 01
+
+BUILD_COMP_THIRDPART_EN = y
+BUILD_THPART_CJSON_ENABLE = y
+BUILD_THPART_MBEDTLS_ENABLE = y
+BUILD_THPART_OPUS_ENABLE = y
+
+# Board services used by the TiRTC application.
+HWDEMO_KEY_EN          ?= y
+HWDEMO_LCD_SSD1306_EN  ?= y
+HWDEMO_NET_TIME_EN     ?= y
+HWDEMO_BINDING_EN      ?= y
+
+# TiRTC runtime and product features.
+HWDEMO_TIRTC_EN        ?= y
+TIRTC_SMOKE_RUNTIME_EN ?= n
+HWDEMO_AI_CHAT_EN      ?= y
+HWDEMO_WECHAT_EN       ?= y
+HWDEMO_DEV_CHAT_EN     ?= y
+HWDEMO_LIVE_TALK_EN    ?= y
+
+TIRTC_MAX_SEND_BUFFER_BYTES ?= 131072
+TIRTC_LIBRARY_LOG_LEVEL     ?= 15
+TIRTC_TRANSPORT_LOG_LEVEL   ?= 3
+TIRTC_TRANSPORT_STATS_EN    ?= 0
+TIRTC_AI_PREBUFFER_PACKETS  ?= 1

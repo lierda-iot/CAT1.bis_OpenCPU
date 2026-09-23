@@ -23,8 +23,8 @@ static int liot_st7789_init(liot_hal_lcd_handle_t handle)
     {
         case LIOT_LCD_DIR_0_ANGLE: liot_hal_lcd_write_cmd(handle, 0x36, 0x00); break;
         case LIOT_LCD_DIR_90_ANGLE: liot_hal_lcd_write_cmd(handle, 0x36, 0x70); break;
-        case LIOT_LCD_DIR_180_ANGLE: liot_hal_lcd_write_cmd(handle, 0x36, 0xA0); break;
-        case LIOT_LCD_DIR_270_ANGLE: liot_hal_lcd_write_cmd(handle, 0x36, 0xC0); break;
+        case LIOT_LCD_DIR_180_ANGLE: liot_hal_lcd_write_cmd(handle, 0x36, 0xC0); break;
+        case LIOT_LCD_DIR_270_ANGLE: liot_hal_lcd_write_cmd(handle, 0x36, 0xA0); break;
         default: liot_hal_lcd_write_cmd(handle, 0x36, 0x00); break;
     }
 
@@ -136,7 +136,7 @@ liot_hal_lcdDev_t liot_st7789_dev = {
                     | LIOT_LCD_INTERFACE_8080,
         .width = 240,
         .height = 320,
-        .direction = LIOT_LCD_DIR_0_ANGLE,
+        .direction = LIOT_LCD_DIR_180_ANGLE,
         .color_depth = LIOT_LCD_COLOR_RGB565,
     },
 };

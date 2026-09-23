@@ -81,7 +81,7 @@ $(BUILDDIR)/%.o: %.S
 	$(Q)$(CC) $(CFLAGS) $(CFLAGS_CPU) $(CFLAGS_INC) $(CFLAGS_DEFS) $(DEPFLAGS) -c $< -o $@
 
 $(BUILDDIR)/mem_map.txt: $(TOP)/components/kernel/include/mem_map.h
-	$(Q)$(CC) $(CFLAGS_CPU) $(CFLAGS_DEFS) -E -dM -P $< -o $@
+	$(Q)$(CC) $(CFLAGS_CPU) $(CFLAGS_DEFS) -E -dD -P $< -o $@
 
 $(BUILDDIR)/$(BINNAME).elf: $(OBJS) $(LIBS) $(LIBURS) $(PREBUILDLIBS)
 	$(ECHO) LINK $@

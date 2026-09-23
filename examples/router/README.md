@@ -8,8 +8,10 @@
 - 工程入口：[src/user_main.c](src/user_main.c) → `Liot_RouterStart()`
 - 核心引擎：以预编译库 `libliot_router.a` 形式随底包提供，公共头 `liot_router.h`
   在 `LSDK/components/kernel/lierda_api/liot_router/`
-- 本示例包含**板级 / 用户层**代码（引脚、开关、持久化、LAN 设备驱动、入口）以及
-  **Web 管理服务侧**代码（前端资源、业务 API、HAL 适配、Web 入口）
+- 本示例分为两部分：
+  - **板级 / 用户层**（[src/](src/) + [inc/](inc/)）：入口、启动编排、引脚/开关、持久化、LAN 设备驱动
+  - **Web 管理服务**（[webServer/](webServer/)）：前端资源、业务 API、HAL 适配、Web 入口，
+    由 [webServer/Makefile](webServer/Makefile) 在 `LIOT_ROUTER_WEB=y` 时并入编译
 
 ## 1. 快速开始
 
@@ -19,7 +21,7 @@ make cleanall
 make all PROJECT=router MODEM=NT26F6D1
 ```
 
-生成物：`LSDK/gccout/router/router_<MODEM>.bin` 及 `*_01.binpkg`。
+生成物：`LSDK/gccout/router/router_<MODEM>.bin` 及 `*_.binpkg`。
 下载 binpkg 到模组后，PC / 设备接入 CH390 LAN 口即可通过蜂窝网络上网。
 
 > `MODEM` 按实际模组型号替换（示例默认 `NT26F6D0`，对应底包生成物 `F6D_A`）。
@@ -29,29 +31,47 @@ make all PROJECT=router MODEM=NT26F6D1
 ```text
 examples/router/
 ├── README.md                 # 本文档
-├── config                    # 工程级功能开关（含 CH390 驱动、LAN/灯/复位/Web 开关）
-├── Makefile                  # 条件编译 + 产出 lib_router.a
-├── inc/
-│   ├── user_main.h           # user_main() 声明（内核入口要求）
-│   ├── liot_router_user.h    # 硬件引脚 / 默认值 / 功能开关 / 用户接口
-│   └── liot_router_nv.h      # NV 持久化数据结构 + API
-├── src/
+├── config                    # 工程级功能开关（CH390 驱动 + LAN/灯/复位/Web 开关）
+├── default.ini               # 分区/引脚等默认配置
+├── Makefile                  # 板级层条件编译 + 产出 lib_router.a；Web=y 时并入 webServer/Makefile
+├── inc/                      # 板级层头文件
+│   ├── user_main.h               # user_main() 声明（内核入口要求）
+│   ├── liot_router_user.h        # 硬件引脚 / 默认值 / 功能开关 / 用户接口
+│   └── liot_router_nv.h          # NV 持久化数据结构 + API
+├── src/                      # 板级 / 用户层源码
 │   ├── user_main.c               # 入口：延时 2s 后 Liot_RouterStart()
-│   ├── liot_router_user.c        # 启动编排：NV → 核心 Init → LAN 注册 → Web
+│   ├── liot_router_user.c        # 启动编排：NV → 核心 Init → LAN 注册 → 灯 → Web
 │   ├── liot_router_nv.c          # 配置持久化到 /router_cfg.dat（LittleFS）
 │   ├── liot_router_atlan0.c      # LAN#0 CH390 实例驱动（SPI1）
 │   ├── liot_router_atlan1.c      # LAN#1 CH390 实例驱动（SPI0）
 │   ├── liot_router_light.c       # 网络状态指示灯（PS 承载事件驱动）
-│   ├── liot_router_reset.c       # 复位按键（长按 5s 清 NV 重启）
-│   └── liot_router_web_main.c    # Web 管理服务入口
-├── api/                          # Web 业务 API 模块
-├── hal/                          # Web 平台抽象层及 EC718 适配
-├── resource/                     # 自动生成的 gzip 前端资源 C 数组
-├── ui/                           # 前端 SPA 源码（index.html/app.js/logo1.png）
-└── tools/                        # 前端资源生成工具与架构图
+│   └── liot_router_reset.c       # 复位按键（长按 5s 清 NV 重启）
+└── webServer/                # Web 管理服务（LIOT_ROUTER_WEB=y 时编译）
+    ├── Makefile                  # web 各层 include + 目标文件 + 资源生成规则
+    ├── api/                      # Web 入口 + 业务 API 模块
+    │   ├── liot_router_web_main.c    # Web 入口：注册模块 + 静态资源 handler + 启动 httpd
+    │   ├── liot_router_auth.c        # 登录 / 登出 / 改密
+    │   ├── liot_router_sysinfo.c     # 设备信息
+    │   ├── liot_router_network.c     # WAN/LAN 状态、在线终端
+    │   ├── liot_router_lanconfig.c   # 网关/DHCP/DNS/静态绑定/NAT 配置
+    │   ├── liot_router_system.c      # 重启 / 恢复出厂 / 固件升级
+    │   └── liot_router_modules.h     # 各模块注册声明（含后续功能预留）
+    ├── hal/                      # 平台抽象层
+    │   ├── liot_router_hal.h         # 平台无关接口
+    │   ├── liot_router_hal_ec718.c   # EC718 实现
+    │   └── liot_router_resource.h    # 前端资源表接口（固定头，手工维护，勿改）
+    ├── ui/                       # 前端 SPA 源码（index.html/app.js/logo1.png）← 改这里
+    └── tools/
+        ├── gen_web_asset.py          # 资源生成器（编译时由 Makefile 规则调用）
+        └── diagrams/                 # 架构图资源（.drawio.svg）
 ```
 
-## 3. 编译开关（`config`）
+> **生成产物不在源码树内**：`ui/` 经 `gen_web_asset.py` 打成的
+> `liot_router_resource.c` 生成到 `gccout/.../webServer/` 下，源码目录不落地、无需提交。
+> 而 `liot_router_resource.h` 是**固定接口头**，手工维护在 [webServer/hal/](webServer/hal/)，
+> 不再自动生成（详见第 10.1.4、10.5 节）。
+
+## 3. 编译开关（[config](config)）
 
 | 开关 | 默认 | 说明 |
 | --- | --- | --- |
@@ -60,13 +80,13 @@ examples/router/
 | `LIOT_ROUTER_LAN1` | `y` | 编译 LAN#1（SPI0）实例 |
 | `LIOT_ROUTER_LIGHT` | `y` | 编译网络指示灯模块 |
 | `LIOT_ROUTER_RESET` | `y` | 编译复位按键模块 |
-| `LIOT_ROUTER_WEB` | `y` | 编译 Web 管理服务（前端资源、API、HAL、入口） |
+| `LIOT_ROUTER_WEB` | `y` | 编译 Web 管理服务（并入 [webServer/Makefile](webServer/Makefile)） |
 
-开关 `y` 时 Makefile 追加对应 `-DLIOT_ROUTER_XXX_ENABLE` 宏并编译对应 `.o`。
-只用一个 LAN 口时把 `LIOT_ROUTER_LAN1 ?= n` 即可；不需要 Web 管理页面时把
-`LIOT_ROUTER_WEB ?= n`。
+开关 `y` 时 [Makefile](Makefile) 追加对应 `-DLIOT_ROUTER_XXX_ENABLE` 宏并编译对应 `.o`。
+只用一个 LAN 口时把 `LIOT_ROUTER_LAN1 ?= n`；不需要 Web 管理页面时把
+`LIOT_ROUTER_WEB ?= n`（此时 `webServer/` 整个不参与编译）。
 
-## 4. 硬件引脚（`inc/liot_router_user.h`）
+## 4. 硬件引脚（[inc/liot_router_user.h](inc/liot_router_user.h)）
 
 | 用途 | 宏 | 默认值 |
 | --- | --- | --- |
@@ -167,7 +187,7 @@ examples/router/
 **网关本机流量**：走虚拟 lwIP netif（名 `lr`，MTU 1500）——ICMP echo 手写应答、
 DHCP 续租交 DHCP 处理、其余（如 TCP 本机服务）送入 lwIP 协议栈。
 
-## 8. 启动流程（`Liot_RouterStart`）
+## 8. 启动流程（`Liot_RouterStart`，见 [src/liot_router_user.c](src/liot_router_user.c)）
 
 ```text
 user_main()
@@ -189,7 +209,7 @@ user_main()
 - 组播/广播（DHCP 除外）一律丢弃，依赖组播的业务在 LAN 侧不可用。
 - 核心引擎为预编译库，修改路由算法需在底包工程重新编译；本示例只负责板级/用户层。
 
-## 10. Web 管理服务
+## 10. Web 管理服务（[webServer/](webServer/)）
 
 ### 10.1 当前方案
 
@@ -224,39 +244,30 @@ liot_router_http_server.c   单任务监听 :80 → 缓冲块读解析请求行/
    │   三合一)                → 响应/参数 helper(URL解码等)、10min 会话过期
    │  归属：components/kernel/lierda_api/liot_router (随核心库 libliot_router.a)
    ▼
-api/liot_router_*.c          业务模块(自注册路由，互不耦合)
+webServer/api/liot_router_*.c   业务模块(自注册路由，互不耦合)
    │              auth / sysinfo / network / lanconfig / system
-   │  归属：examples/router/api
    ▼
-hal/liot_router_hal.h        平台无关抽象接口
-   └ liot_router_hal_ec718.c  EC718 适配(LittleFS / liot_dev / liot_nw信号 /
+webServer/hal/liot_router_hal.h   平台无关抽象接口
+   └ liot_router_hal_ec718.c      EC718 适配(LittleFS / liot_dev / liot_nw信号 /
                   liot_fota2 Liot_FotaUpgrade(本地文件包升级) / mbedtls)
-                  归属：examples/router/hal
 ```
 
 > 命名规范：对外函数 `Liot_XxxXxx`、结构体 `Liot_XxxXxx_t`、枚举 `Liot_XxxXxx_e`。
 > 模块分布：HTTP 核心(server.c/.h)在 `components/kernel/lierda_api/liot_router` 侧，
-> 前端资源/API/HAL/入口在 `examples/router` 侧，由 `examples/router/Makefile` 统一把
-> 双方头文件目录加入 include 路径。
+> 前端资源/API/HAL/入口在 `examples/router/webServer` 侧，由
+> [webServer/Makefile](webServer/Makefile) 统一把双方头文件目录加入 include 路径。
 
-#### 10.1.4 目录结构
+#### 10.1.4 目录结构与 include 关系
 
-Web 服务代码分布在两个模块目录，通过 `examples/router/Makefile` 的 include 路径引用核心库头文件：
+Web 服务代码分布在两个模块目录，通过 [webServer/Makefile](webServer/Makefile) 的 `-I`
+路径互相引用：
 
-**① `examples/router/`**（前端资源 + API 业务 + HAL + 入口）
+**① `examples/router/webServer/`**（前端资源 + API 业务 + HAL + 入口）
 ```
-examples/router/
-├── src/
-│   ├── liot_router_web_main.c    入口：注册模块 + 静态资源 handler + 启动 httpd
-│   ├── liot_router_atlan0.c/atlan1.c  LAN0/LAN1 网口驱动
-│   ├── liot_router_nv.c          路由配置 NV 读写
-│   ├── liot_router_user.c        用户配置/初始化
-│   ├── liot_router_light.c       指示灯(可选，ROUTER_LIGHT)
-│   └── liot_router_reset.c       复位按键(可选，ROUTER_RESET)
-├── inc/
-│   ├── liot_router_user.h            用户配置接口
-│   └── liot_router_nv.h              NV 接口
-├── api/                          Web 业务模块(ROUTER_WEB)
+webServer/
+├── Makefile                      模块 include(-I webServer{,/api,/hal}) + 目标 .o + 资源生成规则
+├── api/                          Web 入口 + 业务模块
+│   ├── liot_router_web_main.c        入口：Liot_WebInit() 注册模块 + 静态资源 handler + 启动 httpd
 │   ├── liot_router_auth.c            登录/登出/改密
 │   ├── liot_router_sysinfo.c         设备信息
 │   ├── liot_router_network.c         WAN/LAN 状态、在线终端
@@ -265,15 +276,18 @@ examples/router/
 │   └── liot_router_modules.h         各模块注册声明(含后续功能预留)
 ├── hal/                          平台抽象层
 │   ├── liot_router_hal.h             平台无关接口
-│   └── liot_router_hal_ec718.c       EC718 实现
-├── resource/                     [自动生成] gzip 前端资源，勿手改
-│   └── liot_router_resource.c/.h
+│   ├── liot_router_hal_ec718.c       EC718 实现
+│   └── liot_router_resource.h        前端资源表接口(固定头，手工维护，勿改)
 ├── ui/                           前端 SPA 源码(index.html/app.js/logo1.png) ← 改这里
-├── tools/
-│   ├── gen_web_asset.py          资源生成器(编译前由 Makefile 自动调用)
-│   └── diagrams/                 架构图资源
-└── Makefile                      模块开关(LAN0/1、LIGHT、RESET、WEB) + web 各层 include
+└── tools/
+    ├── gen_web_asset.py          资源生成器(编译时由 Makefile 规则调用)
+    └── diagrams/                 架构图资源
 ```
+
+> **资源产物**：`ui/` 下网页文件经 `gen_web_asset.py` gzip 后转成
+> `liot_router_resource.c`，**生成到 `gccout/.../webServer/` 构建目录**，源码树不落地。
+> 其接口头 `liot_router_resource.h` 是**固定文件**，手工维护在 `webServer/hal/`，
+> 编译时通过 `-I webServer/hal` 被生成的 `.c` 与 `liot_router_web_main.c` 引用。
 
 **② `components/kernel/lierda_api/liot_router/`**（路由核心库 libliot_router.a：公共头文件目录）
 ```
@@ -282,32 +296,36 @@ components/kernel/lierda_api/liot_router/
 └── liot_router_http_server.h    HTTP 核心对外接口
 ```
 
-> 交叉引用关系：`examples/router` 侧的 web API/HAL 依赖核心库侧的
+> 交叉引用关系：`webServer` 侧的 web API/HAL 依赖核心库侧的
 > `liot_router_http_server.h` 与 `liot_router.h`；核心库中的
-> `liot_router_http_server.c` 依赖 `examples/router` 侧的
-> `liot_router_hal.h`、`liot_router_resource.h`、`liot_router_user.h`。
-> `examples/router/Makefile` 通过 `-I` 把 `examples/router/{,api,hal,resource}` 和
-> `components/kernel/lierda_api/liot_router` 加入 include 路径。
+> `liot_router_http_server.c` 依赖 `webServer` 侧的
+> `liot_router_hal.h`、`liot_router_resource.h`。
+> [webServer/Makefile](webServer/Makefile) 通过 `-I` 把 `webServer/{,api,hal}` 加入
+> include 路径（核心库头目录由其组件 Makefile 全局加入）。
 
 #### 10.1.5 流程架构图
 
 ##### 图 A：整体分层与数据流
 
-![整体分层与数据流](tools/diagrams/arch-A-layers.drawio.svg)
+![整体分层与数据流](webServer/tools/diagrams/arch-A-layers.drawio.svg)
 
 ##### 图 B1：登录时序
 
-![登录时序](tools/diagrams/arch-B-login.drawio.svg)
+![登录时序](webServer/tools/diagrams/arch-B-login.drawio.svg)
 
 > 登录免认证(needAuth=false)。密码错返回 401 + 提示；成功签发 Session → Set-Cookie，
 > 前端存 SID、进主界面，后续请求带 Cookie 通过认证中间件校验。
 
 ##### 图 B2：一次请求的处理时序（以"保存 DNS"为例）
 
-![请求处理时序](tools/diagrams/arch-B-request.drawio.svg)
+![请求处理时序](webServer/tools/diagrams/arch-B-request.drawio.svg)
 
 > 认证失败时(SID 无效/过期)：middleware 直接 401，前端跳登录页，不进 handler。
 > DNS/IP 非法时：h_dns 返回 400 "Invalid IP address"，前端红条提示，不写 NV。
+
+##### 图 C：固件升级时序
+
+![固件升级时序](webServer/tools/diagrams/arch-C-upgrade.drawio.svg)
 
 ---
 
@@ -332,6 +350,9 @@ components/kernel/lierda_api/liot_router/
 | `/api/system/upgrade` | POST | ✅ | 固件升级（流式写 FOTA NVM → 校验 → FOTA 专用复位） |
 | `/`, `/index.html`, `/app.js`, `/logo1.png` | GET | ❌ | 静态前端资源（gzip，Cache-Control: no-cache） |
 
+> 静态资源路由由 `Liot_WebInit()` 遍历生成的 `gWebAssets[]` 表逐条注册（见
+> [webServer/api/liot_router_web_main.c](webServer/api/liot_router_web_main.c)）。
+
 ---
 
 ### 10.3 安全机制
@@ -353,17 +374,40 @@ components/kernel/lierda_api/liot_router/
 
 ---
 
-### 10.4 扩展与移植指引
+### 10.4 前端资源生成机制
 
-- **加功能模块**（核心层不改，6 步；路径均相对 `examples/router/`）：
+`ui/` 是唯一需要手改的前端目录，其它是构建产物或固定接口：
+
+- **生成器**：[webServer/tools/gen_web_asset.py](webServer/tools/gen_web_asset.py)
+  `python3 gen_web_asset.py <ui_dir> <out_c>` —— 遍历 `ui/`，文本类(js/html/css)去注释精简，
+  再 gzip(已压缩的 png/ico 等原样存)，输出 C 数组与索引表 `gWebAssets[]` 到 `<out_c>`。
+- **触发方式**：[webServer/Makefile](webServer/Makefile) 里的规则
+  ```make
+  $(BUILDDIR)/$(ROUTER_WEB_DIR)/liot_router_resource.c:
+      $(Q)$(PYTHON) $(WEB_GEN_TOOL) $(UI_DIR) $@ >/dev/null
+      $(Q)$(ECHO) "GE $@"
+  ```
+  生成到构建目录（`gccout/.../webServer/liot_router_resource.c`），随后被编入 `lib_router.a`。
+- **固定头**：`liot_router_resource.h` 只声明结构体 `Liot_WebAsset_t` 与两个 `extern`，
+  内容与 `ui/` 无关，故手工维护在 `webServer/hal/`，**脚本不再生成它**。
+
+> ⚠️ 该规则以目标文件是否**存在**为准，没有跟踪 `ui/` 的修改时间。改了网页后若
+> 构建目录里已有旧的 `liot_router_resource.c`，不会自动重生成 —— 需 `make clean`（或删掉那个
+> 生成的 `.c`）后再编译。只想在**本机浏览器预览**时，手动跑一次脚本指向任意输出即可。
+
+---
+
+### 10.5 扩展与移植指引
+
+- **加功能模块**（核心层不改，6 步；路径均相对 `examples/router/webServer/`）：
   1. 新建 `api/liot_router_xxx.c`，写 handler(签名 `int (Liot_HttpCtx_t*)`)
   2. 用 `Liot_HttpRouteRegister("/api/xxx", HTTP_METHOD_x, needAuth, handler)` 注册路由
   3. `api/liot_router_modules.h` 声明 `void Liot_ApiXxxRegister(void);`
-  4. `src/liot_router_web_main.c` 的 `Liot_WebInit()` 里调用 `Liot_ApiXxxRegister()`
-  5. `Makefile` 的 WEB 块加一行 `ROUTER_COBJSTEMP += $(ROUTER_DIR)/api/liot_router_xxx.o`
-  6. **前端 `app.js` 加新栏目**（完全不懂 JS 也能照做，以加个"About"栏为例）：
+  4. `api/liot_router_web_main.c` 的 `Liot_WebInit()` 里调用 `Liot_ApiXxxRegister()`
+  5. `webServer/Makefile` 加一行 `ROUTER_COBJSTEMP += $(ROUTER_WEB_DIR)/api/liot_router_xxx.o`
+  6. **前端 `ui/app.js` 加新栏目**（完全不懂 JS 也能照做，以加个"About"栏为例）：
 
-     **6.1 打开 `ui/app.js`，搜索 `const TABS`，找到这段**（约 51 行）：
+     **6.1 打开 `ui/app.js`，搜索 `const TABS`，找到这段**：
      ```js
      const TABS = [
        {id:'status', name:'Status',       render:vStatus},
@@ -378,9 +422,9 @@ components/kernel/lierda_api/liot_router/
      ```js
        {id:'about',  name:'About',        render:vAbout},
      ```
-     ↑ 注意结尾也有**逗号**（像上面每行一样）。三个字段：
+     ↑ 注意结尾也有**逗号**。三个字段：
      - `id:'about'` → 栏目内部标识（英文小写，唯一）
-     - `name:'About'` → 显示在导航按钮上的文字（给用户看的）
+     - `name:'About'` → 显示在导航按钮上的文字
      - `render:vAbout` → 渲染函数名，马上要写这个函数
 
      **6.3 在文件末尾（搜索 `function vSystem`，找到它下面位置），复制粘贴加这段**：
@@ -397,7 +441,6 @@ components/kernel/lierda_api/liot_router/
      ↑ 这是你新栏目的**页面内容**，用 HTML 写（反引号`` ` ``括起来的那段）。
      - `$('#view').innerHTML=` 固定写法，把后面的 HTML 显示到页面
      - `<div class="card">...</div>` 是一个卡片，里面放标题 `<h3>` 和段落 `<p>`
-     - 照着这个格式，把内容改成你想展示的就行
 
      **6.4 如果你的栏目要调后端接口取数据**（比如显示日志），改成这样：
      ```js
@@ -413,20 +456,18 @@ components/kernel/lierda_api/liot_router/
        }catch(e){banner(e.message||'Load failed',false);}
      }
      ```
-     ↑ `${d.xxx}` 是把后端返回的 JSON 数据插进去（`d.model` 对应后端 JSON 里的 `"model":"EC718"` 那个字段）。
+     ↑ `${d.xxx}` 是把后端返回的 JSON 数据插进去（`d.model` 对应后端 JSON 里的 `"model":"EC718"`）。
 
-     **6.5 保存 `app.js`，直接编译烧录即可**。
-     资源打包(gzip + 转 C 数组)由 `Makefile` 在**编译时自动执行**
-     (`$(shell ... gen_web_asset.py ...)`)，**无需手动生成**。
-     编译日志里会看到 `router web asset: [gen_web_asset] ...` 一行确认已重新生成。
-     烧录后界面导航就会多一个"About"按钮，点进去显示你写的内容。
-     > 只有想在**本机浏览器预览**(不烧设备)时，才需手动跑一次 `gen_web_asset.py`。
+     **6.5 保存 `app.js`，`make clean` 后重新编译烧录即可**。
+     资源打包(gzip + 转 C 数组)由 `webServer/Makefile` 的规则在编译时执行，生成到构建目录。
+     > 注意第 10.4 节的提醒：生成规则只看目标是否存在、不跟踪 `ui/` 改动，改完网页需
+     > `make clean`（或删掉生成的 `liot_router_resource.c`）后再编译，否则用的还是旧资源。
 
      > **常见错误**：忘了 TABS 最后一行加逗号 → 浏览器 Console 报错 `Unexpected token`；
      > 函数名写错（TABS 里写 `vAbout` 但函数定义成 `function vAboutPage`）→ 点按钮空白页。
   > 用户输入务必校验(仿 `parse_ip_strict`/端口范围)；响应文案用英文(与界面一致)。
 
-- **完整实例：新增"流量统计与限额"模块**（把上面 6 步走一遍的真实样例）
+- **完整实例：新增"流量统计与限额"模块**（把上面 6 步走一遍的真实样例，路径相对 `webServer/`）
 
   **① 新建 `api/liot_router_traffic.c`**（含一个 GET 查询 + 一个 POST 设限额）：
   ```c
@@ -439,7 +480,7 @@ components/kernel/lierda_api/liot_router/
   #include <stdio.h>
   #include <stdlib.h>
 
-  /* 假设 HAL 已提供以下接口(需在 liot_router_hal.h + liot_router_hal_ec718.c 实现)：
+  /* 假设 HAL 已提供以下接口(需在 hal/liot_router_hal.h + liot_router_hal_ec718.c 实现)：
    *   uint64_t Liot_WebHalTrafficRx(void);        // 本月已用下行字节
    *   uint64_t Liot_WebHalTrafficTx(void);        // 本月已用上行字节
    *   uint32_t Liot_WebHalTrafficLimitMb(void);   // 限额(MB,0=不限)
@@ -489,26 +530,26 @@ components/kernel/lierda_api/liot_router/
   }
   ```
 
-  **② `api/liot_router_modules.h` 声明**（把注释里的那行取消注释即可）：
+  **② `api/liot_router_modules.h` 声明**：
   ```c
   void Liot_ApiTrafficRegister(void);   /* 流量统计与限额 */
   ```
 
-  **③ `src/liot_router_web_main.c` 的 `Liot_WebInit()` 里调用**：
+  **③ `api/liot_router_web_main.c` 的 `Liot_WebInit()` 里调用**：
   ```c
   Liot_ApiTrafficRegister();
   ```
 
-  **④ `Makefile` 的 WEB 块加一行**：
+  **④ `webServer/Makefile` 加一行**：
   ```make
-  ROUTER_COBJSTEMP += $(ROUTER_DIR)/api/liot_router_traffic.o
+  ROUTER_COBJSTEMP += $(ROUTER_WEB_DIR)/api/liot_router_traffic.o
   ```
 
-  **⑤ HAL 里实现那 4 个 `Liot_WebHalTraffic*`**（`liot_router_hal.h` 声明 +
-  `liot_router_hal_ec718.c` 实现，用途:从模组/PS 层读流量计数、限额存 NV）。
+  **⑤ HAL 里实现那 4 个 `Liot_WebHalTraffic*`**（`hal/liot_router_hal.h` 声明 +
+  `hal/liot_router_hal_ec718.c` 实现，用途:从模组/PS 层读流量计数、限额存 NV）。
   这是唯一需要碰平台相关代码的地方。
 
-  **⑥ 前端 `app.js` 加"Traffic"栏**（TABS 加一项 + 写渲染函数）：
+  **⑥ 前端 `ui/app.js` 加"Traffic"栏**（TABS 加一项 + 写渲染函数）：
   ```js
   // TABS 数组里加(注意逗号)：
     {id:'traffic', name:'Traffic', render:vTraffic},
@@ -537,12 +578,12 @@ components/kernel/lierda_api/liot_router/
   }
   ```
 
-  改完编译烧录，界面就会多出 **Traffic** 栏，显示本月上下行用量、限额进度，并可设置月限额。
+  改完 `make clean` 再编译烧录，界面就会多出 **Traffic** 栏。
   > 全程 **core 层零改动**；唯一的平台相关工作是第 ⑤ 步的 4 个 HAL 接口。
 
-- **预留功能模块**（见 `liot_router_modules.h` 注释）：蜂窝(APN/制式/拨号)、SIM/PIN、
+- **预留功能模块**（见 `api/liot_router_modules.h` 注释）：蜂窝(APN/制式/拨号)、SIM/PIN、
   流量统计与限额、短信、MAC 过滤/访问控制、静态路由、ping/traceroute 诊断。
-- **移植新平台**：仿 `examples/router/hal/liot_router_hal_ec718.c` 实现
-  `liot_router_hal.h` 全部接口即可；Linux 侧另将核心库中的
+- **移植新平台**：仿 `webServer/hal/liot_router_hal_ec718.c` 实现
+  `hal/liot_router_hal.h` 全部接口即可；Linux 侧另将核心库中的
   `liot_router_http_server.c` 的 lwip socket 换成 POSIX socket（接口一致）。
   前端与 API 逻辑一行不用改。

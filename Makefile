@@ -21,7 +21,6 @@ endif
 
 export GCC_PATH		:= $(TOP)/tools/toolchain/gcc
 export BUILDDIR		:= $(TOP)/gccout/$(PROJECT)
-export BINNAME		:= $(PROJECT)_$(MODEM)
 export TOOLCHAIN	:= GCC
 ###########################################################
 # tools

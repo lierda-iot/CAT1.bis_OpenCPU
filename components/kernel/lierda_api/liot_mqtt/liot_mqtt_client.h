@@ -97,6 +97,13 @@ typedef struct liot_mqtt_client_option_t
     char will_topic[257];                       /*!< Will topic*/
     char will_message[257];                     /*!< Will message*/
     unsigned char ping_timeout;                 /*!< Ping timeout*/
+    int mqtt_send_buf_len;                      /*!< MQTT send buffer length */
+    int mqtt_read_buf_len;                      /*!< MQTT read buffer length */
+    int recv_timeout;                           /*!< Receive timeout(ms) */
+    int send_timeout;                           /*!< Send timeout(ms) */
+    unsigned int command_timeout_ms;            /*!< Command timeout(ms) */
+    int reconnect_count_max;                    /*!< Max reconnect count */
+    int cycle_interval;                         /*!< Task cycle interval(ms) */
 } liot_mqtt_client_option;
 
 typedef enum

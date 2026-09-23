@@ -85,14 +85,18 @@ void demo_gpio2_thread(void *argv)
     Liot_GpioInit(GPIO_IN_ADDR, L_IO_INPUT, L_IO_LOW, &_intcb);
 
     /* 4. Initialize wakeup pad interrupt */
-    Liot_WakeupIntInit(DEMO_WAKEUP_PAD, L_INT_EDGE_RISE, _demo_wakeuppad_cb, NULL);
+    liot_wakeup_cfg_t wakeup_cfg = {
+        .wakeup_pull = LIOT_FORCE_PULL_UP,
+        .wakeup_edge = L_INT_EDGE_FALL
+    };
+    Liot_WakeupIntInit(DEMO_WAKEUP_PAD, wakeup_cfg, _demo_wakeuppad_cb, NULL);
 
     /* 5. Enter main loop, periodically switch GPIO output level */
     while(1)
     {
         Liot_GpioSetLevel(GPIO_OUT_ADDR, L_IO_LOW);  // Set GPIO output to low level
         liot_rtos_task_sleep_ms(1000);                // Delay 1 second
-        
+
         Liot_GpioSetLevel(GPIO_OUT_ADDR, L_IO_HIGH); // Set GPIO output to high level
         liot_rtos_task_sleep_ms(2000);                // Delay 2 seconds
     }
