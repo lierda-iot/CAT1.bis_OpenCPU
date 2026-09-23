@@ -8,6 +8,7 @@
 # DEMO_NAME: Select demo when BUILD_MODE=demo
 #   hardware        - Hardware validation (demo/src/demo_main.c + demo_xxx.c)
 #   demo_zhongyi_ai - Zhongyi AI voice dialog demo
+#   demo_3a         - Audio 3A loopback demo, requires MODEMPKG=F6D_D or F9D_D
 #   demo_watch      - Watch AI demo
 ##############################################################################
 APP_VERSION = 01

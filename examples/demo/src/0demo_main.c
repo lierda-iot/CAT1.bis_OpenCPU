@@ -137,6 +137,12 @@ void user_main(void)
     liot_rtos_task_create(&cameratskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_camera_demo_thread", &liot_camera_demo_thread, NULL);
     #endif
 
+    #ifdef APPDEMO_JPEG_EN
+    void liot_jpeg_demo_thread(void *argv);
+    liot_task_t jpegtaskhandle = NULL;
+    liot_rtos_task_create(&jpegtaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_jpeg_demo_thread", &liot_jpeg_demo_thread, NULL);
+    #endif
+
     #ifdef APPDEMO_LBS_EN
     void liot_lbs_demo_thread(void *argv);
     liot_task_t lbstskhandle = NULL;
@@ -348,5 +354,11 @@ void user_main(void)
     void liot_zip_demo_thread(void *argv);
     liot_task_t ziptskhandle = NULL;
     liot_rtos_task_create(&ziptskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_zip_demo_thread", &liot_zip_demo_thread, NULL);
+    #endif
+
+    #ifdef APPDEMO_SFDT_SLAVE_EN
+    void liot_sfdt_slave_demo_thread(void *argv);
+    liot_task_t sfdtSlaveTaskHandle = NULL;
+    liot_rtos_task_create(&sfdtSlaveTaskHandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_sfdt_slave_demo_thread", &liot_sfdt_slave_demo_thread, NULL);
     #endif
 }

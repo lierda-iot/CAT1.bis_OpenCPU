@@ -107,6 +107,11 @@ CFLAGS_DEFS += -DAPPDEMO_CAMERA_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_camera.o
 endif
 
+ifeq ($(EXDEMO_JPEG_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_JPEG_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_jpeg.o
+endif
+
 ifeq ($(EXDEMO_TP_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_TP_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_tp.o
@@ -282,6 +287,11 @@ endif
 ifeq ($(EXDEMO_ZIP_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_ZIP_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_zip.o
+endif
+
+ifeq ($(EXDEMO_SFDT_SLAVE_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_SFDT_SLAVE_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_sfdt_slave.o
 endif
 
 DEMO_COBJS := $(addprefix $(BUILDDIR)/, $(DEMO_COBJSTEMP))

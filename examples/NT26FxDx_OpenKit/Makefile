@@ -66,12 +66,16 @@ CFLAGS_INC += -I $(TOP)/$(CUSTOM_INC)
 CUSTOM_COBJSTEMP := $(patsubst $(TOP)/%.c,%.o,$(wildcard $(TOP)/$(CUSTOM_SRC)/*.c))
 PP_FILES += $(wildcard $(TOP)/$(CUSTOM_SRC)/*.c)
 
+else ifeq ($(DEMO_NAME), demo_3a)
+
+include $(TOP)/$(CUSTOM_DIR)/demo/src/demo_3a/Makefile
+
 else ifeq ($(DEMO_NAME), demo_watch)
 
 include $(TOP)/$(CUSTOM_DIR)/demo/src/demo_watch/Makefile
 
 else
-$(error Unsupported DEMO_NAME "$(DEMO_NAME)"; use "hardware", "demo_zhongyi_ai", or "demo_watch")
+$(error Unsupported DEMO_NAME "$(DEMO_NAME)"; use "hardware", "demo_zhongyi_ai", "demo_3a", or "demo_watch")
 endif
 
 else

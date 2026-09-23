@@ -126,4 +126,3 @@ _Generate_binpkg_: $(BASEPKG_OBJ) $(BUILDDIR)/mem_map.txt
 	-productname $(BASEPKG_PRODUCT) \
 	-def $(BUILDDIR)/mem_map.txt \
 	-outfile $(BUILDDIR)/$(BINNAME)_$(APP_VERSION).binpkg
-

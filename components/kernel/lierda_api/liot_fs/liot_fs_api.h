@@ -213,7 +213,7 @@ int liot_fwrite(void *buffer, size_t size, size_t num, LFILE fd);
  * @param[in] fd File descriptor returned by liot_fopen
  * @param[in] offset Number of bytes to offset from origin
  * @param[in] origin Reference position for offset (SEEK_SET, SEEK_CUR, or SEEK_END)
- * @return LIOT_FILE_SUCCESS on success, negative @ref liot_file_errcode_e on failure
+ * @return new file position on success, negative @ref liot_file_errcode_e on failure
  * @warning Behavior is undefined for append-mode files ("a" or "a+")
  */
 int liot_fseek(LFILE fd, long offset, int origin);

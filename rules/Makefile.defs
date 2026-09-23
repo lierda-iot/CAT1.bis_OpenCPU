@@ -2,8 +2,8 @@
 # SDK Version (managed by SDK maintainer, do not modify in project config)
 ###########################################################
 SDK_VERSION_MAJOR ?= 1
-SDK_VERSION_MINOR ?= 6
-SDK_VERSION_PATCH ?= 05_beta
+SDK_VERSION_MINOR ?= 7
+SDK_VERSION_PATCH ?= 0
 SDK_VERSION = $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
 
 ###########################################################

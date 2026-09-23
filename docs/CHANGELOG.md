@@ -39,6 +39,38 @@ Each version entry should include the following categories (as applicable):
 ---
 
 <!-- CHANGELOG_PLACEHOLDER -->
+## [v1.7] - 2026-09-22
+
+Special note: 718_M series chip modules must be upgraded to this version, otherwise subsequent new batches of modules will fail to boot properly. Related tools have been upgraded accordingly; please use the latest version of the tools.
+
+Tools: Cellular firmware flash tool has been upgraded to V1.0.2.
+
+### Added
+
+- Add hardware timer liot_timer interface
+- Add VSIM feature support
+- Add liot_telldir, liot_seekdir, and liot_rewinddir interfaces to the filesystem
+- Add TTS with directly available 8k/16k Chinese-English libraries
+- Add base packages F6D_D/F9D_D with 3A algorithm support
+- Add F7D_A, supporting NT26F7D0 base package with VoLTE
+- Add liot_jpeg interface and example demo
+- Optimize router project network speed and stability; add IPv6 and CLAT support
+- Add UART upgrade example to the fota demo
+- Add support for embedding the filesystem during flashing
+- Add support new models NT26F7D0, NT26F8D0, NT26F8D0-0K, and NT26F8D0-0TK
+
+### Changed
+
+- Optimize liot_audio interface and add spicodec feature
+- MQTT connection supports configuring send/receive buffer size, send/receive timeout, and reconnect count
+- Rename the L_CT4IT00_YP00W_01_V04 example to NT26FxDx_OpenKit and add demo_watch
+
+### Fixed
+
+- Fix third-party library lvgl compilation issue
+- Fix crash in third-party MQTT exception handling
+- Fix SIM2 detection exception on F6D series
+- Fix various compilation issues and comments
 
 ## [v1.6] - 2026-07-20
 

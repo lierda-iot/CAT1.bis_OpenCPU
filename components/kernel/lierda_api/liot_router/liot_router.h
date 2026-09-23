@@ -10,10 +10,20 @@
 
 /* Utility macros */
 
-/** @brief IP address printf format string (network-order uint32_t -> a.b.c.d) */
+/** @brief IPv4 address printf format string (network-order uint32_t -> a.b.c.d) */
 #define IP4_FMT          "%d.%d.%d.%d"
 #define IP4_UNPACK(ip)   ((uint8_t*)&(ip))[0], ((uint8_t*)&(ip))[1], \
                          ((uint8_t*)&(ip))[2], ((uint8_t*)&(ip))[3]
+
+/** @brief IPv6 address printf format string (network-order uint8_t[16] -> hex) */
+#define IP6_FMT "%x%x:%x%x:%x%x:%x%x:%x%x:%x%x:%x%x:%x%x"
+#define IP6_UNPACK(ip6) \
+    (ip6)[0],(ip6)[1],(ip6)[2],(ip6)[3],(ip6)[4],(ip6)[5],(ip6)[6],(ip6)[7],\
+    (ip6)[8],(ip6)[9],(ip6)[10],(ip6)[11],(ip6)[12],(ip6)[13],(ip6)[14],(ip6)[15]
+
+/** @brief MAC address printf format string (uint8_t[6] -> aa:bb:cc:dd:ee:ff) */
+#define MAC_FMT          "%x:%x:%x:%x:%x:%x"
+#define MAC_UNPACK(mac)  (mac)[0],(mac)[1],(mac)[2],(mac)[3],(mac)[4],(mac)[5]
 
 /* Byte order conversion */
 
@@ -37,11 +47,21 @@
 
 /** @brief WAN side network information */
 typedef struct Liot_RouterWanInfo {
+    /* IPv4 */
     uint32_t wanIp;       /**< WAN IP address (network order) */
     uint32_t wanMask;     /**< WAN subnet mask (network order) */
     uint32_t wanGw;       /**< WAN gateway (network order) */
     uint32_t dns1;        /**< Primary DNS (network order) */
     uint32_t dns2;        /**< Secondary DNS (network order) */
+    uint8_t  wanMac[6];   /**< WAN MAC address */
+
+    /* IPv6 */
+    uint8_t  ipv6Valid;         /**< IPv6 是否有效：1=有效, 0=无效 */
+    uint8_t  wanIpv6[16];       /**< WAN IPv6 地址（网络序） */
+    uint8_t  wanIpv6PrefixLen;  /**< IPv6 前缀长度（如 64） */
+    uint8_t  wanIpv6Gw[16];     /**< WAN IPv6 网关（网络序） */
+    uint8_t  dnsv6_1[16];       /**< IPv6 DNS1（网络序） */
+    uint8_t  dnsv6_2[16];       /**< IPv6 DNS2（网络序） */
 } Liot_RouterWanInfo_t;
 
 /* LAN layer */
@@ -131,6 +151,23 @@ int32_t Liot_RouterDhcpGetHost(uint32_t ip, uint8_t *lan_port, uint8_t *mac);
  * @param ip       IP address (network order)
  */
 void Liot_RouterDhcpAddHost(uint8_t lan_port, const uint8_t *mac, uint32_t ip);
+
+/**
+ * @brief Add or update IPv6 host entry (learned from Ethernet frame)
+ * @param lan_port LAN port index
+ * @param mac      MAC address
+ * @param ipv6     IPv6 address (16 bytes, network order)
+ */
+void Liot_RouterAddHostV6(uint8_t lan_port, const uint8_t *mac, const uint8_t *ipv6);
+
+/**
+ * @brief Query IPv6 host entry
+ * @param ipv6     IPv6 address to look up (16 bytes, network order)
+ * @param out_port Output LAN port index (can be NULL)
+ * @param out_mac  Output MAC address (can be NULL)
+ * @return 0 if found, -1 if not found
+ */
+int32_t Liot_RouterGetHostV6(const uint8_t *ipv6, uint8_t *out_port, uint8_t *out_mac);
 
 /**
  * @brief Set DHCP address pool range

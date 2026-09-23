@@ -30,7 +30,11 @@ libusr-y += liblvgl.a
 $(BUILDDIR)/lib/libusr/liblvgl.a: $(LVGL_COBJS)
 	@mkdir -p $(dir $@)
 	$(ECHO) AR $@
+ifeq ($(BUILD_ENV),windows)
+	$(Q)printf '%s\n' $^ | sed -e 's#^/cygdrive/\([A-Za-z]\)/#\1:/#' > $@.rsp
+else
 	$(Q)echo $^ > $@.rsp
+endif
 	$(Q)$(AR) $(ARFLAGS) $@ @$@.rsp
 	$(Q)rm -f $@.rsp
 endif
