@@ -1,0 +1,65 @@
+#define BP_USED_UART0 1
+#define BP_USED_UART1 1
+#define BP_USED_UART2 1
+#define BP_USED_UART3 1
+#define BP_USED_I2C0 1
+#define BP_USED_I2C1 1
+#define BP_USED_SPI0 1
+#define BP_USED_SPI1 1
+#define BP_USED_I2S0 1
+#define BP_USED_I2S1 1
+#define BP_USED_CAN0 0
+ 
+typedef struct _bp_ioPin {
+  unsigned char pinNum;
+  unsigned char funcNum;
+} bp_ioPin;
+ 
+bp_ioPin uart0_pin_tx = {32, 1};
+bp_ioPin uart0_pin_rx = {31, 1};
+bp_ioPin uart0_pin_cts = {43, 3};
+bp_ioPin uart0_pin_rts = {42, 3};
+bp_ioPin uart1_pin_tx = {34, 1};
+bp_ioPin uart1_pin_rx = {33, 1};
+bp_ioPin uart1_pin_cts = {28, 2};
+bp_ioPin uart1_pin_rts = {27, 2};
+bp_ioPin uart2_pin_tx = {26, 3};
+bp_ioPin uart2_pin_rx = {25, 3};
+bp_ioPin uart2_pin_cts = {24, 3};
+bp_ioPin uart2_pin_rts = {23, 3};
+bp_ioPin uart3_pin_tx = {30, 3};
+bp_ioPin uart3_pin_rx = {29, 3};
+bp_ioPin uart3_pin_cts = {255, 255};
+bp_ioPin uart3_pin_rts = {255, 255};
+bp_ioPin i2c0_pin_scl = {30, 2};
+bp_ioPin i2c0_pin_sda = {29, 2};
+bp_ioPin i2c1_pin_scl = {13, 3};
+bp_ioPin i2c1_pin_sda = {14, 3};
+bp_ioPin spi0_pin_sclk = {26, 1};
+bp_ioPin spi0_pin_ssn = {23, 1};
+bp_ioPin spi0_pin_mosi = {24, 1};
+bp_ioPin spi0_pin_miso = {25, 1};
+bp_ioPin spi1_pin_sclk = {30, 1};
+bp_ioPin spi1_pin_ssn = {27, 1};
+bp_ioPin spi1_pin_mosi = {28, 1};
+bp_ioPin spi1_pin_miso = {29, 1};
+bp_ioPin cspi0_pin_mclk = {39, 1};
+bp_ioPin cspi0_pin_pclk = {35, 1};
+bp_ioPin cspi0_pin_cs = {36, 1};
+bp_ioPin cspi0_pin_sdo0 = {37, 1};
+bp_ioPin cspi0_pin_sdo1 = {38, 1};
+bp_ioPin cspi1_pin_mclk = {18, 1};
+bp_ioPin cspi1_pin_pclk = {19, 1};
+bp_ioPin cspi1_pin_cs = {20, 1};
+bp_ioPin cspi1_pin_sdo0 = {21, 1};
+bp_ioPin cspi1_pin_sdo1 = {22, 1};
+bp_ioPin i2s0_pin_mclk = {39, 1};
+bp_ioPin i2s0_pin_bclk = {35, 1};
+bp_ioPin i2s0_pin_lrck = {36, 1};
+bp_ioPin i2s0_pin_din = {37, 1};
+bp_ioPin i2s0_pin_dout = {38, 1};
+bp_ioPin i2s1_pin_mclk = {18, 1};
+bp_ioPin i2s1_pin_bclk = {19, 1};
+bp_ioPin i2s1_pin_lrck = {20, 1};
+bp_ioPin i2s1_pin_din = {21, 1};
+bp_ioPin i2s1_pin_dout = {22, 1};

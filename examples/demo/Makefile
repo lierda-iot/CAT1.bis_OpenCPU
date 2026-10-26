@@ -12,6 +12,11 @@ CFLAGS_DEFS += -DAPPDEMO_ADC_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_adc.o
 endif
 
+ifeq ($(EXDEMO_UART_SLEEP_GPIO_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_UART_SLEEP_GPIO_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_uart_sleep_gpio.o
+endif
+
 ifeq ($(EXDEMO_DEV_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_DEV_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_dev.o
@@ -25,6 +30,11 @@ endif
 ifeq ($(EXDEMO_I2C_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_I2C_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_i2c.o
+endif
+
+ifeq ($(EXDEMO_I2C_MPU6050_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_I2C_MPU6050_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_i2c_mpu6050.o
 endif
 
 ifeq ($(EXDEMO_USB_EN), y)
@@ -147,6 +157,11 @@ CFLAGS_DEFS += -DAPPDEMO_PWMAUD_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_pwmaud.o
 endif
 
+ifeq ($(EXDEMO_PWM_OPUS_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_PWM_OPUS_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_pwm_opus.o
+endif
+
 ifeq ($(EXDEMO_APWM_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_APWM_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_apwm.o
@@ -170,6 +185,11 @@ endif
 ifeq ($(EXDEMO_UART2_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_UART2_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_uart2.o
+endif
+
+ifeq ($(EXDEMO_AT_DOWNLOAD_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_AT_DOWNLOAD_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_at_download.o
 endif
 
 ifeq ($(EXDENO_SLEEPEX_EN), y)
@@ -292,6 +312,21 @@ endif
 ifeq ($(EXDEMO_SFDT_SLAVE_EN), y)
 CFLAGS_DEFS += -DAPPDEMO_SFDT_SLAVE_EN
 DEMO_COBJSTEMP += $(DEMO_SRC)/demo_sfdt_slave.o
+endif
+
+ifeq ($(EXDEMO_POWERKEY_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_POWERKEY_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_powerkey.o
+endif
+
+ifeq ($(EXDEMO_SFDT_WIFISTA_WAN_SWITCH_TCP_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_SFDT_WIFISTA_WAN_SWITCH_TCP_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_sfdt_wifista_wan_switch_tcp.o
+endif
+
+ifeq ($(EXDEMO_SFDT_WIFIAP_TCP_ECHO_EN), y)
+CFLAGS_DEFS += -DAPPDEMO_SFDT_WIFIAP_TCP_ECHO_EN
+DEMO_COBJSTEMP += $(DEMO_SRC)/demo_sfdt_wifiap_tcp_echo.o
 endif
 
 DEMO_COBJS := $(addprefix $(BUILDDIR)/, $(DEMO_COBJSTEMP))

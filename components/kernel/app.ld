@@ -13,6 +13,7 @@ SECTIONS
     KEEP(*(.app_header))
     KEEP(*(.iomap))
     KEEP(*(.cfgmap))
+    KEEP(*(.app_info))
   } > FLASH
 
   .app_nvram : ALIGN(0x1000)

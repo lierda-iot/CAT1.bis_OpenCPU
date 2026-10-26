@@ -23,6 +23,12 @@ void user_main(void)
     liot_rtos_task_create(&adctaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_adc_demo_thread", &liot_adc_demo_thread, NULL);
     #endif
 
+    #ifdef APPDEMO_UART_SLEEP_GPIO_EN
+    void liot_uart_sleep_gpio_demo_thread(void *argv);
+    liot_task_t uartsleepgpiotskhandle = NULL;
+    liot_rtos_task_create(&uartsleepgpiotskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_uart_sleep_gpio_demo_thread", &liot_uart_sleep_gpio_demo_thread, NULL);
+    #endif
+
     #ifdef APPDEMO_DEV_EN
     void liot_dev_demo_thread(void *argv);
     liot_task_t devtaskhandle = NULL;
@@ -35,12 +41,25 @@ void user_main(void)
     liot_rtos_task_create(&uart2taskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_uart2_demo_thread", &liot_uart2_demo_thread, NULL);
     #endif
 
+    #ifdef APPDEMO_AT_DOWNLOAD_EN
+    void liot_at_download_demo_thread(void *argv);
+    liot_task_t atdownloadtaskhandle = NULL;
+    liot_rtos_task_create(&atdownloadtaskhandle, 10240, LIOT_APP_TASK_PRIORITY,
+                          "liot_at_download_demo_thread", &liot_at_download_demo_thread, NULL);
+    #endif
+
     #ifdef APPDEMO_I2C_EN
     void liot_i2c_demo_thread(void *argv);
     liot_task_t i2ctaskhandle = NULL;
     liot_rtos_task_create(&i2ctaskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_i2c_demo_thread", &liot_i2c_demo_thread, NULL);
     #endif
-   
+
+    #ifdef APPDEMO_I2C_MPU6050_EN
+    void liot_i2c_mpu6050_demo_thread(void *argv);
+    liot_task_t i2cmpu6050taskhandle = NULL;
+    liot_rtos_task_create(&i2cmpu6050taskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_i2c_mpu6050_demo_thread", &liot_i2c_mpu6050_demo_thread, NULL);
+    #endif
+
     #ifdef APPDEMO_USB_EN
     void liot_usb_demo_thread(void *argv);
     liot_task_t usbtaskhandle = NULL;
@@ -189,6 +208,12 @@ void user_main(void)
     void liot_pwm_tts_demo_thread(void *argv);
     liot_task_t pwmAudtskhandle = NULL;
     liot_rtos_task_create(&pwmAudtskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_pwm_tts_demo_thread", &liot_pwm_tts_demo_thread, NULL);
+    #endif
+
+    #ifdef APPDEMO_PWM_OPUS_EN
+    void liot_pwm_opus_demo_task(void *argv);
+    liot_task_t pwmOpusTaskHandle = NULL;
+    liot_rtos_task_create(&pwmOpusTaskHandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_pwm_opus_demo_task", &liot_pwm_opus_demo_task, NULL);
     #endif
 
     #ifdef APPDEMO_APWM_EN
@@ -360,5 +385,31 @@ void user_main(void)
     void liot_sfdt_slave_demo_thread(void *argv);
     liot_task_t sfdtSlaveTaskHandle = NULL;
     liot_rtos_task_create(&sfdtSlaveTaskHandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_sfdt_slave_demo_thread", &liot_sfdt_slave_demo_thread, NULL);
+    #endif
+
+    #ifdef APPDEMO_POWERKEY_EN
+    void liot_powerkey_demo_task(void *argv);
+    liot_task_t powerkeyTaskHandle = NULL;
+    liot_rtos_task_create(&powerkeyTaskHandle, 4096, LIOT_APP_TASK_PRIORITY, "liot_powerkey_demo", &liot_powerkey_demo_task, NULL);
+    #endif
+
+    #ifdef APPDEMO_SFDT_WIFIAP_TCP_ECHO_EN
+    void liot_sfdt_wifiap_tcp_echo_demo_thread(void *argv);
+    liot_task_t sfdtApTcpTaskHandle = NULL;
+    liot_rtos_task_create(&sfdtApTcpTaskHandle, 10240, LIOT_APP_TASK_PRIORITY,
+                          "sfdt_wifiap_tcp_echo", &liot_sfdt_wifiap_tcp_echo_demo_thread, NULL);
+    if (sfdtApTcpTaskHandle == NULL)
+        liot_trace("[sfdt-ap-tcp] create demo task failed");
+    #endif
+
+    #ifdef APPDEMO_SFDT_WIFISTA_WAN_SWITCH_TCP_EN
+    /* The switch task changes the default route; the TCP task reconnects
+     * on each new egress and logs its traffic. */
+    void liot_sfdt_wifista_wan_switch_thread(void *argv);
+    void liot_sfdt_wifista_wan_tcp_thread(void *argv);
+    liot_task_t sfdtWanSwitchTaskHandle = NULL;
+    liot_task_t sfdtWanTcpTaskHandle = NULL;
+    liot_rtos_task_create(&sfdtWanSwitchTaskHandle, 4096, LIOT_APP_TASK_PRIORITY, "sfdt_sta_wan_switch", &liot_sfdt_wifista_wan_switch_thread, NULL);
+    liot_rtos_task_create(&sfdtWanTcpTaskHandle, 10240, LIOT_APP_TASK_PRIORITY, "sfdt_sta_wan_tcp", &liot_sfdt_wifista_wan_tcp_thread, NULL);
     #endif
 }

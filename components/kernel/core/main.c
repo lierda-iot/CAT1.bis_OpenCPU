@@ -7,14 +7,19 @@
 #include "lierda_defcfg.h"
 #include "mem_map.h"
 
-/***************** lwip ****************/
-/* sync basepack lib lwip errno to app*/
-extern int errno;
-void synclwiperrno(int err) { errno = err;}
-void Liot_SetAppSockErrnoCB(void* cb);
-/***************** end *****************/
-
 #define __L_APP_HEAD_ __attribute__((section(".app_header")))
+#define __L_APP_INFO_ __attribute__((section(".app_info")))
+
+typedef struct
+{
+    char *appBuildDate;     // Build date (YYYYMMDD format)
+    char *appBuildTime;     // Build time (HHMMSS format)
+    char *appsdkVersionStr; // SDK version string
+    char *appVersionStr;    // APP version string
+    char *cgrmVersionStr;   // CGRM version string
+    char *modemType;        // Modem type string
+} app_info_t;
+
 typedef struct _app_header_
 {
     uint32_t name;
@@ -23,6 +28,7 @@ typedef struct _app_header_
     uint32_t table2;
     uint32_t filesys_addr;
     uint32_t filesys_size;
+    uint32_t appInfo;
 } app_header_t;
 
 extern DriveioMap hwioResource;
@@ -44,10 +50,17 @@ void main(uint32_t syscallTable, uint32_t appImageLocation, uint32_t reserved2, 
 {
     copyRwDataFromBin();
     setZiDataToZero();
-    __Liot_SetAppSdkversion(SDK_VERSION "_" APP_VERSION);
-    Liot_SetAppSockErrnoCB(synclwiperrno);
     userTaskEnter();
 }
+
+__L_APP_INFO_ app_info_t appInfo = {
+    .appBuildDate = __DATE__,
+    .appBuildTime = __TIME__,
+    .appsdkVersionStr = SDK_VERSION,
+    .appVersionStr = APP_VERSION,
+    .cgrmVersionStr = CGRM_VERSION,
+    .modemType = MODEL_TYPE,
+};
 
 __L_APP_HEAD_ app_header_t head =
 {
@@ -57,4 +70,5 @@ __L_APP_HEAD_ app_header_t head =
     .table2 = (uint32_t)&lsdk_cfg,
     .filesys_addr = PKGFLXFS_IMG_ADDR,
     .filesys_size = PKGFLXFS_IMG_SIZE,
+    .appInfo = (uint32_t)&appInfo,
 };

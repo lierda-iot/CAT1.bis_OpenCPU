@@ -2,7 +2,18 @@
 # This is for the reconfiguration of the default switch in "SDK/rules/Makefile.defs".
 # To make it convenient for users to enable different features for different projects.
 ######################################################################################################################
-APP_VERSION = 05
+APP_VERSION := 07
+
+# Changes with the upgrade of the base package baseline
+APP_MAJOR_VERSION := 01
+# Changes with the upgrade of the SDK version
+APP_MINOR_VERSION := $(APP_VERSION)
+# only use Test version, release version must be set to 0.
+APP_TEST_VERSION  := 03
+
+APP_VERSION := $(APP_VERSION)_$(APP_TEST_VERSION)
+OUT_SDK_APP_VERSION := app_V$(APP_MAJOR_VERSION).$(APP_MINOR_VERSION).$(APP_TEST_VERSION)
+
 BUILD_COMP_THIRDPART_EN = y
 BUILD_THPART_LIB1_ENABLE = n
 

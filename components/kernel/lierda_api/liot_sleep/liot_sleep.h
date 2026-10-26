@@ -36,6 +36,31 @@ typedef enum {
  * @param cfg Configuration for the power mode.
  */
 liot_sleep_errcode_e Liot_SleepSetMode(LiotSleepModeCfg_t *cfg);
+
+/**
+ * @brief Write customer data to the sleep retained RAM buffer.
+ *
+ * This function is not supported in IMS mode (VoLTE enabled builds).
+ *
+ * @param[in] data Source data buffer to write from.
+ * @param[in] size Number of bytes to write. Must satisfy: offset + size <= 1024.
+ * @param[in] offset Starting offset in the retained RAM buffer (0 to 1024 - 1).
+ * @return Error code indicating success or failure of the operation.
+ */
+liot_sleep_errcode_e Liot_Sleep2ParamWrite(const uint8_t *data, uint32_t size, uint32_t offset);
+
+/**
+ * @brief Read customer data from the sleep retained RAM buffer.
+ *
+ * This function is not supported in IMS mode (VoLTE enabled builds).
+ *
+ * @param[out] data Destination data buffer to read into.
+ * @param[in] size Number of bytes to read. Must satisfy: offset + size <= 1024.
+ * @param[in] offset Starting offset in the retained RAM buffer (0 to 1024 - 1).
+ * @return Error code indicating success or failure of the operation.
+ */
+liot_sleep_errcode_e Liot_Sleep2ParamRead(uint8_t *data, uint32_t size, uint32_t offset);
+
 /**
  * @brief Prototype for the callback function triggered when a deep sleep timer expires.
  *
