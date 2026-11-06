@@ -60,6 +60,12 @@ void user_main(void)
     liot_rtos_task_create(&i2cmpu6050taskhandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_i2c_mpu6050_demo_thread", &liot_i2c_mpu6050_demo_thread, NULL);
     #endif
 
+    #ifdef APPDEMO_SLEEP_I2C_EN
+    void liot_sleep_i2c_demo_thread(void *argv);
+    liot_task_t sleepI2cTaskHandle = NULL;
+    liot_rtos_task_create(&sleepI2cTaskHandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_sleep_i2c_demo_thread", &liot_sleep_i2c_demo_thread, NULL);
+    #endif
+
     #ifdef APPDEMO_USB_EN
     void liot_usb_demo_thread(void *argv);
     liot_task_t usbtaskhandle = NULL;
@@ -391,6 +397,12 @@ void user_main(void)
     void liot_powerkey_demo_task(void *argv);
     liot_task_t powerkeyTaskHandle = NULL;
     liot_rtos_task_create(&powerkeyTaskHandle, 4096, LIOT_APP_TASK_PRIORITY, "liot_powerkey_demo", &liot_powerkey_demo_task, NULL);
+    #endif
+    
+    #ifdef APPDEMO_FLOAT_EN
+    void liot_float_demo_thread(void *argv);
+    liot_task_t floatTaskHandle = NULL;
+    liot_rtos_task_create(&floatTaskHandle, 10240, LIOT_APP_TASK_PRIORITY, "liot_float_demo_thread", &liot_float_demo_thread, NULL);
     #endif
 
     #ifdef APPDEMO_SFDT_WIFIAP_TCP_ECHO_EN

@@ -1,0 +1,26 @@
+# Standalone UI product on the official NT26F6D0 / F6D_D SDK.
+APP_VERSION := pro_release
+BUILD_COMP_THIRDPART_EN := y
+BUILD_COMP_TTS_EN := n
+BUILD_THPART_MP3_ENABLE := n
+BUILD_THPART_LVGL_ENABLE := y
+BUILD_THPART_CJSON_ENABLE := y
+BUILD_THPART_LWIP_ENABLE := y
+BUILD_THPART_MBEDTLS_ENABLE := y
+BUILD_THPART_WEBSOCKET_ENABLE := n
+BUILD_THPART_OPUS_ENABLE := y
+BUILD_THPART_LIB1_ENABLE := n
+BUILD_DRIVER_LCD_EN := y
+BUILD_DRIVER_CAMERA_EN := y
+BUILD_DRIVER_TP_EN := y
+BUILD_DRIVER_GX8006_EN := n
+BUILD_DRIVER_WS2812B_EN := n
+# SDK 1.7.1 F6D_D: APP 0x292000..0x3BC000 (1192 KiB); preserve the
+# existing internal FS at 0x3BC000..0x3E4000 (160 KiB).
+CODE_REGION_ADJUST := 0x5F000
+# External storage is probed/mounted at runtime; do not flash a preset over existing files.
+BUILD_PRESET_FILE_EXTFLASHLFS_EN := n
+# Use the same F6D_D 3A backend and initial delay as the verified Lite build.
+# Override with TIRTC_AUDIO_AEC_EN=n for the ordinary PCM fallback.
+TIRTC_AUDIO_AEC_EN ?= y
+TIRTC_AUDIO_AEC_DELAY ?= 10

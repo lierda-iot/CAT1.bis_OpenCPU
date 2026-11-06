@@ -6,30 +6,7 @@
 #include "liot_iocfg.h"
 #include "lierda_defcfg.h"
 #include "mem_map.h"
-
-#define __L_APP_HEAD_ __attribute__((section(".app_header")))
-#define __L_APP_INFO_ __attribute__((section(".app_info")))
-
-typedef struct
-{
-    char *appBuildDate;     // Build date (YYYYMMDD format)
-    char *appBuildTime;     // Build time (HHMMSS format)
-    char *appsdkVersionStr; // SDK version string
-    char *appVersionStr;    // APP version string
-    char *cgrmVersionStr;   // CGRM version string
-    char *modemType;        // Modem type string
-} app_info_t;
-
-typedef struct _app_header_
-{
-    uint32_t name;
-    uint32_t main_addr;
-    uint32_t table1;
-    uint32_t table2;
-    uint32_t filesys_addr;
-    uint32_t filesys_size;
-    uint32_t appInfo;
-} app_header_t;
+#include "main.h"
 
 extern DriveioMap hwioResource;
 extern appcfg_t lsdk_cfg;
@@ -64,7 +41,7 @@ __L_APP_INFO_ app_info_t appInfo = {
 
 __L_APP_HEAD_ app_header_t head =
 {
-    .name = 0x30707061, //app0
+    .name = APP_HEAD_NAME(CONFIG_APP_SLOT), //app0/app1/...
     .main_addr = (uint32_t)main,
     .table1 = (uint32_t)&hwioResource,
     .table2 = (uint32_t)&lsdk_cfg,

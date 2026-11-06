@@ -3,8 +3,9 @@
 ###########################################################
 SDK_VERSION_MAJOR := 1
 SDK_VERSION_MINOR := 7
-SDK_VERSION_PATCH := 1
-SDK_VERSION := $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH)
+SDK_VERSION_PATCH_MAJOR := 2
+SDK_VERSION_PATCH_MINOR := 0
+SDK_VERSION := $(SDK_VERSION_MAJOR).$(SDK_VERSION_MINOR).$(SDK_VERSION_PATCH_MAJOR)
 
 OUT_APP_VERSION ?= appV$(APP_VERSION)
 OUT_SDK_VERSION ?= V$(SDK_VERSION)
@@ -94,6 +95,11 @@ BUILD_THPART_VSIM_ENABLE ?= n
 BUILD_THPART_ZLIB_ENABLE ?= n
 
 ###########################################################
+# multiapp ctrl
+###########################################################
+BUILD_COMP_MULTIAPP_EN ?= n
+
+###########################################################
 # user test demo ctrl
 ###########################################################
 # Note: Modifying the following three values will affect the AT+CGMR and ATI command query responses
@@ -106,3 +112,4 @@ CFLAGS_DEFS += -DMODEL_TYPE=\"$(MODEM)\"
 CFLAGS_DEFS += -DAPP_VERSION=\"$(OUT_APP_VERSION)\"
 CFLAGS_DEFS += -DSDK_VERSION=\"$(OUT_SDK_VERSION)\"
 CFLAGS_DEFS += -DCGRM_VERSION=\"$(OUT_SDK_APP_VERSION)\"
+CFLAGS_DEFS += -DCONFIG_APP_SLOT=$(APP_SLOT)

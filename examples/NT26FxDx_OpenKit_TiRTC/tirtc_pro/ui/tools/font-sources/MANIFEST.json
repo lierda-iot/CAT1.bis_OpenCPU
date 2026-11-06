@@ -1,0 +1,15 @@
+{
+  "lv_font_cn_14.c": {
+    "original_bytes": 20946754,
+    "sha256": "1ebb32ab936476e6f87b52ffebd28cf6d37074f689dd415cb2ee5bdf566a716a"
+  },
+  "supplemental_font_14.c": {
+    "original_bytes": 3634,
+    "sha256": "7ddd9e4b5064ade83dcb5d13fc6bf1ce88f4bbb3d3f5d384516b3acc043e3000",
+    "font_source": "C:/Windows/Fonts/simhei.ttf",
+    "font_sha256": "9b1959db3b3abeb7efdaec26edf7dfe871a6039de8d614af7248575207be629e",
+    "generator": "lv_font_conv 1.5.3",
+    "options": "--bpp 4 --size 14 --font simhei.ttf --symbols 益 --format lvgl --no-compress",
+    "reason": "Original generated cmap/bitmap omit U+76CA; source bitmap goes U+76C9 to U+76CB."
+  }
+}

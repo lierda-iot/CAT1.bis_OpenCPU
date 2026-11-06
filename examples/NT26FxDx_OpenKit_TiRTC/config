@@ -1,7 +1,29 @@
 ##############################################################################
 # NT26FxDx_OpenKit_TiRTC project configuration
+#
+# This file is the user-facing switchboard, following the OpenKit/demo
+# convention. The project Makefile selects the source tree and includes its
+# product-specific configuration.
 ##############################################################################
 APP_VERSION = 01
+
+# APP_VARIANT: select the TiRTC product source tree.
+#   lite - TiRTC Lite application under tirtc/
+#   pro  - TiRTC Pro application and resource installer under tirtc_pro/
+#
+APP_VARIANT ?= lite
+# BUILD_MODE: select the product build output.
+#   app    - build the normal Pro application package
+#   assets - build the temporary external-resource installer package
+#   full   - build the normal application for the factory-package workflow
+#
+# For APP_VARIANT=lite, the source tree does not use the Pro resource
+# installer; app is the normal Lite build.
+BUILD_MODE ?= assets
+
+ifneq ($(filter $(BUILD_MODE),app assets full),$(BUILD_MODE))
+$(error Unsupported BUILD_MODE "$(BUILD_MODE)"; use app, assets, or full)
+endif
 
 BUILD_COMP_THIRDPART_EN = y
 BUILD_THPART_CJSON_ENABLE = y

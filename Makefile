@@ -9,6 +9,7 @@ export MODEM 					?= NT26FCNB60WNA
 export MODEMPKG 				?= 
 export BUILD_COMP_SECBOOT_EN	?= 
 export BUILD_COMP_OTA_EN     	?= n
+export APP_SLOT			     	?= 0
 
 ###########################################################
 # build Environment

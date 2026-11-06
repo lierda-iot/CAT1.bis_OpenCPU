@@ -1,0 +1,20 @@
+--- upstream/lfs.c
++++ local/lfs.c
+@@ -4520,6 +4520,12 @@
+                 lfs->inline_max = lfs_min(lfs->inline_max, lfs->attr_max);
+             }
+ 
++            // TiRTC: optional in-memory, read-only SDK legacy geometry adapter.
++            // Original on-disk metadata has already passed littlefs CRC checks.
++            #ifdef TIRTC_LFS_LEGACY_GEOMETRY
++            TIRTC_LFS_LEGACY_GEOMETRY(lfs->cfg,
++                    &superblock.block_size, &superblock.block_count);
++            #endif
+             // this is where we get the block_count from disk if block_count=0
+             if (lfs->cfg->block_count
+                     && superblock.block_count != lfs->cfg->block_count) {
+@@ -6459,4 +6465,3 @@
+     return err;
+ }
+ #endif
+-

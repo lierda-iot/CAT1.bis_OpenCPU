@@ -24,3 +24,7 @@ endif
 ifeq ($(BUILD_COMP_PRESETFILE_EN), y)
 include $(MID_DIR)/presetfile/Makefile
 endif
+
+ifeq ($(BUILD_COMP_MULTIAPP_EN), y)
+include $(MID_DIR)/multiapp/Makefile
+endif

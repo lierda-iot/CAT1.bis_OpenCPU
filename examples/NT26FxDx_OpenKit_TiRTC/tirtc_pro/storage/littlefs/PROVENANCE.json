@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/littlefs-project/littlefs",
+  "tag": "v2.9.3",
+  "git_object": {
+    "sha": "d01280e64934a09ba16cac60cf9d3a37e228bb66",
+    "type": "commit",
+    "url": "https://api.github.com/repos/littlefs-project/littlefs/git/commits/d01280e64934a09ba16cac60cf9d3a37e228bb66"
+  },
+  "upstream_sha256": {
+    "lfs.c": "4a221443c1936be4d41d8f400cd2fd055695196acadef35fcb227eb7e90f6db5",
+    "lfs.h": "37cefbc6983f19ada481bda913199d917cbb8c82d53a43dca369d62f669c64e6",
+    "lfs_util.c": "f2fbde533670560434bd9f5a547174cc7c5a4670a02c47b4bd85180dced8b2ec",
+    "lfs_util.h": "03e912a6e9894c9d10c61f5da22b89ebe0bb778af67972d7b67a5f160731bf72",
+    "LICENSE.md": "0cb4ff1daf5fdc1359c6a6ee3116092f08fc100c9d58b1b77ab17bfd801f856d"
+  },
+  "local_sha256": {
+    "lfs.c": "082cb75b19e08669889ce5511598109e800e5b9e53943a4f0b33a495c0ff54f8",
+    "lfs.h": "37cefbc6983f19ada481bda913199d917cbb8c82d53a43dca369d62f669c64e6",
+    "lfs_util.c": "f2fbde533670560434bd9f5a547174cc7c5a4670a02c47b4bd85180dced8b2ec",
+    "lfs_util.h": "03e912a6e9894c9d10c61f5da22b89ebe0bb778af67972d7b67a5f160731bf72",
+    "LICENSE.md": "0cb4ff1daf5fdc1359c6a6ee3116092f08fc100c9d58b1b77ab17bfd801f856d"
+  },
+  "local_patch": "legacy-geometry-readonly.patch",
+  "patch_scope": "Read-only compatibility hook after CRC-valid superblock decode; exact SDK prebuilt 256/8192 claim interpreted as physical4096/512 only when explicitly enabled by storage module. Never changes flash bytes."
+}

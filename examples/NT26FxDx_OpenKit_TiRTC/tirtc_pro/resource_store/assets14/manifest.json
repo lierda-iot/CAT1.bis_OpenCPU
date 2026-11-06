@@ -1,0 +1,47 @@
+{
+  "format": "unaltered bytes; no compression or quantization",
+  "files": [
+    {
+      "name": "ui14-font.bin",
+      "size": 631201,
+      "crc32": "5ef3a3ca",
+      "sha256": "fbfbc213d8457d56d200937f56bf9b94b0856103de90f45fb2abf71cabe7e398"
+    },
+    {
+      "name": "ui13-bg.bin",
+      "size": 153600,
+      "crc32": "87dd3141",
+      "sha256": "8252e37c06131043d07374282520aa9a94d1703dd2b82250e87cdf0e106554fb"
+    },
+    {
+      "name": "ui14-meta.bin",
+      "size": 70108,
+      "crc32": "3d1c9e6f",
+      "sha256": "3824f95f417c007c1abdfae5f74e37459ffabf32ea911aab4768f7f816a41ead"
+    },
+    {
+      "name": "ui48-digits.bin",
+      "size": 4495,
+      "crc32": "34edc6cd",
+      "sha256": "a8e5e3c9948c577c3c9f7c9a290ff1cb86a24ba51c3fbc57c205cc33df015ac1"
+    },
+    {
+      "name": "ui-phone.bin",
+      "size": 5292,
+      "crc32": "d442f208",
+      "sha256": "6af7c3eae45c1e22a3c393eba04cb6b5a1cbbd6eb49fa165f14375887e8a27fe"
+    },
+    {
+      "name": "ui-wechat.bin",
+      "size": 4448,
+      "crc32": "8c370f14",
+      "sha256": "c70f4b9ab55fb55e81c17910501434fb0462e27f6d1f40cd4d4b206f36ab3321"
+    },
+    {
+      "name": "ui-face-v1.bin",
+      "size": 7744,
+      "crc32": "843c5f6b",
+      "sha256": "19fb28310dc863e911136fd056109edd5860ace0f1932fea7c3a860050ed1a40"
+    }
+  ]
+}

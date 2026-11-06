@@ -10,7 +10,7 @@ void setZiDataToZero(void)
 {
     uint32_t *start_addr = &(Image$$LOAD_DRAM_SHARED$$ZI$$Base);
     uint32_t *end_addr   = &(Image$$LOAD_DRAM_SHARED$$ZI$$Limit);
-    uint32_t length      = (uint32_t)end_addr - (uint32_t)start_addr;
+    uint32_t length      = ((uint32_t)end_addr - (uint32_t)start_addr) / sizeof(uint32_t);
 
     while (length > 0)
     {

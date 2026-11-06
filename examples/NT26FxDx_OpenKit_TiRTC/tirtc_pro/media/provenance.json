@@ -1,0 +1,20 @@
+{
+  "upstream": "https://github.com/tangeai/xiaotai-lierda",
+  "commit": "f159bfd3e82cc514dfe6b5b2269b2c96fa8e8f93",
+  "license": "Apache-2.0",
+  "source_sha256": {
+    "docs/reference/ai_13/lierda/src/media/audio_device.c": "b0ce27d18d5269593732812f4a14f3fc18cb6ff2c3f0281cdaf542b05eff992c",
+    "docs/reference/ai_13/lierda/include/audio_device.h": "fede086fcf49efbf3672e47ce7dd8c0e9d6f584c96678a8b5bcd51297c8c46a6",
+    "docs/reference/ai_13/lierda/src/media/g711_codec.c": "dd94cc14d7faa9b1d22c106a03449046886834e7dbebb2a4911ce647a244435d",
+    "docs/reference/ai_13/lierda/include/g711_codec.h": "c2001dfe1ebb7689783b7a7760ecf44eef09881cdd022a68a10fe5c4ca0c0f51",
+    "docs/reference/ai_13/lierda/LICENSES/Apache-2.0.txt": "5711e1aa6db98b19c596e290801c4654d2cde9bd5c42c91341da46b02854f9f3"
+  },
+  "adaptation": [
+    "16k mono PCM16,320 samples per 20ms; AI uses Opus/16k mono,20ms uplink,target 24kbps; other features retain G.711 A-law",
+    "Opus adapter copied from sibling tirtc_lite/src/media/opus_codec.c and include/opus_codec.h under MIT; added packet-duration inspection and decoder-only reset; algorithm uses shared components/thirdparty/opus/opus-1.4 under its upstream license",
+    "Shared rail remains owned by display port",
+    "ES8311 hardware codec configuration remains statically retained; the AI Opus encoder/decoder are released after session cleanup",
+    "Lease in-flight guards,0..10 true mute and restored Pro user levels",
+    "F6D_D 3A AEC and ANS (mode=1) enabled by default; AGC bypassed; bounded PCM submissions"
+  ]
+}
