@@ -29,7 +29,7 @@ static void xz_capture_task(void *arg)
                                          (uint8_t *)&block, LIOT_NO_WAIT) != LIOT_OSI_SUCCESS) {
                 ++g_capture_dropped;
                 if ((g_capture_dropped & 3u) == 1u)
-                    liot_trace("[xiaozhi] capture queue full dropped=%u", g_capture_dropped);
+                    liot_trace("[xiaozhi] capture queue full dropped=%u\n", g_capture_dropped);
             }
         }
         g_capture_busy = false;
@@ -46,7 +46,7 @@ int xiaozhi_capture_init(void)
     ret = liot_rtos_task_create(&g_capture_task, 16 * 1024,
                                 LIOT_APP_TASK_PRIORITY, "xiaozhi_cap",
                                 xz_capture_task, NULL);
-    liot_trace("[xiaozhi] capture producer create ret=%d handle=%p", ret, g_capture_task);
+    liot_trace("[xiaozhi] capture producer create ret=%d handle=%p\n", ret, g_capture_task);
     return ret == LIOT_OSI_SUCCESS ? 0 : -2;
 }
 
@@ -66,7 +66,7 @@ void xiaozhi_capture_end(void)
         liot_rtos_task_sleep_ms(5); waited += 5;
     }
     g_capture_active = false;
-    liot_trace("[xiaozhi] capture producer end waited=%u dropped=%u", waited, g_capture_dropped);
+    liot_trace("[xiaozhi] capture producer end waited=%u dropped=%u\n", waited, g_capture_dropped);
 }
 
 int xiaozhi_capture_read(uint8_t *pcm, int len, uint32_t timeout)

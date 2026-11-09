@@ -25,9 +25,6 @@ typedef struct
 	bool baji_del;
 	lv_obj_t *attuition;
 	bool attuition_del;
-	lv_obj_t *attfun;
-	bool attfun_del;
-	lv_obj_t *attfun_led_1;
 	lv_obj_t *salary;
 	bool salary_del;
 	lv_obj_t *positioning;
@@ -71,7 +68,6 @@ extern lv_ui guider_ui;
 void setup_scr_time(lv_ui *ui);
 void setup_scr_baji(lv_ui *ui);
 void setup_scr_attuition(lv_ui *ui);
-void setup_scr_attfun(lv_ui *ui);
 void setup_scr_salary(lv_ui *ui);
 void setup_scr_positioning(lv_ui *ui);
 void setup_scr_mp3(lv_ui *ui);
@@ -82,8 +78,6 @@ LV_IMG_DECLARE(_watch_360x360);
 LV_IMG_DECLARE(_baji_360x360);
 
 LV_IMG_DECLARE(_attitude_360x360);
-
-LV_IMG_DECLARE(_attitudefun_360x360);
 
 LV_IMG_DECLARE(_salary_360x360);
 

@@ -79,7 +79,6 @@ void init_scr_del_flag(lv_ui *ui)
     ui->time_del = true;
     ui->baji_del = true;
     ui->attuition_del = true;
-    ui->attfun_del = true;
     ui->salary_del = true;
     ui->positioning_del = true;
     ui->mp3_del = true;

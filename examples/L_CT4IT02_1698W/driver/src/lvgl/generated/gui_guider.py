@@ -344,24 +344,6 @@ attuition.set_style_bg_img_opa(255, lv.PART.MAIN|lv.STATE.DEFAULT)
 attuition.set_style_bg_img_recolor_opa(0, lv.PART.MAIN|lv.STATE.DEFAULT)
 
 attuition.update_layout()
-# Create attfun
-attfun = lv.obj()
-attfun.set_size(360, 360)
-attfun.set_scrollbar_mode(lv.SCROLLBAR_MODE.OFF)
-# Set style for attfun, Part: lv.PART.MAIN, State: lv.STATE.DEFAULT.
-attfun.set_style_bg_opa(0, lv.PART.MAIN|lv.STATE.DEFAULT)
-attfun.set_style_bg_img_src("B:MicroPython/_attitudefun_360x360.bin", lv.PART.MAIN|lv.STATE.DEFAULT)
-attfun.set_style_bg_img_opa(255, lv.PART.MAIN|lv.STATE.DEFAULT)
-attfun.set_style_bg_img_recolor_opa(0, lv.PART.MAIN|lv.STATE.DEFAULT)
-
-# Create attfun_led_1
-attfun_led_1 = lv.led(attfun)
-attfun_led_1.set_brightness(255)
-attfun_led_1.set_color(lv.color_hex(0x007fff))
-attfun_led_1.set_pos(168, 168)
-attfun_led_1.set_size(29, 27)
-
-attfun.update_layout()
 # Create salary
 salary = lv.obj()
 salary.set_size(360, 360)
@@ -597,13 +579,6 @@ def attuition_event_handler(e):
         pass
         lv.scr_load_anim(baji, lv.SCR_LOAD_ANIM.MOVE_RIGHT, 200, 200, False)
 attuition.add_event_cb(lambda e: attuition_event_handler(e), lv.EVENT.ALL, None)
-
-def attfun_event_handler(e):
-    code = e.get_code()
-    if (code == lv.EVENT.LONG_PRESSED):
-        pass
-        lv.scr_load_anim(attuition, lv.SCR_LOAD_ANIM.FADE_ON, 200, 200, False)
-attfun.add_event_cb(lambda e: attfun_event_handler(e), lv.EVENT.ALL, None)
 
 def salary_event_handler(e):
     code = e.get_code()

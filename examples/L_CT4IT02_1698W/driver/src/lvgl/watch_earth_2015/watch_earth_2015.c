@@ -1,4 +1,5 @@
 #include "watch_earth_2015.h"
+#include "watch_earth_2015_core.h"
 
 static lv_obj_t *s_watch_earth_2015_bg;
 static lv_obj_t *s_watch_earth_2015_hr;
@@ -39,12 +40,14 @@ void watch_earth_2015_update_time(int hour, int minute, int second)
 {
     if (s_watch_earth_2015_hr && lv_obj_is_valid(s_watch_earth_2015_hr)) {
         lv_img_set_angle(s_watch_earth_2015_hr,
-                        (int16_t)(((hour % 12) * 300) + (minute * 5) + (second / 12)));
+                         watch_earth_2015_hour_angle(hour, minute, second));
     }
     if (s_watch_earth_2015_min && lv_obj_is_valid(s_watch_earth_2015_min)) {
-        lv_img_set_angle(s_watch_earth_2015_min, (int16_t)((minute * 60) + second));
+        lv_img_set_angle(s_watch_earth_2015_min,
+                         watch_earth_2015_minute_angle(minute, second));
     }
     if (s_watch_earth_2015_sec && lv_obj_is_valid(s_watch_earth_2015_sec)) {
-        lv_img_set_angle(s_watch_earth_2015_sec, (int16_t)(second * 60));
+        lv_img_set_angle(s_watch_earth_2015_sec,
+                         watch_earth_2015_second_angle(second));
     }
 }

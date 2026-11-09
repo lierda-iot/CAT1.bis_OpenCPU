@@ -11,6 +11,8 @@
 #include "liot_os.h"
 #include "liot_ssl2.h"
 
+#include "demo_xiaozhi_core.h"
+
 #define XZ_WS_SSL_ID             2
 #define XZ_WS_RX_SIZE            (16 * 1024)
 #define XZ_WS_FRAME_SIZE         (8 * 1024)
@@ -47,6 +49,7 @@ static liot_task_t g_ws_talk_task;
 static volatile bool g_ws_connected;
 static volatile bool g_ws_protocol_ready;
 static volatile bool g_ws_talk_pressed;
+static liot_sem_t g_ws_connect_sem;
 static volatile xz_talk_state_t g_ws_talk_state;
 static volatile uint32_t g_ws_talk_ready_tick;
 static volatile uint32_t g_ws_talk_wait_tick;
@@ -70,7 +73,7 @@ static void xz_ws_recv_cb(uint8_t client_id, void *data, uint32_t len, void *arg
     space = XZ_WS_RX_SIZE - g_ws_rx.write_pos;
     if ((int)len > space) {
         g_ws_rx.overflow = true;
-        liot_trace("[xiaozhi] WS RX overflow incoming=%u space=%d", (unsigned)len, space);
+        liot_trace("[xiaozhi] WS RX overflow incoming=%u space=%d\n", (unsigned)len, space);
         return;
     }
     memcpy(g_ws_rx.data + g_ws_rx.write_pos, data, len);
@@ -107,27 +110,8 @@ static int xz_ws_read(void *output, int length, int timeout_ms)
 static int xz_ws_parse_url(const char *url, char *host, int host_size,
                            char *path, int path_size, int *port)
 {
-    const char *start;
-    const char *slash;
-    const char *colon;
-    int host_len;
-    if (url == NULL || strncmp(url, "wss://", 6) != 0) return -1;
-    start = url + 6;
-    slash = strchr(start, '/');
-    if (slash == NULL) slash = start + strlen(start);
-    colon = strchr(start, ':');
-    if (colon != NULL && colon < slash) {
-        host_len = (int)(colon - start);
-        *port = atoi(colon + 1);
-    } else {
-        host_len = (int)(slash - start);
-        *port = 443;
-    }
-    if (host_len <= 0 || host_len >= host_size) return -2;
-    memcpy(host, start, host_len);
-    host[host_len] = '\0';
-    snprintf(path, path_size, "%s", *slash != '\0' ? slash : "/");
-    return 0;
+    return demo_xiaozhi_core_parse_ws_url(url, host, host_size,
+                                          path, path_size, port);
 }
 
 static int xz_ws_ssl_connect(const char *host, int port)
@@ -150,10 +134,10 @@ static int xz_ws_ssl_connect(const char *host, int port)
     g_ws_ssl_info.ssl_context = &g_ws_ssl_ctx;
     g_ws_ssl_info.sslClient_cb = xz_ws_recv_cb;
     ret = Liot_SSLSetCfg(&g_ws_ssl_info);
-    liot_trace("[xiaozhi] WS SSL config ret=%d host=%s port=%d", ret, host, port);
+    liot_trace("[xiaozhi] WS SSL config ret=%d host=%s port=%d\n", ret, host, port);
     if (ret != LIOT_SSL_SUCCESS) return -1;
     ret = Liot_SSLSocketOpen(XZ_WS_SSL_ID);
-    liot_trace("[xiaozhi] WS SSL open ret=%d", ret);
+    liot_trace("[xiaozhi] WS SSL open ret=%d\n", ret);
     if (ret != LIOT_SSL_SUCCESS) return -2;
     for (waited = 0; waited < XZ_WS_CONNECT_TIMEOUT_MS; waited += 200) {
         status = Liot_SSLSocketGetStatus(XZ_WS_SSL_ID);
@@ -162,7 +146,7 @@ static int xz_ws_ssl_connect(const char *host, int port)
             status == LIOT_SSL_CLIENT_STATUS_DISCONNECTED) return -3;
         liot_rtos_task_sleep_ms(200);
     }
-    liot_trace("[xiaozhi] WS SSL connect timeout status=%d", status);
+    liot_trace("[xiaozhi] WS SSL connect timeout status=%d\n", status);
     return -4;
 }
 
@@ -230,7 +214,7 @@ static int xz_ws_recv_frame(uint8_t *payload, int capacity, int *opcode, int tim
     }
     if (masked && xz_ws_read(mask, 4, timeout_ms) != 4) return -5;
     if (length >= capacity) {
-        liot_trace("[xiaozhi] WS frame too large len=%d capacity=%d", length, capacity);
+        liot_trace("[xiaozhi] WS frame too large len=%d capacity=%d\n", length, capacity);
         return -6;
     }
     if (xz_ws_read(payload, length, timeout_ms) != length) return -7;
@@ -264,7 +248,7 @@ static int xz_ws_upgrade(const xiaozhi_config_t *config, const char *host,
         if (used >= 4 && memcmp(response + used - 4, "\r\n\r\n", 4) == 0) break;
     }
     response[used] = '\0';
-    liot_trace("[xiaozhi] WS upgrade response=%.*s", 80, response);
+    liot_trace("[xiaozhi] WS upgrade response=%.*s\n", 80, response);
     return strstr(response, " 101 ") != NULL ? 0 : -4;
 }
 
@@ -291,7 +275,7 @@ static int xz_ws_check_server_hello(uint8_t *data, int length, char *session, in
         audio = cJSON_GetObjectItemCaseSensitive(root, "audio_params");
         rate = cJSON_IsObject(audio) ? cJSON_GetObjectItemCaseSensitive(audio, "sample_rate") : NULL;
         duration = cJSON_IsObject(audio) ? cJSON_GetObjectItemCaseSensitive(audio, "frame_duration") : NULL;
-        liot_trace("[xiaozhi] WS server hello session=%s rate=%d frame_ms=%d",
+        liot_trace("[xiaozhi] WS server hello session=%s rate=%d frame_ms=%d\n",
                    session, cJSON_IsNumber(rate) ? rate->valueint : 0,
                    cJSON_IsNumber(duration) ? duration->valueint : 0);
         ok = 1;
@@ -344,11 +328,11 @@ static void xz_ws_handle_mcp(uint8_t *data, int length, const char *session)
     }
     if (reply_len > 0 && reply_len < (int)sizeof(reply)) {
         int send_ret = xz_ws_send_frame(1, reply, reply_len);
-        liot_trace("[xiaozhi] WS MCP reply method=%s id=%d ret=%d",
+        liot_trace("[xiaozhi] WS MCP reply method=%s id=%d ret=%d\n",
                    method->valuestring, id->valueint, send_ret);
         if (strcmp(method->valuestring, "tools/list") == 0 && send_ret == 0) {
             g_ws_protocol_ready = true;
-            liot_trace("[xiaozhi] protocol ready; talk enabled");
+            liot_trace("[xiaozhi] protocol ready; talk enabled\n");
         }
     }
     cJSON_Delete(root);
@@ -377,7 +361,7 @@ static void xz_ws_handle_event(uint8_t *data, int length, const char *session)
     if (strcmp(type->valuestring, "stt") == 0) {
         text = cJSON_GetObjectItemCaseSensitive(root, "text");
         if (cJSON_IsString(text)) {
-            liot_trace("[xiaozhi] STT text=%s", text->valuestring);
+            liot_trace("[xiaozhi] STT text=%s\n", text->valuestring);
             xiaozhi_ui_status(text->valuestring);
         }
     } else if (strcmp(type->valuestring, "tts") == 0) {
@@ -389,19 +373,19 @@ static void xz_ws_handle_event(uint8_t *data, int length, const char *session)
             xiaozhi_ui_status("Speaking...");
         } else if (cJSON_IsString(state) && strcmp(state->valuestring, "stop") == 0) {
             if (g_ws_talk_state == XZ_TALK_RECORDING) {
-                liot_trace("[xiaozhi] ignore stale TTS stop during recording");
+                liot_trace("[xiaozhi] ignore stale TTS stop during recording\n");
                 cJSON_Delete(root);
                 return;
             }
             int play_ret = xiaozhi_audio_tts_play();
-            liot_trace("[xiaozhi] TTS stop play_ret=%d", play_ret);
+            liot_trace("[xiaozhi] TTS stop play_ret=%d\n", play_ret);
             g_ws_talk_pressed = false;
             g_ws_talk_ready_tick = liot_rtos_get_system_tick() + XZ_TALK_COOLDOWN_MS;
             g_ws_talk_state = XZ_TALK_COOLDOWN;
-            liot_trace("[xiaozhi] talk state COOLDOWN %dms", XZ_TALK_COOLDOWN_MS);
+            liot_trace("[xiaozhi] talk state COOLDOWN %dms\n", XZ_TALK_COOLDOWN_MS);
             xiaozhi_ui_status("Hold to talk");
         } else if (cJSON_IsString(text)) {
-            liot_trace("[xiaozhi] TTS text=%s", text->valuestring);
+            liot_trace("[xiaozhi] TTS text=%s\n", text->valuestring);
             xiaozhi_ui_status(text->valuestring);
         }
     }
@@ -423,7 +407,7 @@ static void xz_ws_talk_thread(void *argument)
         if (g_ws_talk_state == XZ_TALK_COOLDOWN &&
             (int32_t)(liot_rtos_get_system_tick() - g_ws_talk_ready_tick) >= 0) {
             g_ws_talk_state = XZ_TALK_IDLE;
-            liot_trace("[xiaozhi] talk state IDLE");
+            liot_trace("[xiaozhi] talk state IDLE\n");
         }
 
         if (!g_ws_talk_pressed || !g_ws_connected || g_ws_session[0] == '\0' ||
@@ -436,14 +420,14 @@ static void xz_ws_talk_thread(void *argument)
                           "\"state\":\"start\",\"mode\":\"manual\"}",
                           g_ws_session);
         if (xz_ws_send_frame(1, message, length) != 0) continue;
-        liot_trace("[xiaozhi] listen start session=%s", g_ws_session);
+        liot_trace("[xiaozhi] listen start session=%s\n", g_ws_session);
         xiaozhi_audio_capture_session_begin();
 
         frames = 0;
         while (g_ws_talk_pressed && g_ws_connected) {
             length = xiaozhi_audio_capture_opus(opus_data, sizeof(opus_data));
             if (length <= 0) {
-                liot_trace("[xiaozhi] record/encode failed ret=%d", length);
+                liot_trace("[xiaozhi] record/encode failed ret=%d\n", length);
                 break;
             }
             if (xz_ws_send_frame(2, opus_data, length) != 0) break;
@@ -452,7 +436,7 @@ static void xz_ws_talk_thread(void *argument)
              * modem, LVGL and watchdog service tasks continue to run. */
             liot_rtos_task_sleep_ms(2);
             if ((frames % 20) == 0)
-                liot_trace("[xiaozhi] uplink Opus frames=%d last_bytes=%d", frames, length);
+                liot_trace("[xiaozhi] uplink Opus frames=%d last_bytes=%d\n", frames, length);
         }
         xiaozhi_audio_capture_session_end();
         while (g_ws_connected) {
@@ -467,9 +451,9 @@ static void xz_ws_talk_thread(void *argument)
                               "{\"session_id\":\"%s\",\"type\":\"listen\","
                               "\"state\":\"stop\"}", g_ws_session);
             stop_ret = xz_ws_send_frame(1, message, length);
-            liot_trace("[xiaozhi] listen stop send ret=%d", stop_ret);
+            liot_trace("[xiaozhi] listen stop send ret=%d\n", stop_ret);
         }
-        liot_trace("[xiaozhi] listen stop frames=%d", frames);
+        liot_trace("[xiaozhi] listen stop frames=%d\n", frames);
         g_ws_talk_pressed = false;
         if (g_ws_connected) {
             g_ws_talk_wait_tick = liot_rtos_get_system_tick() +
@@ -483,38 +467,45 @@ bool xiaozhi_talk_set(bool pressed)
 {
     uint32_t now = liot_rtos_get_system_tick();
     bool was_recording = (g_ws_talk_state == XZ_TALK_RECORDING);
-    if (pressed) {
-        if (g_ws_talk_state == XZ_TALK_COOLDOWN &&
-            (int32_t)(now - g_ws_talk_ready_tick) >= 0)
-            g_ws_talk_state = XZ_TALK_IDLE;
-        if (!g_ws_connected || !g_ws_protocol_ready) {
-            liot_trace("[xiaozhi] talk press ignored state=%d connected=%d",
-                       (int)g_ws_talk_state, g_ws_connected ? 1 : 0);
-            g_ws_talk_pressed = false;
-            return false;
-        }
-        if (g_ws_talk_state == XZ_TALK_WAIT_TTS ||
-            g_ws_talk_state == XZ_TALK_COOLDOWN) {
-            char abort_msg[160];
-            int abort_len = snprintf(abort_msg, sizeof(abort_msg),
-                "{\"session_id\":\"%s\",\"type\":\"abort\",\"reason\":\"wake_word_detected\"}",
-                g_ws_session);
-            int abort_ret = xz_ws_send_frame(1, abort_msg, abort_len);
-            liot_trace("[xiaozhi] talk interrupt abort ret=%d state=%d",
-                       abort_ret, (int)g_ws_talk_state);
-            xiaozhi_audio_tts_abort();
-            g_ws_talk_state = XZ_TALK_IDLE;
-        }
-        if (g_ws_talk_state != XZ_TALK_IDLE) return false;
-        g_ws_talk_state = XZ_TALK_RECORDING;
-        g_ws_talk_pressed = true;
-        liot_trace("[xiaozhi] talk state RECORDING");
-    } else {
+    if (!pressed) {
         g_ws_talk_pressed = false;
-        liot_trace("[xiaozhi] talk release state=%d", (int)g_ws_talk_state);
+        liot_trace("[xiaozhi] talk release state=%d\n", (int)g_ws_talk_state);
         return was_recording;
     }
+    if (g_ws_talk_state == XZ_TALK_COOLDOWN &&
+        (int32_t)(now - g_ws_talk_ready_tick) >= 0)
+        g_ws_talk_state = XZ_TALK_IDLE;
+    if (!g_ws_connected || !g_ws_protocol_ready) {
+        liot_trace("[xiaozhi] talk press during disconnected state=%d connected=%d\n",
+                   (int)g_ws_talk_state, g_ws_connected ? 1 : 0);
+        if (g_ws_connect_sem != NULL)
+            liot_rtos_semaphore_release(g_ws_connect_sem);
+        g_ws_talk_pressed = false;
+        return false;
+    }
+    if (g_ws_talk_state == XZ_TALK_WAIT_TTS ||
+        g_ws_talk_state == XZ_TALK_COOLDOWN) {
+        char abort_msg[160];
+        int abort_len = snprintf(abort_msg, sizeof(abort_msg),
+            "{\"session_id\":\"%s\",\"type\":\"abort\",\"reason\":\"wake_word_detected\"}",
+            g_ws_session);
+        int abort_ret = xz_ws_send_frame(1, abort_msg, abort_len);
+        liot_trace("[xiaozhi] talk interrupt abort ret=%d state=%d\n",
+                   abort_ret, (int)g_ws_talk_state);
+        xiaozhi_audio_tts_abort();
+        g_ws_talk_state = XZ_TALK_IDLE;
+    }
+    if (g_ws_talk_state != XZ_TALK_IDLE) return false;
+    g_ws_talk_state = XZ_TALK_RECORDING;
+    g_ws_talk_pressed = true;
+    liot_trace("[xiaozhi] talk state RECORDING\n");
     return true;
+}
+
+int xiaozhi_ws_wait_connect_request(uint32_t timeout_ms)
+{
+    if (g_ws_connect_sem == NULL) return -1;
+    return (int)liot_rtos_semaphore_wait(g_ws_connect_sem, timeout_ms);
 }
 
 static int xz_ws_runtime_init(void)
@@ -522,18 +513,18 @@ static int xz_ws_runtime_init(void)
     int ret;
     if (g_ws_send_lock == NULL &&
         liot_rtos_mutex_create(&g_ws_send_lock) != LIOT_OSI_SUCCESS) {
-        liot_trace("[xiaozhi] runtime send mutex create failed");
+        liot_trace("[xiaozhi] runtime send mutex create failed\n");
         return -1;
     }
     if (g_ws_talk_task == NULL) {
         ret = liot_rtos_task_create(&g_ws_talk_task, XZ_TALK_TASK_STACK_SIZE,
                                     LIOT_APP_TASK_PRIORITY,
                                     "xiaozhi_talk", xz_ws_talk_thread, NULL);
-        liot_trace("[xiaozhi] runtime talk task create ret=%d handle=%p", ret,
+        liot_trace("[xiaozhi] runtime talk task create ret=%d handle=%p\n", ret,
                    g_ws_talk_task);
         if (ret != LIOT_OSI_SUCCESS) return -2;
     }
-    liot_trace("[xiaozhi] voice runtime ready");
+    liot_trace("[xiaozhi] voice runtime ready\n");
     return 0;
 }
 #endif
@@ -555,10 +546,13 @@ int xiaozhi_ws_run(const xiaozhi_config_t *config)
 #if XZ_VOICE_RUNTIME
     ret = xz_ws_runtime_init();
     if (ret != 0) {
-        liot_trace("[xiaozhi] voice runtime init failed ret=%d", ret);
+        liot_trace("[xiaozhi] voice runtime init failed ret=%d\n", ret);
         return -100 + ret;
     }
 #endif
+    if (g_ws_connect_sem == NULL &&
+        liot_rtos_semaphore_create(&g_ws_connect_sem, 0) != LIOT_OSI_SUCCESS)
+        return -2;
     g_ws_connected = false;
     g_ws_talk_pressed = false;
     g_ws_talk_state = XZ_TALK_IDLE;
@@ -575,15 +569,16 @@ int xiaozhi_ws_run(const xiaozhi_config_t *config)
     }
     ret = xz_ws_parse_url(config->websocket_url, host, sizeof(host), path, sizeof(path), &port);
     if (ret != 0) goto exit;
-    liot_trace("[xiaozhi] WS connect url=%s protocol=%d", config->websocket_url,
+    liot_trace("[xiaozhi] WS connect url=%s protocol=%d\n", config->websocket_url,
                config->websocket_version);
     ret = xz_ws_ssl_connect(host, port);
     if (ret != 0) goto exit;
     ret = xz_ws_upgrade(config, host, path);
     if (ret != 0) goto exit;
     ret = xz_ws_send_frame(1, hello, (int)strlen(hello));
-    liot_trace("[xiaozhi] WS device hello ret=%d", ret);
+    liot_trace("[xiaozhi] WS device hello ret=%d\n", ret);
     if (ret != 0) goto exit;
+    g_ws_protocol_ready = false;
     for (;;) {
         length = xz_ws_recv_frame(g_ws_frame, sizeof(g_ws_frame), &opcode,
                                   XZ_WS_IDLE_PING_MS);
@@ -592,10 +587,10 @@ int xiaozhi_ws_run(const xiaozhi_config_t *config)
             if (length == -1 &&
                 ssl_status == LIOT_SSL_CLIENT_STATUS_CONNECTED) {
                 int ping_ret = xz_ws_send_frame(9, "", 0);
-                liot_trace("[xiaozhi] WS idle ping ret=%d", ping_ret);
+                liot_trace("[xiaozhi] WS idle ping ret=%d\n", ping_ret);
                 if (ping_ret == 0) continue;
             }
-            liot_trace("[xiaozhi] WS receive failed ret=%d status=%d", length,
+            liot_trace("[xiaozhi] WS receive failed ret=%d status=%d\n", length,
                        ssl_status);
             ret = -20;
             break;
@@ -605,13 +600,13 @@ int xiaozhi_ws_run(const xiaozhi_config_t *config)
             continue;
         }
         if (opcode == 8) {
-            liot_trace("[xiaozhi] WS server closed");
+            liot_trace("[xiaozhi] WS server closed\n");
             ret = -21;
             break;
         }
         if (opcode == 1) {
             g_ws_frame[length] = '\0';
-            liot_trace("[xiaozhi] WS text=%.*s", length > 512 ? 512 : length, g_ws_frame);
+            liot_trace("[xiaozhi] WS text=%.*s\n", length > 512 ? 512 : length, g_ws_frame);
             if (session[0] == '\0') {
                 ret = xz_ws_check_server_hello(g_ws_frame, length, session, sizeof(session));
                 if (ret != 0) break;
@@ -619,7 +614,7 @@ int xiaozhi_ws_run(const xiaozhi_config_t *config)
                 g_ws_connected = true;
                 g_ws_talk_state = XZ_TALK_IDLE;
                 g_ws_talk_pressed = false;
-                liot_trace("[xiaozhi] websocket ready");
+                liot_trace("[xiaozhi] websocket ready\n");
                 xiaozhi_ui_status("Hold to talk");
             }
 #if XZ_VOICE_RUNTIME
@@ -631,22 +626,19 @@ int xiaozhi_ws_run(const xiaozhi_config_t *config)
 #endif
         } else if (opcode == 2) {
             int decode_ret = xiaozhi_audio_decode_append(g_ws_frame, length);
-            liot_trace("[xiaozhi] WS binary bytes=%d decode_ret=%d", length,
+            liot_trace("[xiaozhi] WS binary bytes=%d decode_ret=%d\n", length,
                        decode_ret);
         }
     }
 exit:
-    liot_trace("[xiaozhi] WS cleanup begin ret=%d", ret);
+    liot_trace("[xiaozhi] WS cleanup begin ret=%d\n", ret);
     g_ws_connected = false;
     g_ws_talk_pressed = false;
     g_ws_talk_state = XZ_TALK_IDLE;
     g_ws_session[0] = '\0';
-#if XZ_VOICE_RUNTIME
-    xiaozhi_ui_status("Reconnecting...");
-#endif
     Liot_SSLSocketClose(XZ_WS_SSL_ID);
-    liot_trace("[xiaozhi] WS SSL closed");
+    liot_trace("[xiaozhi] WS SSL closed\n");
     /* The semaphore is intentionally retained for the next connection. */
-    liot_trace("[xiaozhi] WS cleanup end");
+    liot_trace("[xiaozhi] WS cleanup end\n");
     return ret;
 }

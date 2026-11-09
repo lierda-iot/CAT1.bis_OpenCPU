@@ -3,27 +3,40 @@ IOINI := $(TOP)/$(CUSTOM_DIR)/iodriver.ini
 DEMO_DIR := $(TOP)/$(CUSTOM_DIR)/demo
 USER_DRIVER_DIR := $(TOP)/$(CUSTOM_DIR)/driver
 APP_DIR := $(TOP)/$(CUSTOM_DIR)/app
-DEMO_LVGL_PHOTO_FS_DIR := $(DEMO_DIR)/src/demo_lvgl_photo_fs
-DEMO_LVGL_PHOTO_FS_ASSET_DIR := $(DEMO_LVGL_PHOTO_FS_DIR)/assets
+DEMO_LVGL_PHOTO_LFS_DIR := $(DEMO_DIR)/src/demo_lvgl_photo_lfs
+DEMO_LVGL_PHOTO_LFS_ASSET_DIR := $(DEMO_LVGL_PHOTO_LFS_DIR)/assets
 BAJI_PHOTO_ASSET_DIR := $(USER_DRIVER_DIR)/src/lvgl/baji_photo/assets
 
 include $(TOP)/$(CUSTOM_DIR)/config
 
 HWDEMO_SOUND_ES8375_EN ?= n
-HWDEMO_SALARY_CALCULATOR_EN ?= y
-HWDEMO_MP3_EN ?= n
-# MP3 player implementation selector:
-#   stream = new streaming implementation (demo_mp3_stream.c)
-#   legacy = original whole-file implementation (demo_mp3.c)
-MP3_IMPL ?= stream
-DEMO_LVGL_PHOTO_FS_ENABLE_GIF ?= 1
-DEMO_LVGL_PHOTO_FS_ENABLE_JPEG ?= 0
-DEMO_LVGL_PHOTO_FS_ENABLE_PNG ?= 0
-DEMO_LVGL_PHOTO_FS_FORCE_RESEED ?= 0
+# Fallback only; `config` already defaults every HWDEMO_* switch to n.
+HWDEMO_SALARY_CALCULATOR_EN ?= n
+DEMO_LVGL_PHOTO_LFS_ENABLE_GIF ?= 1
+DEMO_LVGL_PHOTO_LFS_ENABLE_JPEG ?= 0
+DEMO_LVGL_PHOTO_LFS_ENABLE_PNG ?= 0
+DEMO_LVGL_PHOTO_LFS_FORCE_RESEED ?= 0
 HWDEMO_LOCATION_EN ?= n
 HWDEMO_LOCATION_HEADLESS_EN ?= n
 HWDEMO_XIAOZHI_EN ?= n
 HWDEMO_MP3_STANDALONE_EN ?= n
+
+# APP_WATCHFACE_EARTH_2015_EN selects the Earth 2015 watchface skin; it defaults
+# to y but is only effective when the watchface app itself is enabled.
+APP_WATCHFACE_EARTH_2015_EFFECTIVE := 0
+ifeq ($(APP_WATCHFACE_EN),y)
+ifeq ($(APP_WATCHFACE_EARTH_2015_EN),y)
+APP_WATCHFACE_EARTH_2015_EFFECTIVE := 1
+endif
+else
+ifeq ($(APP_WATCHFACE_EARTH_2015_EN),y)
+# Stay quiet for the default build (watchface off by default); only flag an
+# explicit APP_WATCHFACE_EN=n passed by the user together with EARTH=y.
+ifneq ($(filter command line environment,$(origin APP_WATCHFACE_EN)),)
+$(warning APP_WATCHFACE_EARTH_2015_EN=y ignored: requires APP_WATCHFACE_EN=y)
+endif
+endif
+endif
 
 CFLAGS_INC += -I $(USER_DRIVER_DIR)/inc
 
@@ -88,7 +101,7 @@ LVGL_DIR += $(USER_DRIVER_DIR)/src/lvgl	\
 			$(LVGL_GENERATED_DIR)/guider_fonts	\
 			$(USER_DRIVER_DIR)/src/lvgl/baji_photo
 
-ifeq ($(APP_WATCHFACE_EARTH_2015_EN),y)
+ifeq ($(APP_WATCHFACE_EARTH_2015_EFFECTIVE),1)
 LVGL_DIR += $(USER_DRIVER_DIR)/src/lvgl/watch_earth_2015
 CFLAGS_INC += -I $(USER_DRIVER_DIR)/src/lvgl/watch_earth_2015
 endif
@@ -141,10 +154,9 @@ CFLAGS_DEFS += -DAPP_BUILD_GIT_SHORT=\"$(APP_BUILD_GIT_SHORT)\"
 CFLAGS_DEFS += -DAPP_BUILD_PROJECT=\"$(APP_BUILD_PROJECT)\"
 CFLAGS_DEFS += -DAPP_BUILD_MODE=\"$(APP_BUILD_MODE)\"
 CFLAGS_DEFS += -DAPP_WATCHFACE_EN=$(if $(filter y,$(APP_WATCHFACE_EN)),1,0)
-CFLAGS_DEFS += -DAPP_WATCHFACE_EARTH_2015_EN=$(if $(filter y,$(APP_WATCHFACE_EARTH_2015_EN)),1,0)
+CFLAGS_DEFS += -DAPP_WATCHFACE_EARTH_2015_EN=$(APP_WATCHFACE_EARTH_2015_EFFECTIVE)
 CFLAGS_DEFS += -DAPP_BAJI_EN=$(if $(filter y,$(APP_BAJI_EN)),1,0)
 CFLAGS_DEFS += -DAPP_ATTITUDE_EN=$(if $(filter y,$(APP_ATTITUDE_EN)),1,0)
-CFLAGS_DEFS += -DAPP_ATTFUN_EN=$(if $(filter y,$(APP_ATTFUN_EN)),1,0)
 CFLAGS_DEFS += -DAPP_SALARY_EN=$(if $(filter y,$(APP_SALARY_EN)),1,0)
 CFLAGS_DEFS += -DAPP_MAP_EN=$(if $(filter y,$(APP_MAP_EN)),1,0)
 CFLAGS_DEFS += -DAPP_MP3_EN=$(if $(filter y,$(APP_MP3_EN)),1,0)
@@ -158,12 +170,14 @@ BUILD_THPART_CJSON_ENABLE := y
 endif
 ifeq ($(APP_SALARY_EN),y)
 HWDEMO_SALARY_CALCULATOR_EN := y
+HWDEMO_MP3_EN := y
+BUILD_THPART_MP3_ENABLE := y
 endif
 ifeq ($(APP_MP3_EN),y)
 HWDEMO_MP3_EN := y
 BUILD_THPART_MP3_ENABLE := y
 endif
-ifeq ($(strip $(filter y,$(APP_WATCHFACE_EN) $(APP_BAJI_EN) $(APP_ATTITUDE_EN) $(APP_ATTFUN_EN) $(APP_SALARY_EN) $(APP_MAP_EN) $(APP_MP3_EN))),)
+ifeq ($(strip $(filter y,$(APP_WATCHFACE_EN) $(APP_BAJI_EN) $(APP_ATTITUDE_EN) $(APP_SALARY_EN) $(APP_MAP_EN) $(APP_MP3_EN))),)
 $(error BUILD_MODE=app requires at least one APP_*_EN=y)
 endif
 endif
@@ -171,12 +185,20 @@ endif
 # 运行demo
 ifeq ($(BUILD_MODE), demo)
 
+ifeq ($(HWDEMO_SALARY_CALCULATOR_EN),y)
+HWDEMO_MP3_EN := y
+BUILD_THPART_MP3_ENABLE := y
+endif
+
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/0demo_main.o
+# extflash P25Q64 unified lifecycle manager (shared by raw / fs / lvgl photo fs)
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_extflash_p25q64/demo_extflash_p25q64_mgr.o
+CFLAGS_INC += -I $(DEMO_DIR)/src/demo_extflash_p25q64
 
 
 # 启动LCD demo
 ifeq ($(HWDEMO_LCD_EN), y)
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_lcd.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_lcd/demo_lcd.o
 CFLAGS_DEFS += -DHWDEMO_LCD_EN
 endif
 
@@ -184,14 +206,15 @@ endif
 ifeq ($(HWDEMO_SC7A20H_EN), y)
 CUSTOM_SRC_DIRS += $(GSENSOR_DIR) \
 					$(LVGL_DIR)
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_sc7a20h.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_sc7a20h/demo_sc7a20h.o
 CFLAGS_DEFS += -DHWDEMO_SC7A20H_EN
 APP_MENU_NEEDED := y
 endif
 
 # 启动GNSS demo
 ifeq ($(HWDEMO_GNSS_EN), y)
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_gnss.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_gnss/demo_gnss.o
+CFLAGS_INC += -I $(DEMO_DIR)/src/demo_gnss
 CFLAGS_DEFS += -DHWDEMO_GNSS_EN
 endif
 
@@ -202,35 +225,36 @@ CFLAGS_DEFS += -DHWDEMO_EXTFLASH_P25Q64_EN
 endif
 
 # 启动 P25Q64 extflash LittleFS demo
-ifeq ($(HWDEMO_EXTFLASH_FS_P25Q64_EN), y)
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_extflash_fs_p25q64/demo_extflash_fs_p25q64.o
-CFLAGS_DEFS += -DHWDEMO_EXTFLASH_FS_P25Q64_EN
+ifeq ($(HWDEMO_EXTFLASH_P25Q64_LFS_EN), y)
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_extflash_p25q64_lfs/demo_extflash_p25q64_lfs.o
+CFLAGS_INC += -I $(DEMO_DIR)/src/demo_extflash_p25q64
+CFLAGS_DEFS += -DHWDEMO_EXTFLASH_P25Q64_LFS_EN
 endif
 
 # 启动 LVGL photo fs demo
-ifeq ($(HWDEMO_LVGL_PHOTO_FS_EN), y)
-CUSTOM_SRC_DIRS += $(DEMO_LVGL_PHOTO_FS_DIR)
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_1_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_2_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_3_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_4_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_5_data.o
-ifeq ($(DEMO_LVGL_PHOTO_FS_ENABLE_GIF),1)
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/baji_gif_seed_5_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/saa_360_360_gif_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/saq_360_360_gif_data.o
+ifeq ($(HWDEMO_LVGL_PHOTO_LFS_EN), y)
+CUSTOM_SRC_DIRS += $(DEMO_LVGL_PHOTO_LFS_DIR)
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_1_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_2_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_3_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_4_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_5_data.o
+ifeq ($(DEMO_LVGL_PHOTO_LFS_ENABLE_GIF),1)
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/baji_gif_seed_5_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/saa_360_360_gif_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/saq_360_360_gif_data.o
 endif
-ifeq ($(DEMO_LVGL_PHOTO_FS_ENABLE_JPEG),1)
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_6_360_360_jpg_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_7_360_360_jpg_data.o
-CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_FS_ASSET_DIR)/landscape_8_360_360_jpg_data.o
+ifeq ($(DEMO_LVGL_PHOTO_LFS_ENABLE_JPEG),1)
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_6_360_360_jpg_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_7_360_360_jpg_data.o
+CUSTOM_COBJSTEMP += $(DEMO_LVGL_PHOTO_LFS_ASSET_DIR)/landscape_8_360_360_jpg_data.o
 endif
-CFLAGS_INC += -I $(DEMO_LVGL_PHOTO_FS_DIR)
-CFLAGS_DEFS += -DHWDEMO_LVGL_PHOTO_FS_EN
-CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_FS_ENABLE_GIF=$(DEMO_LVGL_PHOTO_FS_ENABLE_GIF)
-CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_FS_ENABLE_JPEG=$(DEMO_LVGL_PHOTO_FS_ENABLE_JPEG)
-CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_FS_ENABLE_PNG=$(DEMO_LVGL_PHOTO_FS_ENABLE_PNG)
-CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_FS_FORCE_RESEED=$(DEMO_LVGL_PHOTO_FS_FORCE_RESEED)
+CFLAGS_INC += -I $(DEMO_LVGL_PHOTO_LFS_DIR)
+CFLAGS_DEFS += -DHWDEMO_LVGL_PHOTO_LFS_EN
+CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_LFS_ENABLE_GIF=$(DEMO_LVGL_PHOTO_LFS_ENABLE_GIF)
+CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_LFS_ENABLE_JPEG=$(DEMO_LVGL_PHOTO_LFS_ENABLE_JPEG)
+CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_LFS_ENABLE_PNG=$(DEMO_LVGL_PHOTO_LFS_ENABLE_PNG)
+CFLAGS_DEFS += -DDEMO_LVGL_PHOTO_LFS_FORCE_RESEED=$(DEMO_LVGL_PHOTO_LFS_FORCE_RESEED)
 endif
 
 # Salary calculator LVGL demo
@@ -239,6 +263,7 @@ CUSTOM_SRC_DIRS += $(LVGL_DIR) \
 					$(GSENSOR_DIR)
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_salary_calculator/demo_salary_calculator.o
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_salary_calculator/coin_burst_wav.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_salary_calculator/salary_core_utils.o
 CFLAGS_INC += -I $(DEMO_DIR)/src/demo_salary_calculator
 CFLAGS_DEFS += -DHWDEMO_SALARY_CALCULATOR_EN
 APP_MENU_NEEDED := y
@@ -247,7 +272,7 @@ endif
 # 启动板载 ES8375 sound demo
 ifeq ($(HWDEMO_SOUND_ES8375_EN), y)
 ifeq ($(HWDEMO_MP3_STANDALONE_EN), y)
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3_standalone.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3_standalone/demo_mp3_standalone.o
 BUILD_THPART_MP3_ENABLE := y
 else
 ifeq ($(HWDEMO_XIAOZHI_EN), y)
@@ -267,8 +292,8 @@ BUILD_THPART_CJSON_ENABLE := y
 BUILD_THPART_OPUS_ENABLE := y
 APP_MENU_NEEDED := y
 else
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_1khz_tone.o
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_1khz_tone_at.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_1khz_tone/demo_1khz_tone.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_1khz_tone/demo_1khz_tone_at.o
 endif
 endif
 CFLAGS_DEFS += -DHWDEMO_SOUND_ES8375_EN
@@ -278,11 +303,8 @@ endif
 ifeq ($(HWDEMO_MP3_EN), y)
 CUSTOM_SRC_DIRS += $(LVGL_DIR) \
 					$(GSENSOR_DIR)
-ifeq ($(MP3_IMPL), stream)
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3_stream.o
-else
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3.o
-endif
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3_core.o
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3_resources.o
 CFLAGS_INC += -I $(DEMO_DIR)/src/demo_mp3
 CFLAGS_DEFS += -DHWDEMO_MP3_EN
@@ -295,6 +317,7 @@ CUSTOM_SRC_DIRS += $(LVGL_DIR) \
 					$(GSENSOR_DIR)
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_location/demo_location.o
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_location/lv_font_location_cjk_16.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_location/location_core_utils.o
 CFLAGS_INC += -I $(DEMO_DIR)/src/demo_location
 CFLAGS_DEFS += -DHWDEMO_LOCATION_EN
 BUILD_THPART_CJSON_ENABLE := y
@@ -317,13 +340,15 @@ CUSTOM_SRC_DIRS += 		$(APP_DIR)/src \
 						$(GSENSOR_DIR)
 
 ifeq ($(HWDEMO_GNSS_EN), y)
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_gnss.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_gnss/demo_gnss.o
+CFLAGS_INC += -I $(DEMO_DIR)/src/demo_gnss
 CFLAGS_DEFS += -DHWDEMO_GNSS_EN
 endif
 
 ifeq ($(HWDEMO_LOCATION_EN), y)
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_location/demo_location.o
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_location/lv_font_location_cjk_16.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_location/location_core_utils.o
 CFLAGS_INC += -I $(DEMO_DIR)/src/demo_location
 CFLAGS_DEFS += -DHWDEMO_LOCATION_EN
 BUILD_THPART_CJSON_ENABLE := y
@@ -334,17 +359,15 @@ endif
 ifeq ($(HWDEMO_SALARY_CALCULATOR_EN), y)
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_salary_calculator/demo_salary_calculator.o
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_salary_calculator/coin_burst_wav.o
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_salary_calculator/salary_core_utils.o
 CFLAGS_INC += -I $(DEMO_DIR)/src/demo_salary_calculator
 CFLAGS_DEFS += -DHWDEMO_SALARY_CALCULATOR_EN
 APP_MENU_NEEDED := y
 endif
 
 ifeq ($(HWDEMO_MP3_EN), y)
-ifeq ($(MP3_IMPL), stream)
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3_stream.o
-else
-CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3.o
-endif
+CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3_core.o
 CUSTOM_COBJSTEMP += $(DEMO_DIR)/src/demo_mp3/demo_mp3_resources.o
 CFLAGS_INC += -I $(DEMO_DIR)/src/demo_mp3
 CFLAGS_DEFS += -DHWDEMO_MP3_EN

@@ -12,14 +12,13 @@
 #include "liot_rtc.h"
 
 #include "demo_salary_calculator.h"
+#include "salary_core_utils.h"
 #ifdef HWDEMO_MP3_EN
 #include "demo_mp3.h"
 #endif
 #include "gui_guider.h"
 
 #define SALARY_NVM_FILE "salary_calc.cfg"
-#define SALARY_NVM_MAGIC 0x53414C31u
-#define SALARY_WORK_DAYS 22u
 #define SALARY_COIN_WAV_PATH "/extflash/salary/coin_burst.wav"
 #define SALARY_COIN_COUNT 18
 #define SALARY_TIMEZONE_HOURS 8
@@ -27,17 +26,6 @@
 #define SALARY_REENTER_BLOCK_MS 2000
 #define SALARY_EXIT_HOLD_MS 1200U
 #define SALARY_EXIT_MOVE_LIMIT 12
-
-typedef struct {
-    uint32_t magic;
-    uint32_t monthly_salary;
-    uint32_t sound_interval;
-    uint8_t start_hour;
-    uint8_t start_min;
-    uint8_t end_hour;
-    uint8_t end_min;
-    uint32_t checksum;
-} salary_config_t;
 
 typedef struct {
     lv_obj_t *settings_scr;
@@ -88,7 +76,7 @@ static void salary_diag_log(const char *stage)
 {
     uint32_t free_heap = liot_get_free_heap_size ? liot_get_free_heap_size() : 0;
     uint32_t total_heap = liot_get_total_heap_size ? liot_get_total_heap_size() : 0;
-    liot_trace("[salary] %s free_heap=%lu total_heap=%lu settings=%p earning=%p active=%d audio=%d/%d",
+    liot_trace("[salary] %s free_heap=%lu total_heap=%lu settings=%p earning=%p active=%d audio=%d/%d\n",
                stage,
                (unsigned long)free_heap,
                (unsigned long)total_heap,
@@ -105,46 +93,33 @@ static const char *year_opts(void) { return "2024\n2025\n2026\n2027\n2028\n2029\
 static const char *mon_opts(void) { return "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"; }
 static const char *day_opts(void) { return "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31"; }
 
-static bool is_leap_year(int year)
+static salary_time_fields_t salary_to_fields(const liot_rtc_time_s *tm)
 {
-    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+    salary_time_fields_t f;
+    f.tm_year = tm->tm_year;
+    f.tm_mon = tm->tm_mon;
+    f.tm_mday = tm->tm_mday;
+    f.tm_hour = tm->tm_hour;
+    f.tm_min = tm->tm_min;
+    f.tm_sec = tm->tm_sec;
+    return f;
 }
 
-static int days_in_month(int year, int month)
+static void salary_from_fields(liot_rtc_time_s *tm, const salary_time_fields_t *f)
 {
-    static const uint8_t days[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if (month == 2 && is_leap_year(year)) return 29;
-    if (month < 1 || month > 12) return 31;
-    return days[month - 1];
+    tm->tm_year = f->tm_year;
+    tm->tm_mon = f->tm_mon;
+    tm->tm_mday = f->tm_mday;
+    tm->tm_hour = f->tm_hour;
+    tm->tm_min = f->tm_min;
+    tm->tm_sec = f->tm_sec;
 }
 
 static void rtc_add_hours(liot_rtc_time_s *tm, int hours)
 {
-    tm->tm_hour += hours;
-    while (tm->tm_hour >= 24) {
-        tm->tm_hour -= 24;
-        tm->tm_mday++;
-        if (tm->tm_mday > days_in_month(tm->tm_year, tm->tm_mon)) {
-            tm->tm_mday = 1;
-            tm->tm_mon++;
-            if (tm->tm_mon > 12) {
-                tm->tm_mon = 1;
-                tm->tm_year++;
-            }
-        }
-    }
-    while (tm->tm_hour < 0) {
-        tm->tm_hour += 24;
-        tm->tm_mday--;
-        if (tm->tm_mday < 1) {
-            tm->tm_mon--;
-            if (tm->tm_mon < 1) {
-                tm->tm_mon = 12;
-                tm->tm_year--;
-            }
-            tm->tm_mday = days_in_month(tm->tm_year, tm->tm_mon);
-        }
-    }
+    salary_time_fields_t f = salary_to_fields(tm);
+    salary_time_add_hours(&f, hours);
+    salary_from_fields(tm, &f);
 }
 
 static bool rtc_get_local_time(liot_rtc_time_s *tm)
@@ -159,47 +134,24 @@ static void rtc_local_to_device_time(liot_rtc_time_s *tm)
     rtc_add_hours(tm, -SALARY_TIMEZONE_HOURS);
 }
 
-static uint32_t checksum(const salary_config_t *cfg)
-{
-    return cfg->magic ^ cfg->monthly_salary ^ cfg->sound_interval ^
-           ((uint32_t)cfg->start_hour << 24) ^ ((uint32_t)cfg->start_min << 16) ^
-           ((uint32_t)cfg->end_hour << 8) ^ cfg->end_min;
-}
-
 static void load_config(void)
 {
     int ret = liot_nvm_fread(SALARY_NVM_FILE, &g_salary.cfg, sizeof(g_salary.cfg), 1);
-    if (ret <= 0 || g_salary.cfg.magic != SALARY_NVM_MAGIC ||
-        g_salary.cfg.checksum != checksum(&g_salary.cfg) || g_salary.cfg.sound_interval == 0) {
-        memset(&g_salary.cfg, 0, sizeof(g_salary.cfg));
-        g_salary.cfg.magic = SALARY_NVM_MAGIC;
-        g_salary.cfg.monthly_salary = 10000;
-        g_salary.cfg.sound_interval = 1;
-        g_salary.cfg.start_hour = 9;
-        g_salary.cfg.end_hour = 18;
-        g_salary.cfg.checksum = checksum(&g_salary.cfg);
+    if (ret <= 0 || !salary_config_is_valid(&g_salary.cfg)) {
+        salary_config_init_defaults(&g_salary.cfg);
     }
 }
 
 
 static void save_config(void)
 {
-    if (g_salary.cfg.sound_interval == 0) g_salary.cfg.sound_interval = 1;
-    g_salary.cfg.magic = SALARY_NVM_MAGIC;
-    g_salary.cfg.checksum = checksum(&g_salary.cfg);
+    salary_config_prepare_save(&g_salary.cfg);
     liot_nvm_fwrite(SALARY_NVM_FILE, &g_salary.cfg, sizeof(g_salary.cfg), 1);
 }
 
 static int ta_int(lv_obj_t *ta, int fallback)
 {
-    const char *s = lv_textarea_get_text(ta);
-    int value = 0;
-    if (s == NULL || s[0] == 0) return fallback;
-    while (*s) {
-        if (*s >= '0' && *s <= '9') value = value * 10 + *s - '0';
-        s++;
-    }
-    return value > 0 ? value : fallback;
+    return salary_parse_digits(lv_textarea_get_text(ta), fallback);
 }
 
 static void ta_set_int(lv_obj_t *ta, int value)
@@ -228,17 +180,8 @@ static void salary_cleanup_inactive_scr(lv_obj_t **scr)
 
 static uint32_t earned_cent(const liot_rtc_time_s *tm)
 {
-    int start = g_salary.cfg.start_hour * 3600 + g_salary.cfg.start_min * 60;
-    int end = g_salary.cfg.end_hour * 3600 + g_salary.cfg.end_min * 60;
-    int now = tm->tm_hour * 3600 + tm->tm_min * 60 + tm->tm_sec;
-    int elapsed;
-    uint64_t day_cent;
-    if (end <= start) return 0;
-    if (now <= start) elapsed = 0;
-    else if (now >= end) elapsed = end - start;
-    else elapsed = now - start;
-    day_cent = ((uint64_t)g_salary.cfg.monthly_salary * 100u) / SALARY_WORK_DAYS;
-    return (uint32_t)(day_cent * (uint32_t)elapsed / (uint32_t)(end - start));
+    salary_time_fields_t f = salary_to_fields(tm);
+    return salary_earned_cent(&g_salary.cfg, &f);
 }
 
 static bool sync_rtc_rollers(void);
@@ -271,19 +214,19 @@ static void salary_audio_callback(Liot_AudEvent_e event, void *context)
     (void)context;
     switch (event) {
     case L_AUD_EVT_START:
-        liot_trace("salary L_AUD_EVT_START");
+        liot_trace("salary L_AUD_EVT_START\n");
         break;
     case L_AUD_EVT_PAUSE:
-        liot_trace("salary L_AUD_EVT_PAUSE");
+        liot_trace("salary L_AUD_EVT_PAUSE\n");
         break;
     case L_AUD_EVT_FINISH:
-        liot_trace("salary L_AUD_EVT_FINISH");
+        liot_trace("salary L_AUD_EVT_FINISH\n");
         break;
     case L_AUD_EVT_CLOSE:
-        liot_trace("salary L_AUD_EVT_CLOSE");
+        liot_trace("salary L_AUD_EVT_CLOSE\n");
         break;
     case L_AUD_EVT_RESUME:
-        liot_trace("salary L_AUD_EVT_RESUME");
+        liot_trace("salary L_AUD_EVT_RESUME\n");
         break;
     default:
         break;
@@ -295,13 +238,13 @@ static void audio_init_once(void)
     if (g_salary.audio_ready) return;
     if (demo_mp3_audio_is_ready()) {
         g_salary.audio_ready = true;
-        liot_trace("salary reuse shared 44.1k audio");
+        liot_trace("salary reuse shared 44.1k audio\n");
         return;
     }
 
     salary_diag_log("audio init begin");
     liot_rtos_task_sleep_ms(2000);
-    liot_trace("salary open audio power");
+    liot_trace("salary open audio power\n");
     Liot_AonPowerCtl(TRUE);
     Liot_SetVoltage(L_DOMAIN_ALL, L_VOLT_3_30V);
     Liot_GpioInit(L_GPIO_25, L_IO_OUTPUT, L_IO_HIGH, NULL);
@@ -319,15 +262,15 @@ static void audio_init_once(void)
         .samples = L_AUD_16K_SAMPLES,
         .callback = salary_audio_callback,
     };
-    liot_trace("salary AudioInit");
+    liot_trace("salary AudioInit\n");
     Liot_AudErr_e ret = Liot_AudioInit(&cfg);
-    liot_trace("salary AudioInit ret=%d", ret);
+    liot_trace("salary AudioInit ret=%d\n", ret);
     if (ret == L_AUD_ERR_SUCCESS) {
-        liot_trace("salary Audio Set Volume");
+        liot_trace("salary Audio Set Volume\n");
         Liot_AudioSetVolume(50);
-        liot_trace("salary Audio Set Codec Volume");
+        liot_trace("salary Audio Set Codec Volume\n");
         Liot_AudioSetCodecVolume(50);
-        liot_trace("salary Audio Set Mic Volume");
+        liot_trace("salary Audio Set Mic Volume\n");
         Liot_AudioSetMicVolume(8, 200);
         g_salary.audio_ready = true;
     }
@@ -347,19 +290,19 @@ static void coin_sound_task(void *argv)
     }
     audio_init_once();
     if (!g_salary.audio_ready) {
-        liot_trace("salary coin audio not ready");
+        liot_trace("salary coin audio not ready\n");
         g_salary.audio_playing = false;
         liot_rtos_task_delete(NULL);
         return;
     }
 
     stop_ret = Liot_AudioStop();
-    liot_trace("salary coin AudioStop ret=%d", (int)stop_ret);
+    liot_trace("salary coin AudioStop ret=%d\n", (int)stop_ret);
     liot_rtos_task_sleep_ms(100);
     {
         uint32_t mp3_len = (uint32_t)(g_salary_coin_mp3_end - g_salary_coin_mp3_start);
         play_ret = Liot_AudioPlayMp3((uint8_t *)g_salary_coin_mp3_start, (int)mp3_len);
-        liot_trace("salary coin AudioPlayMp3 ret=%d len=%u", (int)play_ret,
+        liot_trace("salary coin AudioPlayMp3 ret=%d len=%u\n", (int)play_ret,
                    (unsigned int)mp3_len);
     }
     if (play_ret == L_AUD_ERR_SUCCESS) {
@@ -370,9 +313,9 @@ static void coin_sound_task(void *argv)
         pause_ret = Liot_AudioPlayPause();
         liot_rtos_task_sleep_ms(80);
         resume_ret = Liot_AudioPlayResume();
-        liot_trace("salary coin kick pause=%d resume=%d", (int)pause_ret, (int)resume_ret);
+        liot_trace("salary coin kick pause=%d resume=%d\n", (int)pause_ret, (int)resume_ret);
         wait_ret = Liot_AudioWaitPlayFinish(5000);
-        liot_trace("salary coin wait ret=%d", (int)wait_ret);
+        liot_trace("salary coin wait ret=%d\n", (int)wait_ret);
         (void)Liot_AudioStop();
         g_salary.audio_warmed = (wait_ret == L_AUD_ERR_SUCCESS);
     }
@@ -388,7 +331,7 @@ static void play_coin_sound(void)
     g_salary.audio_playing = true;
     ret = liot_rtos_task_create(&task, 16 * 1024, LIOT_APP_TASK_PRIORITY,
                                 "coin_sound", coin_sound_task, NULL);
-    liot_trace("salary coin task create ret=%d handle=%p", (int)ret, task);
+    liot_trace("salary coin task create ret=%d handle=%p\n", (int)ret, task);
     if (ret != LIOT_OSI_SUCCESS) {
         g_salary.audio_playing = false;
     }
@@ -542,12 +485,12 @@ static void salary_calculator_page_exit(void)
     lv_obj_t *active_scr = lv_scr_act();
 
     if (!g_salary.page_active && !g_salary.settings_scr && !g_salary.earning_scr) {
-        liot_trace("[salary] exit ignored inactive active=%p settings=%p earning=%p",
+        liot_trace("[salary] exit ignored inactive active=%p settings=%p earning=%p\n",
                    active_scr, g_salary.settings_scr, g_salary.earning_scr);
         return;
     }
 
-    liot_trace("[salary] exit begin active=%p settings=%p earning=%p salary_menu=%p page_del=%d",
+    liot_trace("[salary] exit begin active=%p settings=%p earning=%p salary_menu=%p page_del=%d\n",
                active_scr,
                g_salary.settings_scr,
                g_salary.earning_scr,
@@ -579,14 +522,14 @@ static void salary_calculator_page_exit(void)
     }
 
     if (active_scr && active_scr != guider_ui.salary) {
-        liot_trace("[salary] schedule old active screen delete %p", active_scr);
+        liot_trace("[salary] schedule old active screen delete %p\n", active_scr);
         lv_obj_del_delayed(active_scr, 800);
     }
 
     g_salary.settings_scr = NULL;
     g_salary.earning_scr = NULL;
     g_salary.page_del = true;
-    liot_trace("[salary] exit end menu=%p", guider_ui.salary);
+    liot_trace("[salary] exit end menu=%p\n", guider_ui.salary);
 }
 
 static void salary_calculator_page_exit_timer_cb(lv_timer_t *timer)
@@ -594,7 +537,7 @@ static void salary_calculator_page_exit_timer_cb(lv_timer_t *timer)
     if (g_salary.exit_timer == timer) {
         g_salary.exit_timer = NULL;
     }
-    liot_trace("[salary] exit timer fired active=%p", lv_scr_act());
+    liot_trace("[salary] exit timer fired active=%p\n", lv_scr_act());
 
     lv_timer_del(timer);
 
@@ -608,7 +551,7 @@ static void salary_calculator_page_exit_request(void)
     if (g_salary.page_exiting) {
 
 
-        liot_trace("[salary] exit request ignored, exiting");
+        liot_trace("[salary] exit request ignored, exiting\n");
 
 
         return;
@@ -617,7 +560,7 @@ static void salary_calculator_page_exit_request(void)
     }
 
 
-    liot_trace("[salary] exit request active=%p settings=%p earning=%p", lv_scr_act(), g_salary.settings_scr, g_salary.earning_scr);
+    liot_trace("[salary] exit request active=%p settings=%p earning=%p\n", lv_scr_act(), g_salary.settings_scr, g_salary.earning_scr);
 
 
     g_salary.page_exiting = true;
@@ -866,7 +809,7 @@ void salary_calculator_page_enter_async(void)
 void liot_salary_calculator_demo_thread(void *argv)
 {
     (void)argv;
-    liot_trace("salary calculator demo start");
+    liot_trace("salary calculator demo start\n");
     lvgl_init();
     salary_calculator_page_enter();
     while (1) liot_rtos_task_sleep_s(10);

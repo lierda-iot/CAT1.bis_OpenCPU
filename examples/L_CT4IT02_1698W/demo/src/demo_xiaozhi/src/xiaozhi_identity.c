@@ -7,14 +7,11 @@
 #include "liot_dev.h"
 #include "liot_log.h"
 
+#include "demo_xiaozhi_core.h"
+
 static uint32_t xz_hash(const char *text, uint32_t seed)
 {
-    uint32_t hash = seed;
-    while (*text != '\0') {
-        hash ^= (uint8_t)*text++;
-        hash *= 16777619u;
-    }
-    return hash;
+    return demo_xiaozhi_core_fnv1a(text, seed);
 }
 
 int xiaozhi_identity_init(xiaozhi_config_t *config)
@@ -29,7 +26,7 @@ int xiaozhi_identity_init(xiaozhi_config_t *config)
     if (config == NULL) return -1;
     ret = liot_dev_get_imei(imei, sizeof(imei), 0);
     if (ret != 0 || strlen(imei) < 12) {
-        liot_trace("[xiaozhi] IMEI unavailable ret=0x%x len=%u", ret,
+        liot_trace("[xiaozhi] IMEI unavailable ret=0x%x len=%u\n", ret,
                    (unsigned)strlen(imei));
         return -1;
     }
@@ -48,6 +45,6 @@ int xiaozhi_identity_init(xiaozhi_config_t *config)
              (unsigned long)(h2 & 0x0fff),
              (unsigned long)(0x8000u | ((h3 >> 16) & 0x3fffu)),
              (unsigned long)(h3 & 0xffff), (unsigned long)h4);
-    liot_trace("[xiaozhi] identity device=%s client=%s", config->device_id, config->client_id);
+    liot_trace("[xiaozhi] identity device=%s client=%s\n", config->device_id, config->client_id);
     return 0;
 }

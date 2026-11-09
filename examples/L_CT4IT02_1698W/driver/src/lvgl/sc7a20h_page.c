@@ -11,6 +11,7 @@
 #include "pinmap.h"
 #include "sc7a20h.h"
 #include "sc7a20h_page.h"
+#include "sc7a20h_page_core.h"
 #include "gui_guider.h"
 
 #define SC7A20H_SCREEN_W 360
@@ -38,17 +39,6 @@ static volatile bool g_sc7a20h_sensor_ready = false;
 static volatile int16_t g_sc7a20h_accel_x = 0;
 static volatile int16_t g_sc7a20h_accel_y = 0;
 static volatile int16_t g_sc7a20h_accel_z = 0;
-
-static int sc7a20h_clamp_int(int value, int min_value, int max_value)
-{
-    if (value < min_value) {
-        return min_value;
-    }
-    if (value > max_value) {
-        return max_value;
-    }
-    return value;
-}
 
 static bool sc7a20h_page_sensor_init(void)
 {
@@ -129,13 +119,15 @@ static void sc7a20h_page_update_cb(lv_timer_t *timer)
 
     (void)timer;
 
-    target_x = SC7A20H_CENTER_X + accel_x * SC7A20H_MOVE_RADIUS / SC7A20H_MAP_RANGE_MG;
-    target_y = SC7A20H_CENTER_Y + accel_y * SC7A20H_MOVE_RADIUS / SC7A20H_MAP_RANGE_MG;
-    target_x = sc7a20h_clamp_int(target_x, SC7A20H_DOT_SIZE / 2, SC7A20H_SCREEN_W - SC7A20H_DOT_SIZE / 2);
-    target_y = sc7a20h_clamp_int(target_y, SC7A20H_DOT_SIZE / 2, SC7A20H_SCREEN_H - SC7A20H_DOT_SIZE / 2);
+    target_x = sc7a20h_map_dot_axis(SC7A20H_CENTER_X, accel_x, SC7A20H_MOVE_RADIUS,
+                                    SC7A20H_MAP_RANGE_MG, SC7A20H_DOT_SIZE / 2,
+                                    SC7A20H_SCREEN_W - SC7A20H_DOT_SIZE / 2);
+    target_y = sc7a20h_map_dot_axis(SC7A20H_CENTER_Y, accel_y, SC7A20H_MOVE_RADIUS,
+                                    SC7A20H_MAP_RANGE_MG, SC7A20H_DOT_SIZE / 2,
+                                    SC7A20H_SCREEN_H - SC7A20H_DOT_SIZE / 2);
 
-    filtered_x = (filtered_x * 3 + target_x) / 4;
-    filtered_y = (filtered_y * 3 + target_y) / 4;
+    filtered_x = sc7a20h_filter_axis(filtered_x, target_x);
+    filtered_y = sc7a20h_filter_axis(filtered_y, target_y);
 
     if (g_sc7a20h_dot) {
         lv_obj_set_pos(g_sc7a20h_dot, filtered_x - SC7A20H_DOT_SIZE / 2, filtered_y - SC7A20H_DOT_SIZE / 2);

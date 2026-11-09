@@ -10,7 +10,7 @@
 static void xz_audio_probe_callback(Liot_AudEvent_e event, void *context)
 {
     (void)context;
-    liot_trace("[xiaozhi] audio probe event=%d", (int)event);
+    liot_trace("[xiaozhi] audio probe event=%d\n", (int)event);
 }
 
 static Liot_AudHwConfig_t g_audio_config;
@@ -20,7 +20,7 @@ int xiaozhi_audio_probe_init(void)
 {
     Liot_AudErr_e ret;
 
-    liot_trace("[xiaozhi] audio probe power begin");
+    liot_trace("[xiaozhi] audio probe power begin\n");
     Liot_AonPowerCtl(true);
     Liot_SetVoltage(L_DOMAIN_ALL, L_VOLT_3_30V);
     Liot_GpioInit(L_GPIO_25, L_IO_OUTPUT, L_IO_HIGH, NULL);
@@ -39,11 +39,11 @@ int xiaozhi_audio_probe_init(void)
     g_audio_config.samples = L_AUD_16K_SAMPLES;
     g_audio_config.callback = xz_audio_probe_callback;
     g_audio_config.cbContext = NULL;
-    liot_trace("[xiaozhi] audio probe AudioInit begin");
+    liot_trace("[xiaozhi] audio probe AudioInit begin\n");
     ret = Liot_AudioInit(&g_audio_config);
-    liot_trace("[xiaozhi] audio probe AudioInit ret=%d", (int)ret);
+    liot_trace("[xiaozhi] audio probe AudioInit ret=%d\n", (int)ret);
     if (ret != L_AUD_ERR_SUCCESS) return -1;
-    liot_trace("[xiaozhi] audio probe volume ret=%d codec=%d mic=%d",
+    liot_trace("[xiaozhi] audio probe volume ret=%d codec=%d mic=%d\n",
                (int)Liot_AudioSetVolume(60),
                (int)Liot_AudioSetCodecVolume(60),
                (int)Liot_AudioSetMicVolume(8, 200));
@@ -51,6 +51,6 @@ int xiaozhi_audio_probe_init(void)
                          sizeof(g_audio_warmup_silence));
     if (ret == L_AUD_ERR_SUCCESS)
         ret = Liot_AudioWaitPlayFinish(LIOT_WAIT_FOREVER);
-    liot_trace("[xiaozhi] audio output warmup ret=%d", (int)ret);
+    liot_trace("[xiaozhi] audio output warmup ret=%d\n", (int)ret);
     return 0;
 }

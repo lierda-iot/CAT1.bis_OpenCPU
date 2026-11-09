@@ -21,7 +21,6 @@ void events_init(lv_ui *ui);
 void events_init_time(lv_ui *ui);
 void events_init_baji(lv_ui *ui);
 void events_init_attuition(lv_ui *ui);
-void events_init_attfun(lv_ui *ui);
 void events_init_salary(lv_ui *ui);
 void events_init_positioning(lv_ui *ui);
 void events_init_mp3(lv_ui *ui);

@@ -29,11 +29,6 @@ void events_init_attuition(lv_ui *ui)
     app_menu_bind_attuition(ui);
 }
 
-void events_init_attfun(lv_ui *ui)
-{
-    app_menu_bind_attfun(ui);
-}
-
 void events_init_salary(lv_ui *ui)
 {
     app_menu_bind_salary(ui);

@@ -31,23 +31,34 @@ HWDEMO_LCD_EN           ?= n
 HWDEMO_SC7A20H_EN       ?= n
 HWDEMO_GNSS_EN          ?= n
 HWDEMO_EXTFLASH_P25Q64_EN      ?= n
-HWDEMO_EXTFLASH_FS_P25Q64_EN   ?= n
-HWDEMO_LVGL_PHOTO_FS_EN        ?= n
+HWDEMO_EXTFLASH_P25Q64_LFS_EN   ?= n
+HWDEMO_LVGL_PHOTO_LFS_EN        ?= n
 HWDEMO_SALARY_CALCULATOR_EN    ?= n
 HWDEMO_MP3_EN                  ?= n
 HWDEMO_LOCATION_EN              ?= n
 HWDEMO_LOCATION_HEADLESS_EN     ?= n
-HWDEMO_SOUND_ES8375_EN         ?= y
-HWDEMO_XIAOZHI_EN              ?= y
+HWDEMO_SOUND_ES8375_EN         ?= n
+HWDEMO_XIAOZHI_EN              ?= n
 
 ##############################################################################
 # App feature switches (selected per product; later phases consume these directly)
+#
+# Default product selection: baji only (APP_BAJI_EN=y); the optional app switches
+# APP_WATCHFACE_EN / APP_ATTITUDE_EN / APP_SALARY_EN / APP_MAP_EN / APP_MP3_EN
+# default to n. Enable what the product needs on the make command line, e.g.
+# APP_WATCHFACE_EN=y APP_ATTITUDE_EN=y APP_MP3_EN=y.
+#
+# APP_WATCHFACE_EARTH_2015_EN keeps its own default (y) and is listed separately:
+# it selects the Earth 2015 watchface skin and is only compiled in when the
+# watchface app is enabled (APP_WATCHFACE_EN=y).
 ##############################################################################
-APP_WATCHFACE_EN               ?= y
-APP_WATCHFACE_EARTH_2015_EN    ?= y
+APP_WATCHFACE_EN               ?= n
 APP_BAJI_EN                    ?= y
-APP_ATTITUDE_EN                ?= y
-APP_ATTFUN_EN                  ?= n
+APP_ATTITUDE_EN                ?= n
 APP_SALARY_EN                  ?= n
 APP_MAP_EN                     ?= n
-APP_MP3_EN                     ?= y
+APP_MP3_EN                     ?= n
+
+# Watchface skin selector; standalone entry with its own default (y).
+# Build-side gating: effective only together with APP_WATCHFACE_EN=y.
+APP_WATCHFACE_EARTH_2015_EN    ?= y

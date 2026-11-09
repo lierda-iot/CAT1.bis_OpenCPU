@@ -84,12 +84,12 @@ static void xz_tts_play_thread(void *argument)
         for (i = 0; i < XZ_TTS_SLOT_COUNT; ++i) {
             if (g_tts_slots[i].state != XZ_TTS_SLOT_READY) continue;
             g_tts_slots[i].state = XZ_TTS_SLOT_PLAYING;
-            liot_trace("[xiaozhi] TTS stream play slot=%d bytes=%u",
+            liot_trace("[xiaozhi] TTS stream play slot=%d bytes=%u\n",
                        i, g_tts_slots[i].bytes);
             ret = Liot_AudioPlay(g_tts_slots[i].pcm, g_tts_slots[i].bytes);
             if (ret == L_AUD_ERR_SUCCESS)
                 ret = Liot_AudioWaitPlayFinish(LIOT_WAIT_FOREVER);
-            liot_trace("[xiaozhi] TTS stream finish slot=%d ret=%d",
+            liot_trace("[xiaozhi] TTS stream finish slot=%d ret=%d\n",
                        i, (int)ret);
             g_tts_slots[i].bytes = 0;
             g_tts_slots[i].state = XZ_TTS_SLOT_FREE;
@@ -111,7 +111,7 @@ static Liot_AudErr_e xz_audio_record_pcm(void)
     for (i = 0; i < 4; ++i) {
         if (g_probe_record_buffer.guard_before[i] != XZ_PCM_GUARD_BEFORE ||
             g_probe_record_buffer.guard_after[i] != XZ_PCM_GUARD_AFTER) {
-            liot_trace("[xiaozhi] FATAL audio record buffer overflow index=%u before=%08x after=%08x",
+            liot_trace("[xiaozhi] FATAL audio record buffer overflow index=%u before=%08x after=%08x\n",
                        i, g_probe_record_buffer.guard_before[i],
                        g_probe_record_buffer.guard_after[i]);
             return L_AUD_ERR_EXECUTE;
@@ -128,7 +128,7 @@ void xiaozhi_audio_capture_session_begin(void)
     if (g_probe_encoder != NULL)
         opus_encoder_ctl(g_probe_encoder, OPUS_RESET_STATE);
     xiaozhi_capture_begin();
-    liot_trace("[xiaozhi] capture session=%u begin", g_capture_session);
+    liot_trace("[xiaozhi] capture session=%u begin\n", g_capture_session);
 }
 
 void xiaozhi_audio_capture_session_end(void)
@@ -141,18 +141,18 @@ int xiaozhi_opus_probe_init(void)
     int error = OPUS_OK;
     int ret;
 
-    liot_trace("[xiaozhi] opus probe encoder create begin");
+    liot_trace("[xiaozhi] opus probe encoder create begin\n");
     g_probe_encoder = opus_encoder_create(16000, 1, OPUS_APPLICATION_VOIP, &error);
-    liot_trace("[xiaozhi] opus probe encoder=%p error=%d",
+    liot_trace("[xiaozhi] opus probe encoder=%p error=%d\n",
                g_probe_encoder, error);
     if (g_probe_encoder == NULL || error != OPUS_OK) return -1;
     opus_encoder_ctl(g_probe_encoder, OPUS_SET_BITRATE(24000));
     opus_encoder_ctl(g_probe_encoder, OPUS_SET_COMPLEXITY(3));
     opus_encoder_ctl(g_probe_encoder, OPUS_SET_SIGNAL(OPUS_SIGNAL_VOICE));
 
-    liot_trace("[xiaozhi] opus probe decoder create begin");
+    liot_trace("[xiaozhi] opus probe decoder create begin\n");
     g_probe_decoder = opus_decoder_create(16000, 1, &error);
-    liot_trace("[xiaozhi] opus probe decoder=%p error=%d",
+    liot_trace("[xiaozhi] opus probe decoder=%p error=%d\n",
                g_probe_decoder, error);
     if (g_probe_decoder == NULL || error != OPUS_OK) return -2;
     ret = xiaozhi_capture_init();
@@ -163,10 +163,10 @@ int xiaozhi_opus_probe_init(void)
     ret = liot_rtos_task_create(&g_tts_play_task, 16 * 1024,
                                 LIOT_APP_TASK_PRIORITY,
                                 "xiaozhi_tts", xz_tts_play_thread, NULL);
-    liot_trace("[xiaozhi] TTS stream task create ret=%d handle=%p",
+    liot_trace("[xiaozhi] TTS stream task create ret=%d handle=%p\n",
                ret, g_tts_play_task);
     if (ret != LIOT_OSI_SUCCESS) return -5;
-    liot_trace("[xiaozhi] opus probe ready rate=16000 channels=1 frame_ms=60");
+    liot_trace("[xiaozhi] opus probe ready rate=16000 channels=1 frame_ms=60\n");
     return 0;
 }
 
@@ -176,7 +176,7 @@ int xiaozhi_audio_capture_opus(uint8_t *opus_data, int capacity)
     if (g_probe_encoder == NULL || opus_data == NULL || capacity <= 0) return -1;
     ++g_capture_frame;
     if (g_capture_frame <= 3)
-        liot_trace("[xiaozhi] capture s=%u frame=%u record begin",
+        liot_trace("[xiaozhi] capture s=%u frame=%u record begin\n",
                    g_capture_session, g_capture_frame);
     while (g_pcm_pending < 960) {
         if (xiaozhi_capture_read(g_capture_pcm_block,
@@ -187,7 +187,7 @@ int xiaozhi_audio_capture_opus(uint8_t *opus_data, int capacity)
                sizeof(g_probe_record_buffer.pcm));
         g_pcm_pending += 2560;
         if (g_capture_frame <= 3)
-            liot_trace("[xiaozhi] capture s=%u frame=%u record ret=%d block=5120 pending=%u",
+            liot_trace("[xiaozhi] capture s=%u frame=%u record ret=%d block=5120 pending=%u\n",
                        g_capture_session, g_capture_frame, 0,
                        g_pcm_pending);
     }
@@ -198,7 +198,7 @@ int xiaozhi_audio_capture_opus(uint8_t *opus_data, int capacity)
             (g_pcm_pending - 960) * sizeof(int16_t));
     g_pcm_pending -= 960;
     if (g_capture_frame <= 3)
-        liot_trace("[xiaozhi] capture s=%u frame=%u opus ret=%d",
+        liot_trace("[xiaozhi] capture s=%u frame=%u opus ret=%d\n",
                    g_capture_session, g_capture_frame, encoded);
     return encoded > 0 ? encoded : -3;
 }
@@ -253,7 +253,7 @@ int xiaozhi_audio_decode_append(const uint8_t *opus_data, int length)
         memset(slot->pcm, 0, XZ_TTS_WARMUP_BYTES);
         slot->bytes = XZ_TTS_WARMUP_BYTES;
         g_tts_warmup_pending = false;
-        liot_trace("[xiaozhi] TTS first-block warmup bytes=%u",
+        liot_trace("[xiaozhi] TTS first-block warmup bytes=%u\n",
                    (unsigned int)XZ_TTS_WARMUP_BYTES);
     }
     if (slot->bytes + bytes > XZ_TTS_SLOT_BYTES) {
@@ -291,13 +291,13 @@ void xiaozhi_audio_tts_abort(void)
     }
     if (g_probe_decoder != NULL)
         opus_decoder_ctl(g_probe_decoder, OPUS_RESET_STATE);
-    liot_trace("[xiaozhi] TTS aborted and queue cleared");
+    liot_trace("[xiaozhi] TTS aborted and queue cleared\n");
 }
 
 int xiaozhi_audio_tts_play(void)
 {
     xz_tts_submit_fill_slot();
-    liot_trace("[xiaozhi] TTS stream flush dropped_frames=%u",
+    liot_trace("[xiaozhi] TTS stream flush dropped_frames=%u\n",
                g_tts_dropped_frames);
     return 0;
 }

@@ -13,7 +13,7 @@
 #if APP_MAP_EN
 #include "demo_location.h"
 #endif
-#if APP_MP3_EN
+#if APP_MP3_EN && defined(HWDEMO_MP3_EN)
 #include "demo_mp3.h"
 #endif
 #include "liot_gpio2.h"
@@ -310,12 +310,9 @@ void lvgl_gui_setup(void)
 #elif APP_MAP_EN
         setup_scr_positioning(&guider_ui);
         demo_location_page_enter_async();
-#elif APP_MP3_EN
+#elif APP_MP3_EN && defined(HWDEMO_MP3_EN)
         setup_scr_mp3(&guider_ui);
         demo_mp3_page_enter_async();
-#elif APP_ATTFUN_EN
-        setup_scr_attfun(&guider_ui);
-        lv_scr_load(guider_ui.attfun);
 #endif
     } else {
         setup_ui(&guider_ui);
@@ -330,7 +327,7 @@ void lvgl_task()
     // lv_log_register_print_cb(lv_log_print);
     lv_init();
     lvgl_disp_init();
-#ifdef HWDEMO_MP3_EN
+#if APP_MP3_EN && defined(HWDEMO_MP3_EN)
     liot_trace("[audio] MP3 preinit before touch begin");
     demo_mp3_audio_preinit();
 #endif

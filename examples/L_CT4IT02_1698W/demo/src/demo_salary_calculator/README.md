@@ -2,6 +2,8 @@
 
 基于 `lvgl_demo` 的 LVGL v8.4.0 横屏显示和触摸方案，实现工资实时计算、金币动画和 ES8375 金币音效演示。
 
+更新时间：2026-10-09
+
 ## 功能
 
 - 设置月薪，支持数字键盘输入，以及每次 1000 元的减/加按钮
@@ -30,8 +32,8 @@
 
 ### 构建命令
 
-```powershell
-./build.bat build PROJECT=L_CT4IT02_1698W BUILD_MODE=demo MODEM=NT26F9D0 MODEMPKG=F9D_A HWDEMO_SOUND_ES8375_EN=n HWDEMO_SALARY_CALCULATOR_EN=y
+```bash
+make all PROJECT=L_CT4IT02_1698W MODEM=NT26F9D0 MODEMPKG=F9D_A BUILD_MODE=demo HWDEMO_SALARY_CALCULATOR_EN=y
 ```
 
 ### 烧录文件
@@ -40,11 +42,22 @@
 gccout/L_CT4IT02_1698W/L_CT4IT02_1698W_NT26F9D0_01.binpkg
 ```
 
+### 编译开关说明
+
+- `HWDEMO_SALARY_CALCULATOR_EN=y`：编译 `demo_salary_calculator` + `coin_burst_wav` + `salary_core_utils`，并自动联动：
+  - `HWDEMO_MP3_EN=y`
+  - `BUILD_THPART_MP3_ENABLE=y`
+  - LVGL / GSENSOR 依赖
+- 联动原因：金币音效播放依赖 `demo_mp3_resources.c` 内嵌的 `g_salary_coin_mp3_start/end`（`coin_burst_44k.mp3`），因此 salary 模式无需再单独开 `HWDEMO_MP3_EN`。
+- `HWDEMO_SOUND_ES8375_EN` 默认 n：板载声音 demo 的三选一默认关闭，无需显式设置。
+- 音频通路总开关仍是 `HWDEMO_SOUND_ES8375_EN`；salary 页内的 ES8375 初始化与金币播放由自身完成，不受三选一（standalone / xiaozhi / tone）影响。
+
 ## 资源文件
 
 资源文件位于本目录：
 
 - `coin_burst.wav`：金币音效，PCM WAV，16 kHz，16 bit，mono
+- `coin_burst_44k.mp3`：金币音效 44.1kHz MP3 版本，由 `demo_mp3_resources.c` 内嵌导出 `g_salary_coin_mp3_start/end` 供金币音效播放
 - `coin_burst_wav.c`：由 `coin_burst.wav` 转换生成的内置音频数组
 - `money_background.png`：用户提供的原始背景图，保留不修改
 - `money_background_360x360.rgb565`：360x360 RGB565 原始图像资源
@@ -55,6 +68,16 @@ gccout/L_CT4IT02_1698W/L_CT4IT02_1698W_NT26F9D0_01.binpkg
 - `/extflash/salary/money_background_360x360.rgb565`
 
 当前代码已内置 `coin_burst_wav.c`，即使 extflash 中没有音效文件，也可以播放内置音效。
+
+## 启动时序与预期日志
+
+启用后系统自动创建 `liot_salary_calculator_demo_thread`，串口 115200 可观察到：
+
+```text
+salary calculator demo start
+```
+
+随后进入 `lvgl_init()` → `salary_calculator_page_enter()`，直接显示设置页；进入赚钱页后每秒刷新已赚金额，跨过金额档位时输出金币音效触发日志（前缀 `[salary]`）。
 
 ## 操作与预期
 
@@ -79,3 +102,9 @@ gccout/L_CT4IT02_1698W/L_CT4IT02_1698W_NT26F9D0_01.binpkg
 - RTC 显示按 UTC+8 处理；设置时间时界面填写本地时间。
 - 音效触发按“跨过金额档位”判断，不按每秒固定播放。
 - 若冷启动后第一次无声，需关注 ES8375 上电、MCLK/I2S、PA/模拟通路稳定时序；当前版本用后台预热规避。
+
+## 验证状态
+
+- 编译已验证（demo 组合，`HWDEMO_SALARY_CALCULATOR_EN=y`）。
+- 真机金币动画与音效表现以实际串口日志 + 屏幕/喇叭表现为准。
+- 纯逻辑（日历/时区加减、配置校验、文本数字解析、收入折算）由单元测试覆盖，见 [test/README.md](test/README.md)。

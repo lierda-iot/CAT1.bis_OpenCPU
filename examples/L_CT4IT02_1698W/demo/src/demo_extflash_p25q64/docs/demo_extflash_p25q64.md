@@ -1,6 +1,6 @@
 # L_CT4IT02_1698W Raw ExtFlash 示例说明
 
-更新时间：2026-07-20
+更新时间：2026-10-09
 
 ## 1. 示例文件
 
@@ -65,14 +65,17 @@
 
 ## 6. 建议编译方式
 
-当前板级使用 `NT26F9D0`，建议显式带上 `F9D_A`，并临时覆盖 `CODE_REGION_ADJUST=0`：
+当前板级使用 `NT26F9D0`，建议显式带上 `F9D_A`。`CODE_REGION_ADJUST` 已由 `examples/L_CT4IT02_1698W/config` 统一设置，无需在命令中覆盖：
 
 ```bash
-make all PROJECT=L_CT4IT02_1698W MODEM=NT26F9D0 MODEMPKG=F9D_A \
-    CODE_REGION_ADJUST=0 \
-    HWDEMO_EXTFLASH_P25Q64_EN=y \
-    HWDEMO_EXTFLASH_FS_P25Q64_EN=n
+make all PROJECT=L_CT4IT02_1698W MODEM=NT26F9D0 MODEMPKG=F9D_A BUILD_MODE=demo HWDEMO_EXTFLASH_P25Q64_EN=y HWDEMO_EXTFLASH_P25Q64_LFS_EN=n HWDEMO_LVGL_PHOTO_LFS_EN=n
 ```
+
+说明：
+
+- `BUILD_MODE=demo` 显式声明 demo 构建模式。
+- 建议同时显式关闭 `HWDEMO_EXTFLASH_P25Q64_LFS_EN` / `HWDEMO_LVGL_PHOTO_LFS_EN`，避免多个 extflash 使用者同时拉起；应用层已由 `demo_extflash_p25q64_mgr`（引用计数）统一管理并发复用，观察单 demo 时仍建议只开目标功能。
+- `HWDEMO_SOUND_ES8375_EN` 默认 n（声音三选一默认关闭），无需显式设置。
 
 ## 7. 运行方式
 
@@ -104,7 +107,26 @@ make all PROJECT=L_CT4IT02_1698W MODEM=NT26F9D0 MODEMPKG=F9D_A \
 - `raw_rmw pass`
 - `demo done`
 
-### 8.3 预期行为
+### 8.3 实测日志（真机 2026-10-08，生命周期引用计数修复后）
+
+```text
+[p25q64_raw] demo start board=L_CT4IT02_1698W flash=P25Q64_8MB total=0x00800000
+[extflash_mgr] LDO33 enable enabled via direct gpio=25
+[extflash_mgr] VCC3V3 enable enabled via direct gpio=27
+[extflash_mgr] owner=p25q64_raw flash ready refcount=1 spi=1 base=0x000000 total=0x00800000
+[p25q64_raw] flash init ok spi=1 base=0x000000 total=0x00800000
+[p25q64_raw] raw_basic pass offset=0x000000 size=256 erase_tick=21 write_tick=3 read_tick=0 verify_tick=0 tail=0x30
+[p25q64_raw] raw_rmw pass offset=0x001000 size=4096 read_tick=0 erase_tick=40 write_tick=96 verify_tick=0 data=AA BB CC DD total_tick=161
+[extflash_mgr] owner=p25q64_raw last owner deinit, refcount=0
+[p25q64_raw] demo done
+```
+
+说明：
+
+- 实测确认 256B 写入/读取/校验与 4KB 扇区读改写均通过，`demo done` 正常收尾，未再出现复位。
+- 修复前问题表现：`spiFlashInit( port = 1 ) failed : -1` / `Failed to create mutex for gSpiMutex` 后 watchdog 复位，反映应用层并发复用同一 extflash 资源缺少统一生命周期管理的问题。
+
+### 8.4 预期行为
 
 当前预期该示例能够完成：
 
@@ -113,6 +135,15 @@ make all PROJECT=L_CT4IT02_1698W MODEM=NT26F9D0 MODEMPKG=F9D_A \
 - 256B 写入 / 读取 / 校验成功
 - 4KB 扇区 RMW 成功
 - `liot_flash_deinit_ext()` 正常返回
+
+### 8.5 生命周期说明
+
+`demo_extflash_p25q64` / `demo_extflash_p25q64_lfs` / `demo_lvgl_photo_lfs` 通过 `demo_extflash_p25q64_mgr`（引用计数）统一管理 extflash 电源、SPI 与驱动生命周期：
+
+- 首个使用者：初始化硬件并设置 `refcount=1`
+- 后续使用者：仅递增 `refcount`
+- 最后一个使用者释放：递减至 `refcount=0` 并执行 `liot_flash_deinit_ext()`
+- 日志关键字：`owner=... flash ready refcount=N` / `last owner deinit, refcount=0`
 
 ## 9. 当前边界
 

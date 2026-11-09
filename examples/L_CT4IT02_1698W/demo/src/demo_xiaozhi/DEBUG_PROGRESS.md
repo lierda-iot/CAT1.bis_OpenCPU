@@ -7,14 +7,6 @@ Last updated: 2026-08-19 10:40 (Asia/Shanghai)
 The touch release / barge-in issue is **not resolved**. Pause Xiaozhi work here
 and resume from this document after the other work is complete.
 
-Latest test firmware:
-
-`F:\cat1.bis_opencpu_internal\demo_xiaozhi_F9D_A_release_latch_stale_tts_fix_20260819.binpkg`
-
-Latest relevant device log:
-
-`C:\Users\001911\.codex\attachments\486faa90-b405-4371-9462-60b1c83784ee\pasted-text.txt`
-
 ## Implemented
 
 - F9D_A current base package; 3A is not used because the API returned
@@ -61,7 +53,7 @@ problem remains. These changes have not yet been validated as a complete fix.
 ## Build
 
 ```powershell
-.\build.bat build PROJECT=L_CT4IT02_1698W MODEM=NT26F9D0 BUILD_MODE=demo
+make all PROJECT=L_CT4IT02_1698W MODEM=NT26F9D0 MODEMPKG=F9D_A BUILD_MODE=demo HWDEMO_SOUND_ES8375_EN=y HWDEMO_XIAOZHI_EN=y HWDEMO_MP3_STANDALONE_EN=n
 ```
 
 Expected package:

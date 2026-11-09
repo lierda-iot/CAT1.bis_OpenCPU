@@ -6292,19 +6292,19 @@ void playCallback(Liot_AudEvent_e event, void *context)
     switch (event) 
     {
         case L_AUD_EVT_START:
-            liot_trace("L_AUD_EVT_START");
+            liot_trace("L_AUD_EVT_START\n");
             break;
         case L_AUD_EVT_PAUSE:
-            liot_trace("L_AUD_EVT_PAUSE");
+            liot_trace("L_AUD_EVT_PAUSE\n");
             break;
         case L_AUD_EVT_FINISH:
-            liot_trace("L_AUD_EVT_FINISH");
+            liot_trace("L_AUD_EVT_FINISH\n");
             break;
         case L_AUD_EVT_CLOSE:
-            liot_trace("L_AUD_EVT_CLOSE");
+            liot_trace("L_AUD_EVT_CLOSE\n");
             break;
         case L_AUD_EVT_RESUME:
-            liot_trace("L_AUD_EVT_RESUME");
+            liot_trace("L_AUD_EVT_RESUME\n");
             break;
         default:
             break;
@@ -6315,7 +6315,7 @@ void liot_sound_es8375_demo_thread(void *argv)
 {
     liot_rtos_task_sleep_ms(2000);
 
-    liot_trace("open audio power");
+    liot_trace("open audio power\n");
     Liot_AonPowerCtl(TRUE);
     Liot_SetVoltage(L_DOMAIN_ALL, L_VOLT_3_30V );
     Liot_GpioInit(L_GPIO_25, L_IO_OUTPUT, L_IO_HIGH, NULL);
@@ -6334,31 +6334,31 @@ void liot_sound_es8375_demo_thread(void *argv)
         .callback = playCallback,
     };
 
-    liot_trace("AudioInit");
+    liot_trace("AudioInit\n");
     Liot_AudErr_e audioRet = Liot_AudioInit(&cfg);
-    liot_trace("AudioInit ret=%d", audioRet);
+    liot_trace("AudioInit ret=%d\n", audioRet);
     if (audioRet != L_AUD_ERR_SUCCESS)
         goto keep_alive;
 
-    liot_trace("Audio Set Volume");
+    liot_trace("Audio Set Volume\n");
     Liot_AudioSetVolume(50);
 
-    liot_trace("Audio Set Codec Volume");
+    liot_trace("Audio Set Codec Volume\n");
     Liot_AudioSetCodecVolume(50);
 
-    liot_trace("Audio Set Mic Volume");
+    liot_trace("Audio Set Mic Volume\n");
     Liot_AudioSetMicVolume(8, 200);
 
     while(1)
     {
         #ifdef TEST_PLAY
-        liot_trace("Audio Play ...");
+        liot_trace("Audio Play ...\n");
         Liot_AudioPlay(audio16k_16, sizeof(audio16k_16)); //46384
         Liot_AudioWaitPlayFinish(LIOT_WAIT_FOREVER);
         #endif
 
         #ifdef TEST_RECORD
-        liot_trace("Audio Record ...");
+        liot_trace("Audio Record ...\n");
         Liot_AudioRecord(audioRecord, TEST_CACHE_LEN);
         Liot_AudioPlay(audioRecord, TEST_CACHE_LEN);
         liot_rtos_task_sleep_ms(5);
@@ -6367,7 +6367,7 @@ void liot_sound_es8375_demo_thread(void *argv)
     }
 
 keep_alive:
-    liot_trace("Audio test finished, keep task alive");
+    liot_trace("Audio test finished, keep task alive\n");
     while (1)
         liot_rtos_task_sleep_ms(1000);
 }

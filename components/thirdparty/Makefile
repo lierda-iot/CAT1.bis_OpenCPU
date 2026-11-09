@@ -51,3 +51,7 @@ endif
 ifeq ($(BUILD_THPART_ZLIB_ENABLE), y)
 include $(THIRDPART_DIR)/zlib/Makefile
 endif
+
+ifeq ($(BUILD_THPART_UNITY_ENABLE), y)
+include $(THIRDPART_DIR)/unity/Makefile
+endif

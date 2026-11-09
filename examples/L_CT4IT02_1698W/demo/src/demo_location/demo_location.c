@@ -15,6 +15,7 @@
 
 #include "demo_location.h"
 #include "demo_agnss_config.h"
+#include "location_core_utils.h"
 #ifdef HWDEMO_GNSS_EN
 #include "demo_gnss.h"
 #endif
@@ -34,8 +35,7 @@
 #define LOCATION_FIX_POLL_MS       1000U
 #define LOCATION_EXIT_DELAY_MS      300U
 #define AGNSS_RESPONSE_SIZE          8192
-#define AGNSS_HTTP_TIMEOUT_MS        30000
-#define AGNSS_GNSS_READY_TIMEOUT_MS  10000
+#define AGNSS_FIX_TIMEOUT_MS         60000
 #define AGNSS_SOCKET_HEADER_SIZE      2048
 #define AGNSS_REQUEST_BODY \
     "[{\"rtAssistance\":{\"format\":\"rtcm\",\"msgs\":[\"GPS:1NAF\",\"BDS:2NAF\"]}}]"
@@ -56,21 +56,6 @@ typedef struct {
     volatile bool done;
     volatile bool closed;
 } location_http_ctx_t;
-
-typedef struct {
-    uint8_t *response;
-    int response_capacity;
-    int response_len;
-    const char *request;
-    int request_len;
-    int request_offset;
-    int http_status;
-    int event_type;
-    int event_result;
-    bool overflow;
-    volatile bool done;
-    volatile bool closed;
-} agnss_http_ctx_t;
 
 typedef struct {
     lv_obj_t *screen;
@@ -127,20 +112,6 @@ static bool location_source_get(location_fix_t *fix)
     return true;
 }
 
-static void location_format_coordinate(char *buffer, size_t size, int32_t value_e7,
-                                       char positive, char negative)
-{
-    int64_t value = value_e7;
-    char direction = positive;
-    if (value < 0) {
-        value = -value;
-        direction = negative;
-    }
-    snprintf(buffer, size, "%ld.%07ld %c",
-             (long)(value / 10000000),
-             (long)(value % 10000000), direction);
-}
-
 static int location_http_write(liot_http_client_t *client, void *argument,
                                char *data, int size, unsigned char end)
 {
@@ -165,7 +136,7 @@ static void location_http_event(liot_http_client_t *client, int event,
     location_http_ctx_t *ctx = (location_http_ctx_t *)argument;
     if (ctx == NULL) return;
     ctx->event_type = event;
-    liot_trace("%s HTTP callback type=%d code=0x%x", LOCATION_LOG_PREFIX,
+    liot_trace("%s HTTP callback type=%d code=0x%x\n", LOCATION_LOG_PREFIX,
                event, event_code);
     switch (event) {
     case LIOT_HTTPC_RESPONSE_STATUS:
@@ -190,193 +161,6 @@ static void location_http_event(liot_http_client_t *client, int event,
     default:
         break;
     }
-}
-
-static int agnss_http_read(liot_http_client_t *client, void *argument,
-                           char *data, int size)
-{
-    agnss_http_ctx_t *ctx = (agnss_http_ctx_t *)argument;
-    int remaining;
-    int copied;
-
-    (void)client;
-    if (ctx == NULL || data == NULL || size <= 0) return 0;
-    remaining = ctx->request_len - ctx->request_offset;
-    if (remaining <= 0) return 0;
-    copied = remaining < size ? remaining : size;
-    memcpy(data, ctx->request + ctx->request_offset, (size_t)copied);
-    ctx->request_offset += copied;
-    return copied;
-}
-
-static int agnss_http_write(liot_http_client_t *client, void *argument,
-                            char *data, int size, unsigned char end)
-{
-    agnss_http_ctx_t *ctx = (agnss_http_ctx_t *)argument;
-    int available;
-
-    (void)client;
-    (void)end;
-    if (ctx == NULL || data == NULL || size <= 0) return 0;
-    available = ctx->response_capacity - ctx->response_len;
-    if (size > available) {
-        ctx->overflow = true;
-        size = available;
-    }
-    if (size > 0) {
-        memcpy(ctx->response + ctx->response_len, data, (size_t)size);
-        ctx->response_len += size;
-    }
-    return size;
-}
-
-static void agnss_http_event(liot_http_client_t *client, int event,
-                             int event_code, void *argument)
-{
-    agnss_http_ctx_t *ctx = (agnss_http_ctx_t *)argument;
-
-    if (ctx == NULL) return;
-    ctx->event_type = event;
-    switch (event) {
-    case LIOT_HTTPC_RESPONSE_STATUS:
-        if (event_code == LIOT_HTTPC_SUCCESS) {
-            liot_httpc_getinfo(client, LIOT_HTTPC_STATUS_CODE, &ctx->http_status);
-        }
-        break;
-    case LIOT_HTTPC_RESPONSE_COMPLETE:
-    case LIOT_HTTPC_RESPONSE_TIMEOUT:
-        ctx->event_result = event_code;
-        ctx->done = true;
-        break;
-    case LIOT_HTTPC_SESSION_OPEN:
-        if (event_code != LIOT_HTTPC_SUCCESS) {
-            ctx->event_result = event_code;
-            ctx->done = true;
-        }
-        break;
-    case LIOT_HTTPC_SESSION_CLOSE:
-        ctx->closed = true;
-        break;
-    default:
-        break;
-    }
-}
-
-static int location_agnss_download_httpc(void)
-{
-#ifdef HWDEMO_GNSS_EN
-    agnss_http_ctx_t ctx;
-    liot_http_client_t client = 0;
-    liot_httpc_url_s parsed_url;
-    char url[192];
-    char headers[384];
-    int waited = 0;
-    int result = -1;
-    int perform_result;
-    int header_len;
-
-    memset(&ctx, 0, sizeof(ctx));
-    memset(&parsed_url, 0, sizeof(parsed_url));
-    snprintf(url, sizeof(url), "%s", DEMO_AGNSS_URL);
-    ctx.response = liot_rtos_malloc(AGNSS_RESPONSE_SIZE);
-    if (ctx.response == NULL) return -1;
-    ctx.response_capacity = AGNSS_RESPONSE_SIZE;
-    ctx.request = AGNSS_REQUEST_BODY;
-    ctx.request_len = (int)strlen(ctx.request);
-
-    header_len = snprintf(headers, sizeof(headers),
-                          "Authorization: RXN-BASIC cId=%s,mId=%s,pw=%s\r\n"
-                          "Content-Type: application/json\r\n"
-                          "Accept: application/octet-stream",
-                          DEMO_AGNSS_CID, DEMO_AGNSS_MID,
-                          DEMO_AGNSS_PASSWORD);
-    if (header_len <= 0 || header_len >= (int)sizeof(headers)) {
-        result = -2;
-        goto cleanup;
-    }
-    if (!liot_httpc_url_parse(url, &parsed_url)) {
-        result = -3;
-        goto cleanup;
-    }
-    if (liot_httpc_new(&client, agnss_http_event, &ctx) != LIOT_HTTPC_SUCCESS) {
-        result = -4;
-        goto cleanup;
-    }
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_SIM_ID, 0);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_PDPCID, 1);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_METHOD, LIOT_HTTPC_METHOD_POST);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_URL, &parsed_url);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_READ_FUNC, agnss_http_read);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_READ_DATA, &ctx);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_UPLOAD_LEN, ctx.request_len);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_BODY_DATA_TYPE,
-                      LIOT_HTTPC_RAW_DATA);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_RAW_REQUEST, 0);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_REQUEST_HEADER, headers);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_CUSTOME_HEADER,
-                      "Content-Type: application/json");
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_WRITE_FUNC, agnss_http_write);
-    liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_WRITE_DATA, &ctx);
-
-    liot_trace("%s AGNSS POST url=%s body_bytes=%d",
-               LOCATION_LOG_PREFIX, DEMO_AGNSS_URL, ctx.request_len);
-    perform_result = liot_httpc_perform(&client);
-    if (perform_result != LIOT_HTTPC_SUCCESS) {
-        liot_trace("%s AGNSS perform failed=0x%x", LOCATION_LOG_PREFIX,
-                   perform_result);
-        result = -5;
-        goto cleanup;
-    }
-    while (!ctx.done && waited < AGNSS_HTTP_TIMEOUT_MS) {
-        liot_rtos_task_sleep_ms(100);
-        waited += 100;
-    }
-    liot_trace("%s AGNSS HTTP done=%d event=%d code=0x%x status=%d bytes=%d overflow=%d",
-               LOCATION_LOG_PREFIX, ctx.done ? 1 : 0, ctx.event_type,
-               ctx.event_result, ctx.http_status, ctx.response_len,
-               ctx.overflow ? 1 : 0);
-    if (!ctx.done || ctx.event_result != LIOT_HTTPC_SUCCESS ||
-        ctx.http_status != 200 || ctx.response_len <= 0 || ctx.overflow) {
-        if (ctx.response_len > 0) {
-            int text_len = ctx.response_len < 256 ? ctx.response_len : 256;
-            liot_trace("%s AGNSS error body=%.*s", LOCATION_LOG_PREFIX,
-                       text_len, (char *)ctx.response);
-        }
-        result = -6;
-        goto cleanup;
-    }
-    waited = 0;
-    while (!demo_gnss_is_ready() && waited < AGNSS_GNSS_READY_TIMEOUT_MS) {
-        liot_rtos_task_sleep_ms(100);
-        waited += 100;
-    }
-    if (!demo_gnss_is_ready()) {
-        result = -7;
-        goto cleanup;
-    }
-    liot_trace("%s AGNSS RTCM head=%02X %02X %02X %02X",
-               LOCATION_LOG_PREFIX, ctx.response[0],
-               ctx.response_len > 1 ? ctx.response[1] : 0,
-               ctx.response_len > 2 ? ctx.response[2] : 0,
-               ctx.response_len > 3 ? ctx.response[3] : 0);
-    result = demo_gnss_inject_assistance(ctx.response,
-                                         (size_t)ctx.response_len);
-cleanup:
-    if (client != 0) {
-        liot_httpc_stop(&client);
-        waited = 0;
-        while (!ctx.closed && waited < 2000) {
-            liot_rtos_task_sleep_ms(100);
-            waited += 100;
-        }
-        liot_httpc_release(&client);
-    }
-    if (ctx.response != NULL) liot_rtos_free(ctx.response);
-    liot_trace("%s AGNSS result=%d", LOCATION_LOG_PREFIX, result);
-    return result;
-#else
-    return -20;
-#endif
 }
 
 static int agnss_socket_send_all(int socket_fd, const uint8_t *data, int size)
@@ -413,13 +197,12 @@ static int location_agnss_download_and_inject(void)
     int ret;
     int waited;
 
-    (void)location_agnss_download_httpc;
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     ret = lwip_getaddrinfowithcid(DEMO_AGNSS_HOST, "80", &hints,
                                   &addresses, 1);
-    liot_trace("%s AGNSS socket DNS ret=%d addresses=%p",
+    liot_trace("%s AGNSS socket DNS ret=%d addresses=%p\n",
                LOCATION_LOG_PREFIX, ret, addresses);
     if (ret != 0 || addresses == NULL) return -31;
 
@@ -434,7 +217,7 @@ static int location_agnss_download_and_inject(void)
         lwip_setsockopt(socket_fd, SOL_SOCKET, SO_SNDTIMEO,
                         &timeout, sizeof(timeout));
         ret = lwip_connect(socket_fd, address->ai_addr, address->ai_addrlen);
-        liot_trace("%s AGNSS socket connect fd=%d ret=%d errno=%d",
+        liot_trace("%s AGNSS socket connect fd=%d ret=%d errno=%d\n",
                    LOCATION_LOG_PREFIX, socket_fd, ret, errno);
         if (ret == 0) break;
         lwip_close(socket_fd);
@@ -462,7 +245,7 @@ static int location_agnss_download_and_inject(void)
     }
     ret = agnss_socket_send_all(socket_fd, (const uint8_t *)request,
                                 request_len);
-    liot_trace("%s AGNSS socket request sent=%d/%d",
+    liot_trace("%s AGNSS socket request sent=%d/%d\n",
                LOCATION_LOG_PREFIX, ret, request_len);
     if (ret != request_len) {
         result = -34;
@@ -503,12 +286,12 @@ static int location_agnss_download_and_inject(void)
             break;
         }
     }
-    liot_trace("%s AGNSS socket HTTP status=%d content_length=%d initial_body=%d",
+    liot_trace("%s AGNSS socket HTTP status=%d content_length=%d initial_body=%d\n",
                LOCATION_LOG_PREFIX, http_status, content_length, rtcm_len);
     if (http_status != 200 || content_length <= 0 ||
         content_length > AGNSS_RESPONSE_SIZE) {
         if (rtcm_len > 0) {
-            liot_trace("%s AGNSS socket error body=%.*s",
+            liot_trace("%s AGNSS socket error body=%.*s\n",
                        LOCATION_LOG_PREFIX, rtcm_len, (char *)rtcm);
         }
         result = -37;
@@ -523,31 +306,45 @@ static int location_agnss_download_and_inject(void)
         }
         rtcm_len += ret;
     }
-    liot_trace("%s AGNSS socket RTCM bytes=%d head=%02X %02X %02X %02X",
+    liot_trace("%s AGNSS socket RTCM bytes=%d head=%02X %02X %02X %02X\n",
                LOCATION_LOG_PREFIX, rtcm_len, rtcm[0], rtcm[1], rtcm[2], rtcm[3]);
-
-    waited = 0;
-    while (!demo_gnss_is_ready() && waited < AGNSS_GNSS_READY_TIMEOUT_MS) {
-        liot_rtos_task_sleep_ms(100);
-        waited += 100;
-    }
-    if (!demo_gnss_is_ready()) {
+    if (rtcm_len < 4 || rtcm[0] != 0xD3U) {
         result = -39;
+        goto cleanup;
+    }
+
+    if (!demo_gnss_uart_ready()) {
+        result = -40;
         goto cleanup;
     }
     result = demo_gnss_inject_assistance(rtcm, (size_t)rtcm_len);
     if (result == 0) {
         liot_rtos_task_sleep_ms(500);
         demo_gnss_query_assistance();
+        waited = 0;
+        while (!demo_gnss_has_fix() && waited < AGNSS_FIX_TIMEOUT_MS) {
+            liot_rtos_task_sleep_ms(1000);
+            waited += 1000;
+        }
+        if (demo_gnss_has_fix()) {
+            liot_trace("%s AGNSS fix acquired after %d ms sats=%d\n",
+                       LOCATION_LOG_PREFIX, waited,
+                       demo_gnss_get_visible_satellites());
+        } else {
+            liot_trace("%s AGNSS no fix after %d ms sats=%d result=%d\n",
+                       LOCATION_LOG_PREFIX, AGNSS_FIX_TIMEOUT_MS,
+                       demo_gnss_get_visible_satellites(), result);
+            result = -41;
+        }
     }
 cleanup:
     if (socket_fd >= 0) lwip_close(socket_fd);
     if (header != NULL) liot_rtos_free(header);
     if (rtcm != NULL) liot_rtos_free(rtcm);
-    liot_trace("%s AGNSS socket result=%d", LOCATION_LOG_PREFIX, result);
+    liot_trace("%s AGNSS socket result=%d\n", LOCATION_LOG_PREFIX, result);
     return result;
 #else
-    return -40;
+    return -42;
 #endif
 }
 
@@ -557,24 +354,24 @@ static int location_network_prepare(void)
     int ret;
     int attempts = 0;
 
-    liot_trace("%s SDK network register wait start", LOCATION_LOG_PREFIX);
+    liot_trace("%s SDK network register wait start\n", LOCATION_LOG_PREFIX);
     do {
         ret = liot_network_register_wait(0, 60);
         if (ret == LIOT_DATACALL_SUCCESS) break;
         attempts++;
         if (attempts == 1 || (attempts % 10) == 0) {
-            liot_trace("%s SDK register retry=%d ret=0x%x",
+            liot_trace("%s SDK register retry=%d ret=0x%x\n",
                        LOCATION_LOG_PREFIX, attempts, ret);
         }
         liot_rtos_task_sleep_s(1);
     } while (attempts < LOCATION_REGISTER_RETRIES);
     if (ret != LIOT_DATACALL_SUCCESS) return -10;
-    liot_trace("%s SDK network registered attempts=%d", LOCATION_LOG_PREFIX, attempts);
+    liot_trace("%s SDK network registered attempts=%d\n", LOCATION_LOG_PREFIX, attempts);
 
     liot_set_data_call_asyn_mode(0, 1, false);
     ret = liot_start_data_call(0, 1, LIOT_DATA_TYPE_IPV4V6,
                                "APNTEST", "", "", LIOT_DATA_AUTH_TYPE_NONE);
-    liot_trace("%s SDK data call ret=0x%x", LOCATION_LOG_PREFIX, ret);
+    liot_trace("%s SDK data call ret=0x%x\n", LOCATION_LOG_PREFIX, ret);
     if (ret != LIOT_DATACALL_SUCCESS &&
         ret != LIOT_DATACALL_REPEAT_ACTIVE_ERR) return -11;
 
@@ -582,16 +379,16 @@ static int location_network_prepare(void)
     liot_rtos_task_sleep_s(4);
     memset(&info, 0, sizeof(info));
     ret = liot_get_data_call_info(0, 1, &info);
-    liot_trace("%s PDP info ret=0x%x cid=%d ipver=%d v4state=%d v6state=%d",
+    liot_trace("%s PDP info ret=0x%x cid=%d ipver=%d v4state=%d v6state=%d\n",
                LOCATION_LOG_PREFIX, ret, info.cid, info.ip_version,
                info.v4.state, info.v6.state);
-    liot_trace("%s PDP info cid=%d ipver=%d v4state=%d",
+    liot_trace("%s PDP info cid=%d ipver=%d v4state=%d\n",
                LOCATION_LOG_PREFIX, info.cid, info.ip_version, info.v4.state);
-    liot_trace("%s PDP IPv4=%s", LOCATION_LOG_PREFIX,
+    liot_trace("%s PDP IPv4=%s\n", LOCATION_LOG_PREFIX,
                liot_ip4addr_ntoa(&info.v4.addr.ip));
-    liot_trace("%s PDP DNS1=%s", LOCATION_LOG_PREFIX,
+    liot_trace("%s PDP DNS1=%s\n", LOCATION_LOG_PREFIX,
                liot_ip4addr_ntoa(&info.v4.addr.pri_dns));
-    liot_trace("%s PDP DNS2=%s", LOCATION_LOG_PREFIX,
+    liot_trace("%s PDP DNS2=%s\n", LOCATION_LOG_PREFIX,
                liot_ip4addr_ntoa(&info.v4.addr.sec_dns));
     g_location_network_ready = true;
     return 0;
@@ -636,21 +433,11 @@ static int location_transport_request(const location_fix_t *fix,
     if (!g_location_network_ready) return -10;
     memset(&ctx, 0, sizeof(ctx));
     memset(&parsed_url, 0, sizeof(parsed_url));
-    {
-        int64_t lon = fix->longitude_e7;
-        int64_t lat = fix->latitude_e7;
-        uint64_t lon_abs = (uint64_t)(lon < 0 ? -lon : lon);
-        uint64_t lat_abs = (uint64_t)(lat < 0 ? -lat : lat);
-        snprintf(longitude, sizeof(longitude), "%s%ld.%07ld",
-                 lon < 0 ? "-" : "", (long)(lon_abs / 10000000U),
-                 (long)(lon_abs % 10000000U));
-        snprintf(latitude, sizeof(latitude), "%s%ld.%07ld",
-                 lat < 0 ? "-" : "", (long)(lat_abs / 10000000U),
-                 (long)(lat_abs % 10000000U));
-    }
+    location_format_coordinate_compact(longitude, sizeof(longitude), fix->longitude_e7);
+    location_format_coordinate_compact(latitude, sizeof(latitude), fix->latitude_e7);
     snprintf(url, sizeof(url), "%s?longitude=%s&latitude=%s",
              LOCATION_API_URL, longitude, latitude);
-    liot_trace("%s GET %s", LOCATION_LOG_PREFIX, url);
+    liot_trace("%s GET %s\n", LOCATION_LOG_PREFIX, url);
     if (!liot_httpc_url_parse(url, &parsed_url)) return -2;
     if (liot_httpc_new(&client, location_http_event, &ctx) != LIOT_HTTPC_SUCCESS) return -3;
     liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_SIM_ID, 0);
@@ -673,7 +460,7 @@ static int location_transport_request(const location_fix_t *fix,
         liot_rtos_task_sleep_ms(100);
         waited += 100;
     }
-    liot_trace("%s HTTP done=%d type=%d code=0x%x perform=0x%x status=%d bytes=%d",
+    liot_trace("%s HTTP done=%d type=%d code=0x%x perform=0x%x status=%d bytes=%d\n",
                LOCATION_LOG_PREFIX, ctx.done ? 1 : 0, ctx.event_type,
                ctx.event_result, perform_result, ctx.http_status, ctx.response_len);
     if (ctx.done && ctx.event_result == LIOT_HTTPC_SUCCESS &&
@@ -757,13 +544,13 @@ static void location_result_timer(lv_timer_t *timer)
         g_location.fix_poll_tick = now;
         location_refresh_fix();
         if (!was_valid && g_location.fix.valid) {
-            liot_trace("%s GNSS fix acquired lat_e7=%ld lon_e7=%ld",
+            liot_trace("%s GNSS fix acquired lat_e7=%ld lon_e7=%ld\n",
                        LOCATION_LOG_PREFIX, (long)g_location.fix.latitude_e7,
                        (long)g_location.fix.longitude_e7);
         } else if (g_location.fix.valid &&
                    (old_latitude != g_location.fix.latitude_e7 ||
                     old_longitude != g_location.fix.longitude_e7)) {
-            liot_trace("%s GNSS fix updated lat_e7=%ld lon_e7=%ld",
+            liot_trace("%s GNSS fix updated lat_e7=%ld lon_e7=%ld\n",
                        LOCATION_LOG_PREFIX, (long)g_location.fix.latitude_e7,
                        (long)g_location.fix.longitude_e7);
         }
@@ -817,7 +604,7 @@ static void location_locate_clicked(lv_event_t *event)
                                    LIOT_APP_TASK_PRIORITY, "location_req",
                                    location_request_task,
                                    (void *)(uintptr_t)g_location.generation);
-    liot_trace("%s request task ret=%d handle=%p", LOCATION_LOG_PREFIX,
+    liot_trace("%s request task ret=%d handle=%p\n", LOCATION_LOG_PREFIX,
                (int)result, g_location.request_task);
     if (result != LIOT_OSI_SUCCESS) {
         g_location.request_running = false;
@@ -832,7 +619,7 @@ static void location_page_exit(void)
     lv_obj_t *old_screen = g_location.screen;
 
     if (!g_location.page_active || old_screen == NULL) return;
-    liot_trace("%s exit begin screen=%p menu=%p request=%d",
+    liot_trace("%s exit begin screen=%p menu=%p request=%d\n",
                LOCATION_LOG_PREFIX, old_screen, guider_ui.positioning,
                g_location_request_active ? 1 : 0);
     g_location.page_active = false;
@@ -858,7 +645,7 @@ static void location_page_exit(void)
     g_location.description_label = NULL;
     g_location.locate_button = NULL;
     g_location.page_del = true;
-    liot_trace("%s exit end menu=%p", LOCATION_LOG_PREFIX, guider_ui.positioning);
+    liot_trace("%s exit end menu=%p\n", LOCATION_LOG_PREFIX, guider_ui.positioning);
 }
 
 static void location_exit_timer_cb(lv_timer_t *timer)
@@ -879,7 +666,7 @@ static void location_exit_request(void)
     g_location.exit_timer = lv_timer_create(location_exit_timer_cb,
                                              LOCATION_EXIT_DELAY_MS, NULL);
     lv_timer_set_repeat_count(g_location.exit_timer, 1);
-    liot_trace("%s exit request", LOCATION_LOG_PREFIX);
+    liot_trace("%s exit request\n", LOCATION_LOG_PREFIX);
 }
 
 static void location_page_event(lv_event_t *event)
@@ -976,7 +763,7 @@ void demo_location_page_enter(void)
     location_update_ready_state(true);
     g_location.result_timer = lv_timer_create(location_result_timer, 100, NULL);
     lv_scr_load_anim(g_location.screen, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, false);
-    liot_trace("%s page enter GNSS valid=%d lat_e7=%ld lon_e7=%ld",
+    liot_trace("%s page enter GNSS valid=%d lat_e7=%ld lon_e7=%ld\n",
                LOCATION_LOG_PREFIX, g_location.fix.valid ? 1 : 0,
                (long)g_location.fix.latitude_e7,
                (long)g_location.fix.longitude_e7);
@@ -1018,7 +805,7 @@ static int location_key_init(void)
     if (ret != L_GPIO_ERR_SUCCESS) return -1;
     ret = Liot_GpioIntEnable();
     if (ret != L_GPIO_ERR_SUCCESS) return -2;
-    liot_trace("%s key ready GPIO20 level=%d", LOCATION_LOG_PREFIX,
+    liot_trace("%s key ready GPIO20 level=%d\n", LOCATION_LOG_PREFIX,
                Liot_GpioGetLevel(LOCATION_KEY_GPIO));
     return 0;
 }
@@ -1026,36 +813,39 @@ static int location_key_init(void)
 
 void liot_location_demo_thread(void *argument)
 {
+    int result;
     (void)argument;
-    liot_trace("%s standalone demo start", LOCATION_LOG_PREFIX);
+    liot_trace("%s standalone demo start\n", LOCATION_LOG_PREFIX);
 #ifdef HWDEMO_LOCATION_HEADLESS_EN
     location_fix_t fix;
     char description[LOCATION_DESC_SIZE];
-    int result;
     liot_rtos_semaphore_create(&g_location_key_sem, 0);
     result = location_key_init();
-    liot_trace("%s key init result=%d", LOCATION_LOG_PREFIX, result);
+    liot_trace("%s key init result=%d\n", LOCATION_LOG_PREFIX, result);
     if (!location_source_get(&fix)) {
-        liot_trace("%s mock GNSS unavailable", LOCATION_LOG_PREFIX);
+        liot_trace("%s mock GNSS unavailable\n", LOCATION_LOG_PREFIX);
         liot_rtos_task_delete(NULL);
         return;
     }
-    liot_trace("%s mock GNSS lat_e7=%ld lon_e7=%ld", LOCATION_LOG_PREFIX,
+    liot_trace("%s mock GNSS lat_e7=%ld lon_e7=%ld\n", LOCATION_LOG_PREFIX,
                (long)fix.latitude_e7, (long)fix.longitude_e7);
     do {
         result = location_network_prepare();
-        liot_trace("%s boot network result=%d", LOCATION_LOG_PREFIX, result);
+        liot_trace("%s boot network result=%d\n", LOCATION_LOG_PREFIX, result);
         if (result != 0) liot_rtos_task_sleep_s(10);
     } while (result != 0);
-    liot_trace("%s AGNSS start after network ready", LOCATION_LOG_PREFIX);
-    location_agnss_download_and_inject();
-    liot_trace("%s network ready; press KEY_USER0 for GET", LOCATION_LOG_PREFIX);
+    liot_trace("%s AGNSS start after network ready\n", LOCATION_LOG_PREFIX);
+    result = location_agnss_download_and_inject();
+    liot_trace("%s AGNSS result=%d fix=%d sats=%d\n", LOCATION_LOG_PREFIX,
+               result, demo_gnss_has_fix() ? 1 : 0,
+               demo_gnss_get_visible_satellites());
+    liot_trace("%s network ready; press KEY_USER0 for GET\n", LOCATION_LOG_PREFIX);
     while (1) {
         liot_rtos_semaphore_wait(g_location_key_sem, LIOT_WAIT_FOREVER);
         memset(description, 0, sizeof(description));
-        liot_trace("%s key pressed; GET begin", LOCATION_LOG_PREFIX);
+        liot_trace("%s key pressed; GET begin\n", LOCATION_LOG_PREFIX);
         result = location_transport_request(&fix, description, sizeof(description));
-        liot_trace("%s GET result=%d location=%s", LOCATION_LOG_PREFIX, result,
+        liot_trace("%s GET result=%d location=%s\n", LOCATION_LOG_PREFIX, result,
                    result == 0 ? description : "<unavailable>");
     }
 #else
@@ -1065,12 +855,19 @@ void liot_location_demo_thread(void *argument)
     do {
         g_location_network_result = location_network_prepare();
         g_location_network_result_pending = true;
-        liot_trace("%s boot network result=%d", LOCATION_LOG_PREFIX,
+        liot_trace("%s boot network result=%d\n", LOCATION_LOG_PREFIX,
                    g_location_network_result);
         if (g_location_network_result != 0) liot_rtos_task_sleep_s(10);
     } while (g_location_network_result != 0);
-    liot_trace("%s AGNSS start after network ready", LOCATION_LOG_PREFIX);
-    location_agnss_download_and_inject();
+    liot_trace("%s AGNSS start after network ready\n", LOCATION_LOG_PREFIX);
+    result = location_agnss_download_and_inject();
+    liot_trace("%s AGNSS result=%d fix=%d sats=%d\n", LOCATION_LOG_PREFIX,
+               result, demo_gnss_has_fix() ? 1 : 0,
+               demo_gnss_get_visible_satellites());
+    if (result == 0 && demo_gnss_has_fix()) {
+        liot_trace("%s GNSS fix available, location page ready\n",
+                   LOCATION_LOG_PREFIX);
+    }
     while (1) {
         liot_rtos_task_sleep_s(10);
     }
@@ -1079,16 +876,20 @@ void liot_location_demo_thread(void *argument)
 
 void demo_location_service_thread(void *argument)
 {
+    int result;
     (void)argument;
-    liot_trace("%s background network service start", LOCATION_LOG_PREFIX);
+    liot_trace("%s background network service start\n", LOCATION_LOG_PREFIX);
     do {
         g_location_network_result = location_network_prepare();
         g_location_network_result_pending = true;
-        liot_trace("%s background network result=%d", LOCATION_LOG_PREFIX,
+        liot_trace("%s background network result=%d\n", LOCATION_LOG_PREFIX,
                    g_location_network_result);
         if (g_location_network_result != 0) liot_rtos_task_sleep_s(10);
     } while (g_location_network_result != 0);
-    liot_trace("%s AGNSS start after network ready", LOCATION_LOG_PREFIX);
-    location_agnss_download_and_inject();
+    liot_trace("%s AGNSS start after network ready\n", LOCATION_LOG_PREFIX);
+    result = location_agnss_download_and_inject();
+    liot_trace("%s AGNSS result=%d fix=%d sats=%d\n", LOCATION_LOG_PREFIX,
+               result, demo_gnss_has_fix() ? 1 : 0,
+               demo_gnss_get_visible_satellites());
     liot_rtos_task_delete(NULL);
 }

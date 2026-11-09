@@ -9,6 +9,8 @@
 #define XZ_CLIENT_ID_SIZE 37
 #define XZ_WS_URL_SIZE 256
 #define XZ_WS_TOKEN_SIZE 512
+#define XZ_WS_RECONNECT_MAX      3
+#define XZ_WS_RECONNECT_DELAY_MS 2000
 
 typedef struct {
     char device_id[XZ_DEVICE_ID_SIZE];
@@ -27,6 +29,7 @@ int xiaozhi_network_start(void);
 int xiaozhi_ota_check(xiaozhi_config_t *config);
 int xiaozhi_ota_activate(const xiaozhi_config_t *config);
 int xiaozhi_ws_run(const xiaozhi_config_t *config);
+int xiaozhi_ws_wait_connect_request(uint32_t timeout_ms);
 int xiaozhi_audio_init(void);
 int xiaozhi_audio_probe_init(void);
 int xiaozhi_opus_probe_init(void);

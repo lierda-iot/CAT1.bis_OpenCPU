@@ -39,7 +39,7 @@ static void xz_http_event(liot_http_client_t *client, int event, int code, void 
 {
     xz_http_ctx_t *ctx = (xz_http_ctx_t *)arg;
     if (ctx == NULL) return;
-    liot_trace("[xiaozhi] HTTP event=%d code=%d", event, code);
+    liot_trace("[xiaozhi] HTTP event=%d code=%d\n", event, code);
     if (event == LIOT_HTTPC_UPLOAD_START) {
         liot_httpc_user_notify(client, LIOT_HTTPC_READ);
     } else if (event == LIOT_HTTPC_RESPONSE_STATUS && code == LIOT_HTTPC_SUCCESS) {
@@ -102,16 +102,16 @@ static int xz_http_post(const char *url, const char *headers, const char *body,
     ctx->upload = body;
     ctx->upload_len = (int)strlen(body);
     if (!liot_httpc_url_parse((char *)url, &parsed)) {
-        liot_trace("[xiaozhi] HTTP URL parse failed url=%s", url);
+        liot_trace("[xiaozhi] HTTP URL parse failed url=%s\n", url);
         return -1;
     }
     if (liot_rtos_semaphore_create(&ctx->sem, 0) != LIOT_OSI_SUCCESS) {
-        liot_trace("[xiaozhi] HTTP semaphore create failed");
+        liot_trace("[xiaozhi] HTTP semaphore create failed\n");
         return -2;
     }
     ret = liot_httpc_new(&client, xz_http_event, ctx);
     if (ret != LIOT_HTTPC_SUCCESS) {
-        liot_trace("[xiaozhi] HTTP client create failed ret=%d", ret);
+        liot_trace("[xiaozhi] HTTP client create failed ret=%d\n", ret);
         ret = -3;
         goto exit;
     }
@@ -129,7 +129,7 @@ static int xz_http_post(const char *url, const char *headers, const char *body,
     raw_ret = liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_RAW_REQUEST, 0);
     header_ret = liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_REQUEST_HEADER,
                                    (char *)headers);
-    liot_trace("[xiaozhi] HTTP setopt raw=%d headers=%d upload_len=%d",
+    liot_trace("[xiaozhi] HTTP setopt raw=%d headers=%d upload_len=%d\n",
                raw_ret, header_ret, ctx->upload_len);
 #ifdef FEATURE_HTTP_TLS_ENABLE
     liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_SSLCTXID, 3);
@@ -138,14 +138,14 @@ static int xz_http_post(const char *url, const char *headers, const char *body,
     liot_httpc_setopt(&client, LIOT_HTTP_CLIENT_OPT_SSL_VERIFY_LEVEL, LIOT_HTTPS_VERIFY_NONE);
 #endif
     ret = liot_httpc_perform(&client);
-    liot_trace("[xiaozhi] HTTP perform ret=%d", ret);
+    liot_trace("[xiaozhi] HTTP perform ret=%d\n", ret);
     if (ret != LIOT_HTTPC_SUCCESS) {
         ret = -4;
         goto exit;
     }
     for (waited = 0; !ctx->done && waited < 60000; waited += 1000)
         liot_rtos_semaphore_wait(ctx->sem, 1000);
-    liot_trace("[xiaozhi] HTTP done=%d result=%d status=%d body_len=%d",
+    liot_trace("[xiaozhi] HTTP done=%d result=%d status=%d body_len=%d\n",
                ctx->done, ctx->result, ctx->status, ctx->body_len);
     if (!ctx->done || ctx->result != LIOT_HTTPC_SUCCESS) {
         ret = -5;
@@ -169,7 +169,7 @@ exit:
         liot_rtos_semaphore_delete(ctx->sem);
         ctx->sem = NULL;
     }
-    liot_trace("[xiaozhi] HTTP request exit ret=%d", ret);
+    liot_trace("[xiaozhi] HTTP request exit ret=%d\n", ret);
     return ret;
 }
 
@@ -200,13 +200,14 @@ int xiaozhi_ota_check(xiaozhi_config_t *config)
              config->device_id, config->client_id);
     snprintf(request, sizeof(request),
              "{\"version\":2,\"language\":\"zh-CN\",\"flash_size\":0,"
-             "\"minimum_free_heap_size\":\"0\",\"mac_address\":\"%s\","
+             "\"minimum_free_heap_size\":\"%u\",\"mac_address\":\"%s\","
              "\"uuid\":\"%s\",\"chip_model_name\":\"NT26F9D0\","
              "\"application\":{\"name\":\"demo_xiaozhi\",\"version\":\"0.1\"},"
              "\"board\":{\"type\":\"L_CT4IT02_1698W\"}}",
+             (unsigned)liot_xPortGetMinimumEverFreeHeapSize(),
              config->device_id, config->client_id);
     ret = xz_http_post(XZ_OTA_URL, headers, request, response, XZ_HTTP_BODY_MAX, &status);
-    liot_trace("[xiaozhi] OTA HTTP ret=%d status=%d body=%.*s", ret, status,
+    liot_trace("[xiaozhi] OTA HTTP ret=%d status=%d body=%.*s\n", ret, status,
                256, response);
     if (ret != 0 || status != 200)
         return -1;

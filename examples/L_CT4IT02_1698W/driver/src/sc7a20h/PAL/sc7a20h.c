@@ -273,7 +273,7 @@ sc7a20h_err_e sc7a20h_odr_set(sc7a20h_dev_t *dev, sc7a20h_odr_t odr)
 {
 	if (!dev->is_init) return SC7A20H_ERR_NOT_INIT;
 
-	SC7A20H_INFO_PRINTF("set odr: 0X%x", odr);
+	SC7A20H_INFO_PRINTF("[SC7A20H] ODR set: 0x%02X", odr);
 	return shadow_reg_write(dev, REG_CTRL1, &dev->shadow_ctrl1, MASK_ODR, (odr << 4));
 }
 
@@ -371,7 +371,8 @@ sc7a20h_err_e sc7a20h_apply_config(sc7a20h_dev_t *dev, const sc7a20h_config_t *c
     }
 
 err_exit:
-	SC7A20H_INFO_PRINTF("apply config errCode: 0x%x", err);
+	SC7A20H_INFO_PRINTF("[SC7A20H] config apply: %s",
+	                    (err == SC7A20H_OK) ? "OK" : "FAIL");
 	return err;
 }
 
@@ -420,7 +421,8 @@ sc7a20h_err_e sc7a20h_config_click(sc7a20h_dev_t *dev, const sc7a20h_click_cfg_t
     }
 
 err_exit:
-	SC7A20H_INFO_PRINTF("config click errCode: 0x%x", err);
+	SC7A20H_INFO_PRINTF("[SC7A20H] click config: %s",
+	                    (err == SC7A20H_OK) ? "OK" : "FAIL");
 	return err;
 }
 
@@ -469,7 +471,8 @@ sc7a20h_err_e sc7a20h_config_shake(sc7a20h_dev_t *dev, const sc7a20h_shake_cfg_t
     }
 
 err_exit:
-	SC7A20H_INFO_PRINTF("config shake errCode: 0x%x", err);
+	SC7A20H_INFO_PRINTF("[SC7A20H] shake config: %s",
+	                    (err == SC7A20H_OK) ? "OK" : "FAIL");
 	return err;
 }
 

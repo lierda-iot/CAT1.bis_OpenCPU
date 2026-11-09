@@ -92,5 +92,5 @@ void xiaozhi_ui_init(void)
 {
     lvgl_init();
     lv_async_call(xz_ui_create, NULL);
-    liot_trace("[xiaozhi] UI initialized");
+    liot_trace("[xiaozhi] UI initialized\n");
 }

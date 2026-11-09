@@ -1,1 +1,1 @@
-#include "../../../../../demo/src/demo_lvgl_photo_fs/assets/landscape_4_data.c"
+#include "../../../../../demo/src/demo_lvgl_photo_lfs/assets/landscape_4_data.c"

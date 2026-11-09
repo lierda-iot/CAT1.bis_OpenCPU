@@ -9,6 +9,9 @@
 #define SC7A20H_I2C_PORT		0
 #define SC7A20H_I2C_ADDR		SC7A20H_IIC_ADDRESS
 
+/* 每次寄存器读写都打印，会以 10ms 频率刷屏；日常调试置 0，仅排障时置 1 */
+#define SC7A20H_I2C_TRACE_ENABLE	0
+
 /* ================= HAL 接口实现 ================= */
 
 /**
@@ -24,7 +27,12 @@ int32_t sc7a20h_write_reg(uint8_t addr, const uint8_t *data, uint16_t len) {
                                             addr, 
                                             (uint8_t*)data, 
                                             len);
-	LIOT_PRINTF(UNILOG_LIOT_OPEN, P_INFO, "Write2 Reg: 0x%X, Data: 0x%X, err: %d", addr, data[0], err);
+    if (SC7A20H_I2C_TRACE_ENABLE && err == LIOT_I2C_SUCCESS && data != NULL && len > 0) {
+        LIOT_PRINTF(UNILOG_LIOT_OPEN, P_INFO, "[SC7A20H] W 0x%02X <- 0x%02X", addr, data[0]);
+    }
+    if (err != LIOT_I2C_SUCCESS) {
+        LIOT_PRINTF(UNILOG_LIOT_OPEN, P_ERROR, "[SC7A20H] I2C write fail: reg=0x%02X err=%d", addr, err);
+    }
     return (err == LIOT_I2C_SUCCESS) ? 0 : -1;
 }
 
@@ -41,7 +49,12 @@ static int32_t sc7a20h_read_reg(uint8_t addr, uint8_t *data, uint16_t len) {
                                            addr, 
                                            data, 
                                            len);
-	LIOT_PRINTF(UNILOG_LIOT_OPEN, P_INFO, "Read1 Reg: 0x%X, Data: 0x%X, err: %d", addr, data[0], err);
+    if (SC7A20H_I2C_TRACE_ENABLE && err == LIOT_I2C_SUCCESS && data != NULL && len > 0) {
+        LIOT_PRINTF(UNILOG_LIOT_OPEN, P_INFO, "[SC7A20H] R 0x%02X -> 0x%02X", addr, data[0]);
+    }
+    if (err != LIOT_I2C_SUCCESS) {
+        LIOT_PRINTF(UNILOG_LIOT_OPEN, P_ERROR, "[SC7A20H] I2C read fail: reg=0x%02X err=%d", addr, err);
+    }
     return (err == LIOT_I2C_SUCCESS) ? 0 : -1;
 }
 

@@ -31,12 +31,12 @@ void liot_gnss_demo_thread(void *argv);
 void liot_extflash_p25q64_demo_thread(void *argv);
 #endif
 
-#ifdef HWDEMO_EXTFLASH_FS_P25Q64_EN
-void liot_extflash_fs_p25q64_demo_thread(void *argv);
+#ifdef HWDEMO_EXTFLASH_P25Q64_LFS_EN
+void liot_extflash_p25q64_lfs_demo_thread(void *argv);
 #endif
 
-#ifdef HWDEMO_LVGL_PHOTO_FS_EN
-void liot_lvgl_photo_fs_demo_thread(void *argv);
+#ifdef HWDEMO_LVGL_PHOTO_LFS_EN
+void liot_lvgl_photo_lfs_demo_thread(void *argv);
 #endif
 
 #ifdef HWDEMO_SOUND_ES8375_EN
@@ -58,7 +58,7 @@ void liot_location_demo_thread(void *argv);
 
 void user_main(void)
 {
-    liot_trace("L_CT4IT02_1698W demo start");
+    liot_trace("L_CT4IT02_1698W demo start\n");
 
 #ifdef HWDEMO_LCD_EN
     liot_task_t lcd_demo_handle = NULL;
@@ -84,16 +84,16 @@ void user_main(void)
                             "liot_extflash_p25q64_demo_thread", liot_extflash_p25q64_demo_thread, NULL);
 #endif
 
-#ifdef HWDEMO_EXTFLASH_FS_P25Q64_EN
+#ifdef HWDEMO_EXTFLASH_P25Q64_LFS_EN
     liot_task_t extflash_fs_demo_handle = NULL;
     liot_rtos_task_create(&extflash_fs_demo_handle, 10240, LIOT_APP_TASK_PRIORITY,
-                            "liot_extflash_fs_p25q64_demo_thread", liot_extflash_fs_p25q64_demo_thread, NULL);
+                            "liot_extflash_p25q64_lfs_demo_thread", liot_extflash_p25q64_lfs_demo_thread, NULL);
 #endif
 
-#ifdef HWDEMO_LVGL_PHOTO_FS_EN
-    liot_task_t lvgl_photo_fs_demo_handle = NULL;
-    liot_rtos_task_create(&lvgl_photo_fs_demo_handle, 16 * 1024, LIOT_APP_TASK_PRIORITY,
-                            "liot_lvgl_photo_fs_demo_thread", liot_lvgl_photo_fs_demo_thread, NULL);
+#ifdef HWDEMO_LVGL_PHOTO_LFS_EN
+    liot_task_t lvgl_photo_lfs_demo_handle = NULL;
+    liot_rtos_task_create(&lvgl_photo_lfs_demo_handle, 16 * 1024, LIOT_APP_TASK_PRIORITY,
+                            "liot_lvgl_photo_lfs_demo_thread", liot_lvgl_photo_lfs_demo_thread, NULL);
 #endif
 
 #ifdef HWDEMO_SALARY_CALCULATOR_EN

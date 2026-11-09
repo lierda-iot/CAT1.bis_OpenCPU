@@ -10,27 +10,15 @@
 
 #include "lierda_app_main.h"
 #include "liot_external_flash.h"
-#include "liot_gpio2.h"
 #include "liot_os.h"
+
+#include "demo_extflash_p25q64_core.h"
+#include "demo_extflash_p25q64_mgr.h"
 
 #define DEMO_LOG_PREFIX              "[p25q64_raw]"
 #define DEMO_FLASH_NAME              "P25Q64_8MB"
 
 #define DEMO_BOOT_DELAY_MS           (2000U)
-#define DEMO_LDO33_STABLE_DELAY_MS   (10U)
-#define DEMO_VCC3V3_STABLE_DELAY_MS  (20U)
-
-#define DEMO_LDO33_EN_PAD            (106)
-#define DEMO_LDO33_EN_GPIO           (L_GPIO_25)
-#define DEMO_VCC3V3_EN_PAD           (16)
-#define DEMO_VCC3V3_EN_GPIO          (L_GPIO_27)
-
-#define DEMO_SPI_MOSI_PAD            (63)
-#define DEMO_SPI_MISO_PAD            (62)
-#define DEMO_SPI_SCLK_PAD            (49)
-#define DEMO_SPI_CS_PAD              (64)
-#define DEMO_SPI_CS_GPIO             (L_GPIO_12)
-#define DEMO_SPI_PIN_FUNC            (L_PIN_FUNC_1)
 
 #define DEMO_FLASH_SPI_PORT          (1U)
 #define DEMO_FLASH_BASE_ADDR         (0x000000U)
@@ -47,50 +35,6 @@ static const liot_ext_flash_cfg_t g_demo_flash_cfg = {
     .total_size = DEMO_FLASH_TOTAL_SIZE,
 };
 
-static int32_t demo_expect_gpio_ok(liot_gpioerr_e ret, const char *step)
-{
-    if (ret != L_GPIO_ERR_SUCCESS)
-    {
-        liot_trace("%s %s failed: %ld\n", DEMO_LOG_PREFIX, step, (long)ret);
-        return (int32_t)ret;
-    }
-
-    return 0;
-}
-
-static int32_t demo_power_gpio_enable(const char *name, int pad, liot_gpio_e gpio)
-{
-    liot_gpioerr_e ret;
-
-    ret = Liot_GpioInit(gpio, L_IO_OUTPUT, L_IO_HIGH, NULL);
-    if (ret == L_GPIO_ERR_SUCCESS)
-    {
-        liot_trace("%s %s enabled via direct gpio=%d\n",
-                   DEMO_LOG_PREFIX,
-                   name,
-                   (int)gpio);
-        return 0;
-    }
-
-    liot_trace("%s %s direct gpio init failed: %ld, fallback pad=%d\n",
-               DEMO_LOG_PREFIX,
-               name,
-               (long)ret,
-               pad);
-
-    ret = Liot_SetPinFunc(pad, L_PIN_FUNC_0);
-    if (ret != L_GPIO_ERR_SUCCESS)
-    {
-        liot_trace("%s %s pinmux fallback failed: %ld\n",
-                   DEMO_LOG_PREFIX,
-                   name,
-                   (long)ret);
-        return (int32_t)ret;
-    }
-
-    return demo_expect_gpio_ok(Liot_GpioInit(gpio, L_IO_OUTPUT, L_IO_HIGH, NULL), name);
-}
-
 static uint32_t demo_tick_now(void)
 {
     return liot_rtos_get_system_tick();
@@ -98,80 +42,7 @@ static uint32_t demo_tick_now(void)
 
 static uint32_t demo_tick_elapsed(uint32_t start_tick)
 {
-    return (uint32_t)(demo_tick_now() - start_tick);
-}
-
-static void demo_fill_pattern(uint8_t *buffer, uint32_t len, uint8_t seed)
-{
-    uint32_t i;
-
-    for (i = 0; i < len; ++i)
-    {
-        buffer[i] = (uint8_t)(seed + (uint8_t)i);
-    }
-}
-
-static int32_t demo_flash_hw_init(void)
-{
-    int32_t ret;
-
-    ret = demo_expect_gpio_ok(Liot_AonPowerCtl(true), "Liot_AonPowerCtl");
-    if (ret != 0)
-    {
-        return ret;
-    }
-
-    ret = demo_expect_gpio_ok(Liot_SetVoltage(L_DOMAIN_ALL, L_VOLT_3_30V), "Liot_SetVoltage");
-    if (ret != 0)
-    {
-        return ret;
-    }
-
-    ret = demo_power_gpio_enable("LDO33 enable", DEMO_LDO33_EN_PAD, DEMO_LDO33_EN_GPIO);
-    if (ret != 0)
-    {
-        return ret;
-    }
-    liot_rtos_task_sleep_ms(DEMO_LDO33_STABLE_DELAY_MS);
-
-    ret = demo_power_gpio_enable("VCC3V3 enable", DEMO_VCC3V3_EN_PAD, DEMO_VCC3V3_EN_GPIO);
-    if (ret != 0)
-    {
-        return ret;
-    }
-    liot_rtos_task_sleep_ms(DEMO_VCC3V3_STABLE_DELAY_MS);
-
-    ret = demo_expect_gpio_ok(Liot_SetPinFunc(DEMO_SPI_MOSI_PAD, DEMO_SPI_PIN_FUNC), "SPI MOSI pinmux");
-    if (ret != 0)
-    {
-        return ret;
-    }
-
-    ret = demo_expect_gpio_ok(Liot_SetPinFunc(DEMO_SPI_MISO_PAD, DEMO_SPI_PIN_FUNC), "SPI MISO pinmux");
-    if (ret != 0)
-    {
-        return ret;
-    }
-
-    ret = demo_expect_gpio_ok(Liot_SetPinFunc(DEMO_SPI_SCLK_PAD, DEMO_SPI_PIN_FUNC), "SPI SCLK pinmux");
-    if (ret != 0)
-    {
-        return ret;
-    }
-
-    ret = demo_expect_gpio_ok(Liot_SetPinFunc(DEMO_SPI_CS_PAD, L_PIN_FUNC_0), "SPI CS pinmux");
-    if (ret != 0)
-    {
-        return ret;
-    }
-
-    ret = demo_expect_gpio_ok(Liot_GpioInit(DEMO_SPI_CS_GPIO, L_IO_OUTPUT, L_IO_HIGH, NULL), "SPI CS gpio");
-    if (ret != 0)
-    {
-        return ret;
-    }
-
-    return 0;
+    return demo_extflash_p25q64_core_tick_elapsed(demo_tick_now(), start_tick);
 }
 
 void liot_extflash_p25q64_demo_thread(void *argv)
@@ -201,18 +72,20 @@ void liot_extflash_p25q64_demo_thread(void *argv)
                DEMO_FLASH_NAME,
                (unsigned long)DEMO_FLASH_TOTAL_SIZE);
 
-    ret = demo_flash_hw_init();
+    ret = demo_extflash_p25q64_mgr_init(&g_demo_flash_cfg,
+                                        DEMO_EXTFLASH_MGR_OWNER_RAW);
     if (ret != 0)
     {
-        liot_trace("%s hardware init failed ret=%ld\n", DEMO_LOG_PREFIX, (long)ret);
+        liot_trace("%s flash lifecycle init failed ret=%ld\n", DEMO_LOG_PREFIX, (long)ret);
         liot_rtos_task_delete(NULL);
         return;
     }
 
-    ret = liot_flash_init_ext(&g_demo_flash_cfg);
+    ret = demo_extflash_p25q64_mgr_lock();
     if (ret != 0)
     {
-        liot_trace("%s liot_flash_init_ext failed ret=%ld\n", DEMO_LOG_PREFIX, (long)ret);
+        liot_trace("%s access lock failed ret=%ld\n", DEMO_LOG_PREFIX, (long)ret);
+        (void)demo_extflash_p25q64_mgr_deinit(DEMO_EXTFLASH_MGR_OWNER_RAW);
         liot_rtos_task_delete(NULL);
         return;
     }
@@ -224,7 +97,7 @@ void liot_extflash_p25q64_demo_thread(void *argv)
                (unsigned long)g_demo_flash_cfg.total_size);
 
     tick_total_start = demo_tick_now();
-    demo_fill_pattern(write_buf, DEMO_TEST_SIZE, 0x31U);
+    demo_extflash_p25q64_core_fill_pattern(write_buf, DEMO_TEST_SIZE, 0x31U);
 
     tick_step_start = demo_tick_now();
     ret = (int32_t)liot_flash_erase_ext(DEMO_TEST_OFFSET, DEMO_FLASH_BLOCK_SIZE);
@@ -301,7 +174,7 @@ void liot_extflash_p25q64_demo_thread(void *argv)
         goto cleanup;
     }
 
-    demo_fill_pattern(rmw_buf, DEMO_FLASH_BLOCK_SIZE, 0x51U);
+    demo_extflash_p25q64_core_fill_pattern(rmw_buf, DEMO_FLASH_BLOCK_SIZE, 0x51U);
 
     tick_step_start = demo_tick_now();
     ret = (int32_t)liot_flash_erase_ext(DEMO_RMW_OFFSET, DEMO_FLASH_BLOCK_SIZE);
@@ -437,7 +310,8 @@ cleanup:
         free(verify_buf);
     }
 
-    (void)liot_flash_deinit_ext();
+    demo_extflash_p25q64_mgr_unlock();
+    (void)demo_extflash_p25q64_mgr_deinit(DEMO_EXTFLASH_MGR_OWNER_RAW);
     liot_trace("%s demo done\n", DEMO_LOG_PREFIX);
     liot_rtos_task_delete(NULL);
 }

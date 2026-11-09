@@ -11,7 +11,7 @@
 #include "demo_salary_calculator.h"
 #endif
 
-#if APP_MP3_EN
+#if APP_MP3_EN && defined(HWDEMO_MP3_EN)
 #include "demo_mp3.h"
 #endif
 
@@ -36,12 +36,6 @@
 #define APP_MENU_HAS_ATTUITION 0
 #endif
 
-#if APP_ATTFUN_EN
-#define APP_MENU_HAS_ATTFUN 1
-#else
-#define APP_MENU_HAS_ATTFUN 0
-#endif
-
 #if APP_SALARY_EN
 #define APP_MENU_HAS_SALARY 1
 #else
@@ -54,7 +48,7 @@
 #define APP_MENU_HAS_POSITIONING 0
 #endif
 
-#if APP_MP3_EN
+#if APP_MP3_EN && defined(HWDEMO_MP3_EN)
 #define APP_MENU_HAS_MP3 1
 #else
 #define APP_MENU_HAS_MP3 0
@@ -64,7 +58,6 @@ typedef enum {
   APP_MENU_SCREEN_TIME = 0,
   APP_MENU_SCREEN_BAJI,
   APP_MENU_SCREEN_ATTUITION,
-  APP_MENU_SCREEN_ATTFUN,
   APP_MENU_SCREEN_SALARY,
   APP_MENU_SCREEN_POSITIONING,
   APP_MENU_SCREEN_MP3,
@@ -98,9 +91,6 @@ static const app_menu_screen_id_t g_app_menu_enabled_order[] = {
 #endif
 #if APP_MENU_HAS_ATTUITION
     APP_MENU_SCREEN_ATTUITION,
-#endif
-#if APP_MENU_HAS_ATTFUN
-    APP_MENU_SCREEN_ATTFUN,
 #endif
 #if APP_MENU_HAS_SALARY
     APP_MENU_SCREEN_SALARY,
@@ -147,8 +137,6 @@ static lv_obj_t **app_menu_screen_ptr(lv_ui *ui, app_menu_screen_id_t screen) {
     return &ui->baji;
   case APP_MENU_SCREEN_ATTUITION:
     return &ui->attuition;
-  case APP_MENU_SCREEN_ATTFUN:
-    return &ui->attfun;
   case APP_MENU_SCREEN_SALARY:
     return &ui->salary;
   case APP_MENU_SCREEN_POSITIONING:
@@ -168,8 +156,6 @@ static bool app_menu_screen_del_flag(lv_ui *ui, app_menu_screen_id_t screen) {
     return ui->baji_del;
   case APP_MENU_SCREEN_ATTUITION:
     return ui->attuition_del;
-  case APP_MENU_SCREEN_ATTFUN:
-    return ui->attfun_del;
   case APP_MENU_SCREEN_SALARY:
     return ui->salary_del;
   case APP_MENU_SCREEN_POSITIONING:
@@ -189,8 +175,6 @@ static bool *app_menu_old_del_flag(lv_ui *ui, app_menu_screen_id_t screen) {
     return &ui->baji_del;
   case APP_MENU_SCREEN_ATTUITION:
     return &ui->attuition_del;
-  case APP_MENU_SCREEN_ATTFUN:
-    return &ui->attfun_del;
   case APP_MENU_SCREEN_SALARY:
     return &ui->salary_del;
   case APP_MENU_SCREEN_POSITIONING:
@@ -216,10 +200,6 @@ static ui_setup_scr_t app_menu_setup_fn(app_menu_screen_id_t screen) {
   case APP_MENU_SCREEN_ATTUITION:
     return setup_scr_attuition;
 #endif
-#if APP_ATTFUN_EN
-  case APP_MENU_SCREEN_ATTFUN:
-    return setup_scr_attfun;
-#endif
 #if APP_SALARY_EN
   case APP_MENU_SCREEN_SALARY:
     return setup_scr_salary;
@@ -228,7 +208,7 @@ static ui_setup_scr_t app_menu_setup_fn(app_menu_screen_id_t screen) {
   case APP_MENU_SCREEN_POSITIONING:
     return setup_scr_positioning;
 #endif
-#if APP_MP3_EN
+#if APP_MP3_EN && defined(HWDEMO_MP3_EN)
   case APP_MENU_SCREEN_MP3:
     return setup_scr_mp3;
 #endif
@@ -490,13 +470,6 @@ static void app_menu_attuition_event(lv_event_t *event) {
   }
 }
 
-static void app_menu_attfun_event(lv_event_t *event) {
-  if (lv_event_get_code(event) != LV_EVENT_LONG_PRESSED)
-    return;
-  app_menu_load_adjacent(APP_MENU_SCREEN_ATTFUN, APP_MENU_SCREEN_ATTUITION,
-                         false);
-}
-
 static void app_menu_salary_event(lv_event_t *event) {
   app_menu_track_touch(event);
   if (app_menu_click_suppressed(event)) return;
@@ -565,7 +538,7 @@ static void app_menu_mp3_event(lv_event_t *event) {
   app_menu_track_touch(event);
   if (app_menu_click_suppressed(event)) return;
   switch (lv_event_get_code(event)) {
-#if APP_MP3_EN
+#if APP_MP3_EN && defined(HWDEMO_MP3_EN)
   case LV_EVENT_CLICKED:
     liot_trace("[menu] mp3 click enter player");
     demo_mp3_page_enter_async();
@@ -652,10 +625,6 @@ void app_menu_bind_baji(lv_ui *ui) {
 void app_menu_bind_attuition(lv_ui *ui) {
   lv_obj_add_event_cb(ui->attuition, app_menu_attuition_event, LV_EVENT_ALL,
                       ui);
-}
-
-void app_menu_bind_attfun(lv_ui *ui) {
-  lv_obj_add_event_cb(ui->attfun, app_menu_attfun_event, LV_EVENT_ALL, ui);
 }
 
 void app_menu_bind_salary(lv_ui *ui) {

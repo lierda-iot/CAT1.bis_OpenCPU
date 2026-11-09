@@ -17,8 +17,9 @@
  *   - Memory drops from one whole-file malloc (~469KB) to a 4KB chunk buffer.
  *   - Progress is bytes_fed / total_bytes, independent of an assumed bitrate.
  *
- * This file does NOT modify demo_mp3.c; the build selects between the two via
- * MP3_IMPL in examples/L_CT4IT02_1698W/Makefile.
+ * demo_mp3.c (legacy whole-file implementation) has been removed: this
+ * streaming implementation is the single MP3 player backend and is compiled
+ * whenever HWDEMO_MP3_EN is enabled.
  */
 
 #include <stdbool.h>
@@ -37,6 +38,7 @@
 #include "gui_guider.h"
 
 #include "demo_mp3.h"
+#include "demo_mp3_core.h"
 
 #define MP3_LOG_PREFIX              "[demo_mp3_stream]"
 #define MP3_BOOT_DELAY_MS           (8000U)
@@ -71,14 +73,6 @@ extern const uint8_t g_demo_mp3_because_cover_start[];
 extern const uint8_t g_demo_mp3_because_cover_end[];
 extern void lvgl_init(void);
 
-typedef struct {
-    const char *title;
-    const uint8_t *mp3_start;
-    const uint8_t *mp3_end;
-    const uint8_t *cover_start;
-    const uint8_t *cover_end;
-} mp3_track_t;
-
 static const mp3_track_t g_mp3_tracks[] = {
     {
         "Because Of You",
@@ -90,14 +84,6 @@ static const mp3_track_t g_mp3_tracks[] = {
 };
 
 #define MP3_TRACK_COUNT             (sizeof(g_mp3_tracks) / sizeof(g_mp3_tracks[0]))
-
-typedef enum {
-    MP3_STATE_STOPPED = 0,
-    MP3_STATE_PLAYING,
-    MP3_STATE_PAUSED,
-    MP3_STATE_LOADING,
-    MP3_STATE_ERROR,
-} mp3_state_t;
 
 /*
  * All fields shared between the LVGL task (UI timer / touch callbacks) and the
@@ -152,7 +138,6 @@ typedef struct {
 
 static demo_mp3_ctx_t g_mp3;
 
-static const char *mp3_state_name(mp3_state_t s);
 static void mp3_set_state_from(mp3_state_t state, const char *reason);
 #define mp3_set_state(s) mp3_set_state_from((s), __func__)
 static void mp3_update_ui(void);
@@ -178,144 +163,6 @@ static void mp3_at_log(const char *fmt, ...)
 }
 
 #define MP3_LOG(fmt, ...) mp3_at_log(fmt, ##__VA_ARGS__)
-
-static uint32_t mp3_seed_size(const uint8_t *start, const uint8_t *end)
-{
-    return (uint32_t)(end - start);
-}
-
-/*
- * Locate the first MPEG audio frame sync word and skip a leading ID3v2 tag
- * (and any junk before it). The -12dB source starts with "ID3..." at offset 0,
- * so feeding from offset 0 would make libmad resync mid-tag. Skip to the first
- * 0xFF 0xEx sync.
- */
-static uint32_t mp3_frame_offset(const mp3_track_t *track)
-{
-    const uint8_t *p = track->mp3_start;
-    uint32_t size = mp3_seed_size(track->mp3_start, track->mp3_end);
-    uint32_t i;
-
-    for (i = 0; i + 1U < size; i++) {
-        if (p[i] == 0xFFU && (p[i + 1U] & 0xE0U) == 0xE0U) {
-            return i;
-        }
-    }
-    return 0;
-}
-
-/* MPEG audio sample-rate lookup: [MPEG1 / MPEG2] x sampling_freq_index. */
-static uint32_t mp3_sample_rate(uint32_t version, uint32_t idx)
-{
-    static const uint32_t table[2][4] = {
-        { 44100U, 48000U, 32000U, 0U }, /* MPEG1 */
-        { 22050U, 24000U, 16000U, 0U }, /* MPEG2 / MPEG2.5 */
-    };
-
-    if (version > 3U || idx > 3U) {
-        return 0U;
-    }
-    return table[(version == 3U) ? 0U : 1U][idx];
-}
-
-/*
- * MPEG Layer III bit-rate lookup (kbps).
- * version: 3=MPEG1, 2=MPEG2, 0=MPEG2.5. layer: 1=L3, 2=L2, 3=L1.
- * Index 0 and 15 are reserved ("free"/invalid).
- */
-static uint32_t mp3_bitrate(uint32_t version, uint32_t layer, uint32_t idx)
-{
-    static const uint32_t mpeg1_l3[16] = {
-        0U, 32U, 40U, 48U, 56U, 64U, 80U, 96U,
-        112U, 128U, 160U, 192U, 224U, 256U, 320U, 0U
-    };
-    static const uint32_t mpeg2_l3[16] = {
-        0U, 8U, 16U, 24U, 32U, 40U, 48U, 56U,
-        64U, 80U, 96U, 112U, 128U, 144U, 160U, 0U
-    };
-
-    if (idx > 15U) {
-        return 0U;
-    }
-    if (layer != 1U) {
-        return 0U; /* this player only feeds MP3 (Layer III) */
-    }
-    return (version == 3U) ? mpeg1_l3[idx] : mpeg2_l3[idx];
-}
-
-/*
- * Estimate total duration in milliseconds by walking MPEG audio frame headers.
- *
- * The streaming feed decodes far faster than the real-time 44.1kHz playback,
- * so byte position cannot represent playback position. This scan gives a
- * precise, VBR-friendly duration before playback starts.
- */
-static uint32_t mp3_estimate_duration_ms(const mp3_track_t *track, uint32_t base)
-{
-    const uint8_t *p = track->mp3_start + base;
-    uint32_t size = mp3_seed_size(track->mp3_start, track->mp3_end) - base;
-    uint64_t total_samples = 0;
-    uint32_t i = 0;
-
-    while (i + 4U <= size) {
-        uint32_t version;
-        uint32_t layer;
-        uint32_t sf_idx;
-        uint32_t br_idx;
-        uint32_t pad;
-        uint32_t samples;
-        uint32_t srate;
-        uint32_t bitrate;
-        uint32_t framelen;
-
-        if (p[i] != 0xFFU || (p[i + 1U] & 0xE0U) != 0xE0U) {
-            i++;
-            continue;
-        }
-
-        version = (p[i + 1U] >> 3) & 0x03U;
-        layer   = (p[i + 1U] >> 1) & 0x03U;
-        sf_idx  = (p[i + 2U] >> 2) & 0x03U;
-        br_idx  = (p[i + 2U] >> 4) & 0x0FU;
-        pad     = (p[i + 2U] >> 1) & 0x01U;
-
-        /* Reject reserved / invalid combinations (anti false-sync). */
-        if (version == 1U || layer == 0U) {
-            i++;
-            continue;
-        }
-        if (br_idx == 0U || br_idx == 15U) {
-            i++;
-            continue;
-        }
-
-        srate   = mp3_sample_rate(version, sf_idx);
-        bitrate = mp3_bitrate(version, layer, br_idx);
-        if (srate == 0U || bitrate == 0U) {
-            i++;
-            continue;
-        }
-
-        /* Samples per frame: Layer III = 1152 (MPEG1) / 576 (MPEG2/2.5). */
-        samples = 1152U;
-        if (version != 3U) {
-            samples = 576U;
-        }
-
-        framelen = (144U * bitrate * 1000U) / srate + pad;
-        if (framelen < 4U || i + framelen > size) {
-            break;
-        }
-
-        total_samples += samples;
-        i += framelen;
-    }
-
-    if (total_samples == 0U) {
-        return 0U;
-    }
-    return (uint32_t)((total_samples * 1000ULL) / 44100ULL);
-}
 
 static const mp3_track_t *mp3_current_track(void)
 {
@@ -353,40 +200,6 @@ static uint32_t mp3_now_ms(void)
 static uint32_t mp3_elapsed_ms(uint32_t start)
 {
     return (uint32_t)(mp3_now_ms() - start);
-}
-
-/* Current playback position in ms, frozen while paused. */
-static uint32_t mp3_current_ms(void)
-{
-    uint32_t elapsed;
-
-    if (g_mp3.state == MP3_STATE_LOADING ||
-        g_mp3.state == MP3_STATE_ERROR) {
-        return 0U;
-    }
-    if (g_mp3.state == MP3_STATE_STOPPED) {
-        return g_mp3.play_finished ? g_mp3.duration_ms : 0U;
-    }
-    if (g_mp3.state == MP3_STATE_PAUSED) {
-        return g_mp3.pause_started_ms;
-    }
-
-    elapsed = mp3_elapsed_ms(g_mp3.started_tick);
-    if (elapsed > g_mp3.paused_total_ms) {
-        elapsed -= g_mp3.paused_total_ms;
-    } else {
-        elapsed = 0U;
-    }
-    if (g_mp3.duration_ms > 0U && elapsed > g_mp3.duration_ms) {
-        elapsed = g_mp3.duration_ms;
-    }
-    return elapsed;
-}
-
-static void mp3_format_time(char *buf, size_t len, uint32_t ms)
-{
-    uint32_t sec = ms / 1000U;
-    snprintf(buf, len, "%02lu:%02lu", (unsigned long)(sec / 60U), (unsigned long)(sec % 60U));
 }
 
 static void mp3_audio_callback(Liot_AudEvent_e event, void *context)
@@ -452,7 +265,7 @@ static void mp3_audio_init_once(void)
     cfg.callback = mp3_audio_callback;
 
     ret = Liot_AudioInit(&cfg);
-    liot_trace("%s AudioInit ret=%d", MP3_LOG_PREFIX, (int)ret);
+    liot_trace("%s AudioInit ret=%d\n", MP3_LOG_PREFIX, (int)ret);
     if (ret == L_AUD_ERR_SUCCESS) {
         Liot_AudioSetVolume(MP3_AUDIO_VOLUME);
         Liot_AudioSetCodecVolume(MP3_CODEC_VOLUME);
@@ -469,18 +282,6 @@ void demo_mp3_audio_preinit(void)
 bool demo_mp3_audio_is_ready(void)
 {
     return g_mp3.audio_ready;
-}
-
-static const char *mp3_state_name(mp3_state_t s)
-{
-    switch (s) {
-    case MP3_STATE_STOPPED: return "STOPPED";
-    case MP3_STATE_PLAYING: return "PLAYING";
-    case MP3_STATE_PAUSED:  return "PAUSED";
-    case MP3_STATE_LOADING: return "LOADING";
-    case MP3_STATE_ERROR:   return "ERROR";
-    default: return "?";
-    }
 }
 
 static void mp3_set_state_from(mp3_state_t state, const char *reason)
@@ -750,7 +551,10 @@ static void mp3_pause_play(void)
     Liot_AudErr_e ret;
 
     if (g_mp3.state != MP3_STATE_PLAYING) return;
-    g_mp3.pause_started_ms = mp3_current_ms();
+    g_mp3.pause_started_ms = mp3_core_current_ms(g_mp3.state, g_mp3.play_finished,
+                                                 g_mp3.duration_ms, g_mp3.pause_started_ms,
+                                                 g_mp3.started_tick, g_mp3.paused_total_ms,
+                                                 mp3_now_ms());
     g_mp3.paused_tick = mp3_now_ms();
     ret = Liot_AudioPlayPause();
     mp3_at_log("%s Pause ret=%d", MP3_LOG_PREFIX, (int)ret);
@@ -791,7 +595,10 @@ static void mp3_update_ui(void)
     default: break;
     }
 
-    current_ms = mp3_current_ms();
+    current_ms = mp3_core_current_ms(g_mp3.state, g_mp3.play_finished,
+                                     g_mp3.duration_ms, g_mp3.pause_started_ms,
+                                     g_mp3.started_tick, g_mp3.paused_total_ms,
+                                     mp3_now_ms());
 
     mp3_format_time(cur, sizeof(cur), current_ms);
     if (total_ms != 0U) {
@@ -1223,13 +1030,13 @@ void demo_mp3_page_enter_async(void)
 void liot_mp3_demo_thread(void *argv)
 {
     (void)argv;
-    liot_trace("%s demo start", MP3_LOG_PREFIX);
+    liot_trace("%s demo start\n", MP3_LOG_PREFIX);
     liot_rtos_task_sleep_ms(MP3_BOOT_DELAY_MS);
-    liot_trace("[demo_mp3_stream] === MP3 DEMO START ===");
+    liot_trace("[demo_mp3_stream] === MP3 DEMO START ===\n");
     liot_rtos_task_sleep_ms(1000);
-    liot_trace("[demo_mp3_stream] === MP3 DEMO START 2 ===");
+    liot_trace("[demo_mp3_stream] === MP3 DEMO START 2 ===\n");
     liot_rtos_task_sleep_ms(1000);
-    liot_trace("[demo_mp3_stream] === MP3 DEMO START 3 ===");
+    liot_trace("[demo_mp3_stream] === MP3 DEMO START 3 ===\n");
     lvgl_init();
     demo_mp3_page_enter_async();
     while (1) {
