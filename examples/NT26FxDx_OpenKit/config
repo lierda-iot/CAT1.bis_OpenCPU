@@ -14,11 +14,11 @@
 APP_VERSION = 01
 
 BUILD_MODE ?= demo
-DEMO_NAME ?= demo_zhongyi_ai
+DEMO_NAME ?= hardware
 BUILD_COMP_THIRDPART_EN = y
 BUILD_THPART_LIB1_ENABLE = n
-BUILD_THPART_WEBSOCKET_ENABLE = y
-BUILD_THPART_OPUS_ENABLE = y
+BUILD_THPART_WEBSOCKET_ENABLE = n
+BUILD_THPART_OPUS_ENABLE = n
 
 ##############################################################################
 # Hardware ready flags (only effective when BUILD_MODE=demo)
@@ -35,3 +35,4 @@ HWDEMO_TP_EN           ?= n
 HWDEMO_SOUND_EN        ?= n
 # I2C1 (TP/SSD1306) and SPI0 (WS2812B) share Pin 66, can't open together
 HWDEMO_WS2812B_EN      ?= n
+HWDEMO_TCP_EN          ?= n

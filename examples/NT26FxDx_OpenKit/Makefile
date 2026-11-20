@@ -58,6 +58,11 @@ CUSTOM_COBJSTEMP += $(CUSTOM_SRC)/demo_ws2812b.o
 CFLAGS_DEFS += -DHWDEMO_WS2812B_EN
 endif
 
+ifeq ($(HWDEMO_TCP_EN), y)
+CUSTOM_COBJSTEMP += $(CUSTOM_SRC)/demo_tcp.o
+CFLAGS_DEFS += -DHWDEMO_TCP_EN
+endif
+
 else ifeq ($(DEMO_NAME), demo_zhongyi_ai)
 
 CUSTOM_SRC := $(CUSTOM_DIR)/demo/src/demo_zhongyi_ai/src

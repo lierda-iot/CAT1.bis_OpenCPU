@@ -39,6 +39,10 @@ void liot_tp_demo_thread(void *argv);
 void liot_sound_demo_thread(void *argv);
 #endif
 
+
+#ifdef HWDEMO_TCP_EN
+void demo_tcp_demo_thread(void *arg);
+#endif
 #ifdef HWDEMO_WS2812B_EN
 #include "demo_ws2812b.h"
 #endif
@@ -87,5 +91,11 @@ void user_main(void)
     liot_task_t ws2812b_handle = NULL;
     liot_rtos_task_create(&ws2812b_handle, 4096, LIOT_APP_TASK_PRIORITY,
                           "demo_ws2812b", demo_ws2812b_task, NULL);
+#endif
+
+#ifdef HWDEMO_TCP_EN
+    liot_task_t tcp_handle = NULL;
+    liot_rtos_task_create(&tcp_handle, 10240, LIOT_APP_TASK_PRIORITY,
+                          "demo_tcp", demo_tcp_demo_thread, NULL);
 #endif
 }
